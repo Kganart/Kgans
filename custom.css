@@ -181,11 +181,11 @@ body {
 
 .protect img {
   pointer-events: none;
-  border-radius: 5% / 80%;
+  /*border-radius: 5% / 80%;*/
 }
 .protect video {
   pointer-events: none;
-  border-radius: 5% / 80%;
+/*  border-radius: 5% / 80%;*/
 }
 .navbar-brand {
   color: #ffa311;
