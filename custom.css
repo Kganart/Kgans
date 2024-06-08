@@ -457,6 +457,10 @@ a {
   font-size: calc(1rem + 5vw);
 }
 
+text_shadows navbar-brand {
+  font-size: calc(1rem + 4vw);
+}
+
 .overtext{
   z-index: 9999;
   position: absolute;
