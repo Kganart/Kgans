@@ -468,7 +468,7 @@ a {
 
 @keyframes rocket-man {
   0% {
-    transform: translateX(-110vh) translateY(20vh) scale(1);
+    transform: translateX(-110vh) translateY(20vh) rotate(90deg) scale(1);
   }
   15% {
     transform: translateX(-90vh) translateY(15vh) scale(1);
