@@ -455,20 +455,20 @@ a {
 
 .rocket1 {
   aspect-ratio: 1 / 1;
-  animation: 8s ease 1s delay 0.4s infinite rocket-man;
+  animation: 8s ease 0s infinite rocket-man;
 }
 .rocket2 {
   aspect-ratio: 1 / 1;
-  animation: 8s ease 1s delay 0.3s infinite rocket-man;
+  animation: 8s linear 1s infinite rocket-man;
 }
 .rocket3 {
   aspect-ratio: 1 / 1;
-  animation: 8s ease 1s infinite rocket-man;
+  animation: 8s ease 0s infinite rocket-man;
 }
 
 @keyframes rocket-man {
   0% {
-    transform: translateX(-110vh) translateY(20vh) rotate(90deg) scale(1);
+    transform: translateX(-250vh) translateY(20vh) rotate(90deg) scale(1);
   }
   15% {
     transform: translateX(-90vh) translateY(15vh) scale(1);
