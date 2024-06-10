@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+/*
 var faviconImages = [];
 for (var i = 0; i < 150; i++) {
     var frameNumber = ("000" + i).slice(-3); // Ensures the frame number is always three digits
@@ -38,3 +39,4 @@ setInterval(function() {
     currentFavicon = (currentFavicon + 1) % faviconImages.length;
     faviconElement.setAttribute('href', faviconImages[currentFavicon]);
 }, 10); // Change every 20 milliseconds to match the 0.02s delay
+*/
