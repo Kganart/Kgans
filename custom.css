@@ -466,7 +466,7 @@ a {
   animation: 6s linear 0s infinite rocket-man;
 }
 
-@keyframes rocket-man {
+@keyframes rocket-man1 {
   0% {
     transform: translateX(-250vw) translateY(20vh) rotate(60deg) scale(0.8);
   }
@@ -496,6 +496,70 @@ a {
   }
   100% {
     transform: translateX(100vw) translateY(20vh) rotate(90deg) scale(1);
+  }
+}
+@keyframes rocket-man2 {
+  0% {
+    transform: translateX(-250vw) translateY(20vh) rotate(60deg) scale(0.8);
+  }
+  10% {
+    transform: translateX(-150vw) translateY(18vh) rotate(65deg) scale(0.9);
+  }
+  15% {
+    transform: translateX(-90vw) translateY(15vh) rotate(70deg) scale(1);
+  }
+  30% {
+    transform: translateX(-55vw) translateY(10vh) rotate(80deg) scale(1);
+  }
+  45% {
+    transform: translateX(-27vw) translateY(3vh) rotate(85deg) scale(1);
+  }
+  60% {
+    transform: translateX(0vw) translateY(0vh) rotate(90deg) scale(1);
+  }
+  75% {
+    transform: translateX(30vw) translateY(2vh) rotate(92deg) scale(1);
+  }
+  90% {
+    transform: translateX(70vw) translateY(10vh) rotate(94deg) scale(1);
+  }
+  95% {
+    transform: translateX(70vw) translateY(15vh) rotate(92deg) scale(1);
+  }
+  100% {
+    transform: translateX(70vw) translateY(20vh) rotate(90deg) scale(1);
+  }
+}
+@keyframes rocket-man3 {
+  0% {
+    transform: translateX(-250vw) translateY(20vh) rotate(60deg) scale(0.8);
+  }
+  10% {
+    transform: translateX(-150vw) translateY(18vh) rotate(65deg) scale(0.9);
+  }
+  15% {
+    transform: translateX(-90vw) translateY(15vh) rotate(70deg) scale(1);
+  }
+  30% {
+    transform: translateX(-55vw) translateY(10vh) rotate(80deg) scale(1);
+  }
+  45% {
+    transform: translateX(-27vw) translateY(3vh) rotate(85deg) scale(1);
+  }
+  60% {
+    transform: translateX(0vw) translateY(0vh) rotate(90deg) scale(1);
+  }
+  75% {
+    transform: translateX(30vw) translateY(2vh) rotate(92deg) scale(1);
+  }
+  90% {
+    transform: translateX(40vw) translateY(10vh) rotate(94deg) scale(1);
+  }
+  95% {
+    transform: translateX(40vw) translateY(15vh) rotate(92deg) scale(1);
+  }
+  100% {
+    transform: translateX(40vw) translateY(20vh) rotate(90deg) scale(1);
   }
 }
 
