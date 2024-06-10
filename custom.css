@@ -455,15 +455,15 @@ a {
 
 .rocket1 {
   aspect-ratio: 1 / 1;
-  animation: 8s linear 1s infinite rocket-man;
+  animation: 6s linear 1s infinite rocket-man;
 }
 .rocket2 {
   aspect-ratio: 1 / 1;
-  animation: 8s linear 1s infinite rocket-man;
+  animation: 6s linear 1s infinite rocket-man;
 }
 .rocket3 {
   aspect-ratio: 1 / 1;
-  animation: 8s linear 1s infinite rocket-man;
+  animation: 6s linear 1s infinite rocket-man;
 }
 
 @keyframes rocket-man {
@@ -486,16 +486,16 @@ a {
     transform: translateX(0vh) translateY(0vh) rotate(90deg) scale(1);
   }
   75% {
-    transform: translateX(30vh) translateY(2vh) rotate(95deg) scale(1);
+    transform: translateX(30vh) translateY(2vh) rotate(92deg) scale(1);
   }
   90% {
-    transform: translateX(80vh) translateY(10vh) rotate(110deg) scale(1);
+    transform: translateX(80vh) translateY(10vh) rotate(94deg) scale(1);
   }
   95% {
-    transform: translateX(110vh) translateY(20vh) rotate(120deg) scale(1);
+    transform: translateX(110vh) translateY(20vh) rotate(92deg) scale(1);
   }
   100% {
-    transform: translateX(220vh) translateY(20vh) rotate(130deg) scale(1);
+    transform: translateX(220vh) translateY(20vh) rotate(90deg) scale(1);
   }
 }
 
