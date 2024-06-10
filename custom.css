@@ -455,7 +455,7 @@ a {
 
 .rocket1 {
   aspect-ratio: 1 / 1;
-  animation: 8s ease 0s infinite rocket-man;
+  animation: 8s linear 1s infinite rocket-man;
 }
 .rocket2 {
   aspect-ratio: 1 / 1;
@@ -463,7 +463,7 @@ a {
 }
 .rocket3 {
   aspect-ratio: 1 / 1;
-  animation: 8s ease 0s infinite rocket-man;
+  animation: 8s linear 1s infinite rocket-man;
 }
 
 @keyframes rocket-man {
