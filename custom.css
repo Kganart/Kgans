@@ -495,7 +495,7 @@ a {
     transform: translateX(95vw) translateY(15vh) rotate(92deg) scale(1);
   }
   100% {
-    transform: translateX(95vw) translateY(20vh) rotate(90deg) scale(1);
+    transform: translateX(100vw) translateY(20vh) rotate(90deg) scale(1);
   }
 }
 
