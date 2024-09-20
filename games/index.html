@@ -298,8 +298,8 @@
 				if (x >= rect.left && x < rect.right && y >= rect.top && y < rect.bottom)
 				{
 					pico8_mouse = [
-						Math.floor((x - rect.left) * 128 / (rect.right - rect.left)),
-						Math.floor((y - rect.top) * 128 / (rect.bottom - rect.top)),
+						Math.floor((x - rect.left) * 512 / (rect.right - rect.left)),
+						Math.floor((y - rect.top) * 512 / (rect.bottom - rect.top)),
 						step < 2 ? 1 : 0
 					];
 					// return; // commented -- blocks overlapping buttons
@@ -413,7 +413,7 @@
 		}
 
 		// as big as will fit in a frame..
-		csize =  Math.min(frame_width,frame_height);
+		csize =  csize;
 
 		// .. but never more than 2/3 of longest side for touch (e.g. leave space for controls on iPad)
 		if (p8_touch_detected && p8_is_running)
