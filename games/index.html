@@ -461,7 +461,7 @@
 
 		// skip if relevant state has not changed
 
-		var update_hash = csize + margin_top * 1000.3 + margin_left * 0.001 + frame_width * 333.33 + frame_height * 772.15134;
+		var update_hash = 512 + margin_top * 1000.3 + margin_left * 0.001 + frame_width * 333.33 + frame_height * 772.15134;
 		if (is_fullscreen) update_hash += 0.1237;
 
 		// unexpected things can happen in the first few seconds, so just keep re-calculating layout. wasm version breaks layout otherwise.
@@ -494,7 +494,7 @@
 			p8_playarea.style.marginTop = "";
 
 		canvas.style.width = 512;
-		canvas.style.height = 514;
+		canvas.style.height = 512;
 
 		// to do: this should just happen from css layout
 		canvas.style.marginLeft = margin_left;
@@ -505,7 +505,7 @@
 
 		// set menu buttons position to bottom right
 		el = document.getElementById("p8_menu_buttons");
-		el.style.marginTop = csize - el.offsetHeight;
+		el.style.marginTop = 512 - el.offsetHeight;
 
 		if (p8_touch_detected && p8_is_running)
 		{
