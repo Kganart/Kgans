@@ -419,14 +419,14 @@
 		if (p8_touch_detected && p8_is_running)
 		{
 			var longest_side = Math.max(window.innerWidth,window.innerHeight);
-			csize = Math.min(csize, longest_side * 2/3);
+			csize = csize;
 		}
 
 		// pixel perfect: quantize to closest multiple of 128
 		// only when large display (desktop)
 		if (frame_width >= 512 && frame_height >= 512)
 		{
-			csize = (csize+1) & ~0x7f;
+			csize = csize;
 		}
 
 		// csize should never be higher than parent frame
