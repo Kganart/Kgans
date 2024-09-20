@@ -408,31 +408,31 @@
 		}
 		else{
 			// never larger than window  // (happens when address bar is down in portraight mode on phone)
-			frame_width  = Math.min(frame_width, window.innerWidth);
-			frame_height = Math.min(frame_height, window.innerHeight);
+			frame_width  = 512;
+			frame_height = 512;
 		}
 
 		// as big as will fit in a frame..
-		csize =  csize;
+		csize =  512;
 
 		// .. but never more than 2/3 of longest side for touch (e.g. leave space for controls on iPad)
 		if (p8_touch_detected && p8_is_running)
 		{
 			var longest_side = Math.max(window.innerWidth,window.innerHeight);
-			csize = csize;
+			csize = 512;
 		}
 
 		// pixel perfect: quantize to closest multiple of 128
 		// only when large display (desktop)
 		if (frame_width >= 512 && frame_height >= 512)
 		{
-			csize = csize;
+			csize = 512;
 		}
 
 		// csize should never be higher than parent frame
 		// (otherwise stretched large when fullscreen and then return)
 		if (!is_fullscreen && p8_frame) 
-			csize = csize; // p8_frame_0 parent
+			csize = 512; // p8_frame_0 parent
 		
 
 		if (is_fullscreen)
