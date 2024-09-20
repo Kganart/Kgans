@@ -497,8 +497,8 @@
 		canvas.style.height = 512;
 
 		// to do: this should just happen from css layout
-		canvas.style.marginLeft = margin_left;
-		canvas.style.marginTop = margin_top;
+		canvas.style.marginLeft = 512;
+		canvas.style.marginTop = 512;
 
 		p8_container.style.width = 512;
 		p8_container.style.height = 512;
@@ -1009,6 +1009,8 @@
 }
 
 canvas{
+	width: 512px;
+		height:512px;
     image-rendering: optimizeSpeed;
     image-rendering: -moz-crisp-edges;
     image-rendering: -webkit-optimize-contrast;
