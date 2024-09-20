@@ -41,7 +41,6 @@
   <script src="../assets/js/video.js" defer></script>
   <script src="../assets/js/loadwait.js" defer></script>
 
-<meta name="viewport" content="width=device-width, user-scalable=no">
 <script type="text/javascript">
 
 	// Default shell for PICO-8 0.2.2 (includes @weeble's gamepad mod 1.0)
@@ -433,7 +432,7 @@
 		// csize should never be higher than parent frame
 		// (otherwise stretched large when fullscreen and then return)
 		if (!is_fullscreen && p8_frame) 
-			csize = Math.min(csize, last_windowed_container_height); // p8_frame_0 parent
+			csize = csize; // p8_frame_0 parent
 		
 
 		if (is_fullscreen)
