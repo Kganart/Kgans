@@ -6,10 +6,15 @@
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
-    
+    <!-- Game Page  -->
+    <url>
+        <loc>https://www.kgans.com/games/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
     <!-- Work Page -->
     <url>
-        <loc>https://www.kgans.com/work</loc>
+        <loc>https://www.kgans.com/work/</loc>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
