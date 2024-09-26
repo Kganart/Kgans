@@ -320,7 +320,8 @@ a {
 .nav2,
 .nav3,
 .nav4 {
-  font-family: "Monoton", sans-serif;
+ /* font-family: "Monoton", sans-serif;*/
+  font-family: "Press Start 2P", system-ui;
 }
 /*
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link .nav2{
@@ -572,7 +573,8 @@ a {
 }
 
 .kgantitle .text_shadows{
-  font-size: calc(1rem + 3vw);
+  /*font-size: calc(1rem + 3vw);*/
+  font-size: calc(sin(pi / 2)* 3vw);
   font-family: "Press Start 2P", system-ui;
 }
 
