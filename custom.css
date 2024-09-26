@@ -340,7 +340,7 @@ a {
   font-size: 2rem;
 }
 .navimg{
-    width: 6.2wh;
+    width: 6.2vw;
 }
 @media (max-width: 1000px) {
   .nav-link {
