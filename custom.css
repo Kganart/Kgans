@@ -681,12 +681,12 @@ a {
     object-fit: contain;
   }
   .kgantitle{
-    text-align: center;
+    text-align: left;
     align-content: center;
     justify-content: center;
     position: sticky;
-      left: 50%; /* Centering horizontally */
-      transform: translateX(-50%); /* Adjust for the center alignment */
+    /*  left: 50%;*/ /* Centering horizontally */
+    /*  transform: translateX(-50%);*/ /* Adjust for the center alignment */
   }
 
 }
