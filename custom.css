@@ -693,6 +693,7 @@ a {
 
 :root {
   --color-primary: #d16240;
+  --color-invis: rgba(0, 0, 0, 0);
   --color-secondary: #d93646;
   --color-tertiary: #a16be3;
   --color-quaternary: #6be389;
@@ -707,14 +708,14 @@ a {
   text-transform: uppercase;
   text-align: center;
   margin: 0;
-  color: var(--color-primary);
+  color: var(--color-invis);
   animation: shadows 1.2s ease-in infinite, move 1.2s ease-in infinite;
   letter-spacing: 0.4rem;
 }
 
 @keyframes shadows {
   0% {
-    text-shadow: none;
+    text-shadow: 0.1px 0.1px 0 var(--color-primary);
   }
   10% {
     text-shadow: 3px 3px 0 var(--color-secondary);
@@ -754,7 +755,7 @@ a {
     text-shadow: 3px 3px 0 var(--color-secondary);
   }
   100% {
-    text-shadow: none;
+    text-shadow: 0.1px 0.1px 0 var(--color-primary);
   }
 }
 
