@@ -573,6 +573,7 @@ a {
 
 .kgantitle .text_shadows{
   font-size: calc(1rem + 3vw);
+  font-family: "Press Start 2P", system-ui;
 }
 
 .overtext{
