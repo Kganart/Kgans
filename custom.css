@@ -708,7 +708,7 @@ a {
   text-align: center;
   margin: 0;
   color: var(--color-invis);
-  animation: shadows 1.2s ease-in infinite, move 1.2s ease-in infinite;
+  animation: shadows 2.1s ease-in infinite, move 2.1s ease-in infinite;
   letter-spacing: 0.4rem;
   transform: matrix(1, -0.13, 0.1, 1, 1, 0);
 }
