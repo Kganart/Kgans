@@ -339,6 +339,9 @@ a {
 .navbar-brand {
   font-size: 2rem;
 }
+.navimg{
+    width: 6.2wh;
+}
 @media (max-width: 1000px) {
   .nav-link {
     font-size: 2rem;
@@ -350,6 +353,10 @@ a {
   }
   .navbar-brand {
     font-size: 1.8rem;
+  }
+  .navimg{
+        height: 100%;
+        width: 6.2vw;
   }
   .nav1,
   .nav2,
