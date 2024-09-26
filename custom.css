@@ -582,6 +582,7 @@ a {
 .kgantitle .text_shadows{
   /*font-size: calc(1rem + 3vw);*/
   font-size: calc(sin(pi / 5)* 3vw);
+  pointer-events: none;
   font-family: "Press Start 2P", system-ui;
 }
 
