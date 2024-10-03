@@ -12,6 +12,15 @@
   z-index:9950;
   background:no-repeat center center rgba(0,0,0,1);
 }
+
+
+a.nav-link.nav3.justify-content-end {
+    color: #4041df;
+    text-shadow: 0.9px 0.6px 0.5px #7e750b, -0.9px -0.6px 0.5px #aefffa;
+}
+
+
+
 a:hover.dropdown-item.nav-link.nav2.justify-content-end {
     text-shadow: 0.9px 0.6px 0.5px #ffffff;
     color: #1c1e20;
@@ -287,7 +296,8 @@ a {
 
 .nav-pills .nav1.nav-link {
   color: #d93646;
-  text-shadow: 1.3px 0.9px 0.5px #7b26a9;
+  text-shadow: 0.9px 0.6px 0.5px #6f0101, -0.9px -0.6px 0.5px #ffaeae;
+  /*text-shadow: 1.3px 0.9px 0.5px #7b26a9;*/
 }
 .nav-pills .nav2.nav-link {
   color: #a16be3;
@@ -311,7 +321,8 @@ a {
 .nav-pills .nav1.nav-link.active,
 .nav-pills .show > .nav-link.nav1 {
   background-color: #453939;
-  text-shadow: 3px 1.5px 0.5px #7b26a9, 3.5px 2px 13px #00ff00;
+  text-shadow: 0.9px 0.6px 0.5px #6f0101, -0.9px -0.6px 0.5px #ffaeae, 3px 1.5px 0.5px #7b26a9, 3.5px 2px 13px #00ff00;
+  /*text-shadow: 3px 1.5px 0.5px #7b26a9, 3.5px 2px 13px #00ff00;*/
 }
 .nav-pills .nav2.nav-link.active,
 .nav-pills .show > .nav-link.nav2 {
