@@ -12,6 +12,11 @@
   z-index:9950;
   background:no-repeat center center rgba(0,0,0,1);
 }
+a:hover.dropdown-item.nav-link.nav2.justify-content-end {
+    text-shadow: 0.9px 0.6px 0.5px #ffffff;
+    color: #1c1e20;
+    background-color: #a16be3;
+}
 ul.dropdown-menu.show {
     background-color: #1c1e20;
 }
