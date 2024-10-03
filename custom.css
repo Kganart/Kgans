@@ -369,6 +369,30 @@ a {
   }
 }
 @media (max-width: 767px) {
+    .nav1, .nav2, .nav3, .nav4 {
+      /* font-family: "DotGothic16", sans-serif; */
+      font-weight: 500;
+      font-style: normal;
+      font-size: 0.8rem;
+    }
+}
+@media (max-width: 420px) {
+    .nav1, .nav2, .nav3, .nav4 {
+      /* font-family: "DotGothic16", sans-serif; */
+      font-weight: 500;
+      font-style: normal;
+      font-size: 0.7rem;
+    }
+}
+@media (max-width: 400px) {
+    .nav1, .nav2, .nav3, .nav4 {
+      /* font-family: "DotGothic16", sans-serif; */
+      font-weight: 500;
+      font-style: normal;
+      font-size: 0.6rem;
+    }
+}
+@media (max-width: 767px) {
   .nav-link {
     font-size: 1.2rem;
   }
@@ -379,6 +403,7 @@ a {
         height: 100%;
         width: 6.2vw;
   }
+  /*
   .nav1,
   .nav2,
   .nav3,
@@ -387,7 +412,7 @@ a {
     font-weight: 500;
     font-style: normal;
     font-size: 1.3rem;
-  }
+  }**/
 }
 @media (max-width: 382px) {
   .navbar-brand {
@@ -399,12 +424,13 @@ a {
   .navbar-brand {
     font-size: 1rem;
   }
+  /*
   .nav1,
   .nav2,
   .nav3,
   .nav4 {
     font-size: 0.8rem;
-  }
+  }*/
 }
 
 .objects {
