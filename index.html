@@ -51,22 +51,25 @@
       <ul class="nav nav-pills">
 
         <li class="nav-item">
-          <a class="active nav-link  nav1 justify-content-end" href="#top">Home</a>
+		<button class="active btn nav-link nav1 justify-content-end" href="#top" type="button">
+    			Home
+  		</button>
+          <!--<a class="active nav-link  nav1 justify-content-end" href="#top">Home</a>-->
         </li>
-        <!--<li class="nav-item">-->
-		<div class="dropdown nav-link nav2 justify-content-end">
-			  <a class="btn dropdown-toggle nav-link nav2 justify-content-end" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-			    Work<a>
-			  <ul class="dropdown-menu">
-				    <li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/games/">Games</a></li>
-				    <li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/work/">2D Art</a></li>
-				    <li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/work/3D">3D Art</a></li>
-			  </ul>
-		</div>
+        <li class="nav-item dropdown">
+		<button class="btn nav-link nav2 justify-content-end dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    			Work
+  		</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/games/">Games</a></li>
+			<li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/work/">2D Art</a></li>
+			<li><a class="dropdown-item nav-link nav2 justify-content-end" href="https://www.kgans.com/work/3D">3D Art</a></li>
+		</ul>
+		
 		<!--
         	<a class="nav-link nav2 justify-content-end" href="https://www.kgans.com/work/">Work</a>
 		-->
-        <!--</li>-->
+        </li>
         <li class="nav-item">
           <a class="nav-link nav3 justify-content-end" href="https://www.kgans.com/about">About</a>
         </li>
