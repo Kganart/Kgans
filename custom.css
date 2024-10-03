@@ -12,6 +12,9 @@
   z-index:9950;
   background:no-repeat center center rgba(0,0,0,1);
 }
+ul.dropdown-menu.show {
+    background-color: #1c1e20;
+}
 
 .navbar{
   border-radius:  0 0 1.2em 1.2em;
