@@ -301,11 +301,13 @@ a {
 }
 .nav-pills .nav2.nav-link {
   color: #a16be3;
-  text-shadow: 0.9px 0.6px 0.5px #b82aae;
+  text-shadow: 0.9px 0.6px 0.5px #7300ff, -0.9px -0.6px 0.5px #d4b0ff;
 }
 .nav-pills .nav3.nav-link {
-  color: #6be389;
-  text-shadow: 0.9px 0.6px 0.5px #2ab833;
+  color: #4041df;
+    text-shadow: 0.9px 0.6px 0.5px #7e750b, -0.9px -0.6px 0.5px #aefffa;
+  /*color: #6be389;
+  text-shadow: 0.9px 0.6px 0.5px #2ab833;*/
 }
 .nav-pills .nav4.nav-link {
   color: rgb(14, 180, 213);
@@ -327,12 +329,12 @@ a {
 .nav-pills .nav2.nav-link.active,
 .nav-pills .show > .nav-link.nav2 {
   background-color: #403945;
-  text-shadow: 2px 1px 0.5px #b82aae, 3.5px 2px 13px #7f00cf;
+  text-shadow: 0.9px 0.6px 0.5px #7300ff, -0.9px -0.6px 0.5px #d4b0ff,2px 1px 0.5px #b82aae, 3.5px 2px 13px #7f00cf;
 }
 .nav-pills .nav3.nav-link.active,
 .nav-pills .show > .nav-link.nav3 {
   background-color: #394540;
-  text-shadow: 3px 1.5px 0.5px #0f7a4d, 3.5px 2px 13px #11f24d;
+  text-shadow: 0.9px 0.6px 0.5px #7e750b, -0.9px -0.6px 0.5px #aefffa,3px 1.5px 0.5px #0f7a4d, 3.5px 2px 13px #11f24d;
 }
 .nav-pills .nav3.nav-link.active,
 .nav-pills .show > .nav-link.nav4 {
