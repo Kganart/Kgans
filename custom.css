@@ -20,7 +20,11 @@ a:hover.dropdown-item.nav-link.nav2.justify-content-end {
 ul.dropdown-menu.show {
     background-color: #1c1e20;
 }
-
+button.btn.btn-link.nav-link.nav2.justify-content-end.dropdown-toggle.show[aria-expanded="true"] {
+    color: #91278b;
+    background-color: #a16be3;
+    text-shadow: 0.9px 0.6px 0.5px #7300ff, -0.9px -0.6px 0.5px #d4b0ff;
+}
 .navbar{
   border-radius:  0 0 1.2em 1.2em;
 }
