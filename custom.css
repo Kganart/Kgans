@@ -373,6 +373,14 @@ a {
       /* font-family: "DotGothic16", sans-serif; */
       font-weight: 500;
       font-style: normal;
+      font-size: 1.1rem;
+    }
+}
+@media (max-width: 515px) {
+    .nav1, .nav2, .nav3, .nav4 {
+      /* font-family: "DotGothic16", sans-serif; */
+      font-weight: 500;
+      font-style: normal;
       font-size: 0.8rem;
     }
 }
@@ -393,9 +401,9 @@ a {
     }
 }
 @media (max-width: 767px) {
-  .nav-link {
+  /*.nav-link {
     font-size: 1.2rem;
-  }
+  }*/
   .navbar-brand {
     font-size: 1.8rem;
   }
@@ -418,9 +426,9 @@ a {
   .navbar-brand {
     font-size: 0.5rem;
   }
-  .nav-link {
+  /*.nav-link {
     font-size: 1.2rem;
-  }
+  }*/
   .navbar-brand {
     font-size: 1rem;
   }
