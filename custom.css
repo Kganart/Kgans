@@ -1,6 +1,6 @@
 @font-face{
   font-family: cooper;
-  src:"assets/fonts/COOPBL.ttf";
+  src:url("assets/fonts/COOPBL.TTF");
 }
 #load{
   width:100%;
