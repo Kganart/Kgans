@@ -1,3 +1,7 @@
+@font-face{
+  font-family: cooper;
+  src:"asests/fonts/COOPBL.ttf";
+}
 #load{
   width:100%;
   height: 100vh;
@@ -242,12 +246,16 @@ body {
 @media (max-width: 767px) {
   .nova-text {
     font-size: 0.9rem;
-    font-family: "Press Start 2P", system-ui;
-    font-weight: 200;
+    font-family: cooper;
+    /* font-family: "Press Start 2P", system-ui;
+    font-weight: 200;*/
   }
 }
 h1 {
+  font-family: cooper;
+  /*
   font-family: "Bebas Neue", sans-serif;
+  */
 }
 .banner-title {
   color: #ffffff;
@@ -281,8 +289,9 @@ a {
   font-size: 15rem;
 }
 .nova-text a {
+  font-family: cooper;/*
   font-family: "Press Start 2P", system-ui;
-  font-weight: 400;
+  font-weight: 400;*/
 }
 @media (max-width: 767px) {
   .nova-text a {
