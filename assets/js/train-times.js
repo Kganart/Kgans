@@ -1,42 +1,65 @@
 document.addEventListener("DOMContentLoaded", function () {
     const stationName = "Howth";
-    
-    // You can use a CORS proxy if needed
+
+    // CORS proxy if necessary
     const proxyUrl = "https://cors-anywhere.herokuapp.com/";
     const apiUrl = `http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${stationName}`;
 
     // Fetch data from the Irish Rail Realtime API
     fetch(proxyUrl + apiUrl)
-        .then(response => response.text())  // Get the response as text (since it's XML)
+        .then(response => response.text())  // Get the response as text
         .then(data => {
-            // Parse the XML data
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data, "text/xml");
-
-            // Get all train entries from the XML response
-            const trains = xmlDoc.getElementsByTagName("objStationData");
-
-            if (trains.length === 0) {
+            // Since the data does not have tags, treat it as a raw text response
+            // Split the data by newlines and process each train entry
+            const trainLines = data.trim().split('\n');
+            
+            if (trainLines.length === 0) {
                 document.getElementById("train-times").innerHTML = "No trains currently available.";
                 return;
             }
 
             // Build the output HTML
             let output = "<ul>";
-            for (let i = 0; i < trains.length; i++) {
-                const train = trains[i];
 
-                // Extract train details
-                const destination = train.getElementsByTagName("Destination")[0].textContent;
-                const dueIn = train.getElementsByTagName("Duein")[0].textContent;
-                const direction = train.getElementsByTagName("Direction")[0].textContent;
-                const trainType = train.getElementsByTagName("Traintype")[0].textContent;
-                const expArrival = train.getElementsByTagName("Exparrival")[0].textContent;
+            // Loop over each line and extract train details based on position
+            trainLines.forEach(line => {
+                const trainData = line.trim().split(/\s+/);  // Split each line by spaces (or multiple spaces)
 
+                if (trainData.length < 21) {
+                    // If the line doesn't have enough data fields, skip it
+                    return;
+                }
+
+                // Extract relevant data (assumed positions based on your shared example)
+                const timestamp = trainData[0];
+                const trainCode = trainData[1];
+                const stationName = trainData[2];
+                const stationCode = trainData[3];
+                const queryTime = trainData[4];
+                const trainDate = trainData[5] + " " + trainData[6] + " " + trainData[7];  // Example: "15 Oct 2024"
+                const origin = trainData[8];
+                const destination = trainData[9];
+                const originTime = trainData[10];
+                const destinationTime = trainData[11];
+                const status = trainData[12];
+                const lastLocation = trainData[13] + " " + trainData[14];  // Example: "Departed Kilbarrack"
+                const dueIn = trainData[15];  // Minutes until the train arrives
+                const late = trainData[16];  // Minutes late
+                const expArrival = trainData[17];
+                const expDeparture = trainData[18];
+                const direction = trainData[19];  // Northbound/Southbound
+                const trainType = trainData[20];  // DART or other
+                const locationType = trainData[21];  // Location type (D)
+
+                // Create a list item for each train
                 output += `<li>
-                    <strong>Train to ${destination}</strong> (${trainType}) - ${direction}, Due in: ${dueIn} minutes, Expected arrival: ${expArrival}
+                    <strong>Train ${trainCode} to ${destination}</strong> (${trainType}) - ${direction}<br>
+                    Due in: ${dueIn} minutes | Expected Arrival: ${expArrival}<br>
+                    Status: ${status} | Last Location: ${lastLocation}<br>
+                    Late by: ${late} minutes
                 </li>`;
-            }
+            });
+
             output += "</ul>";
 
             // Display the train times on the webpage
