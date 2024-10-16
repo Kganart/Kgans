@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const stationNameTest = "Howth";
     var stationName = document.getElementById("train-type").innerHTML;
-    const apiUrl = `https://cors-anywhere.herokuapp.com/http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${stationName}`;
+    const apiUrl = `https://corsproxy.io/?http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${stationName}`;
 
     // Fetch data from the Irish Rail Realtime API
     fetch(apiUrl, {
