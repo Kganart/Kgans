@@ -33,17 +33,19 @@ document.addEventListener("DOMContentLoaded", function () {
             ${trainType}</h4></div>
             */
 
-            output += `<div class="row">
-            <div class="col border border-white ">
+            output += `<div class="card text-bg-dark">
+            <div class="row">
+            <div class="col  ">
             <h4 class="banner-text nova-text text-center">
             ${destination}</h4></div>
-            <div class="col border border-white">
+            <div class="col ">
             <h4 class="banner-text nova-text text-center">
             ${direction}</h4></div>
-            <div class="col border border-white">
+            <div class="col">
             <h4 class="banner-text nova-text text-center">
             ${dueIn}</h4></div>
-            </div>`;
+            </div>
+            </div><br>`;
         }
         output += "</div>";
 
