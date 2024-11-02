@@ -1151,7 +1151,10 @@ body {
 }
 
 /* Main CSS */
-
+.m-scroll span, .r-scroll span{
+  pointer-events: none;
+  user-select: none; 
+}
 .protect img {
   pointer-events: none;
   /*border-radius: 5% / 80%;*/
