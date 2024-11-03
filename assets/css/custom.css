@@ -695,10 +695,10 @@ h2.banner-title {
 .gradient-2 .m-scroll:hover,
 .gradient-2 .m-scroll:active {
   height: 23rem;
-  animation-play-state: paused;
+
   color: #865592;
   text-shadow: -1.5px -2px 0px #cba8ff, 1.5px 2px 0px #3c1b6e, 2.5px 3px 0px #7f33bb;
-  animation-play-state: paused;
+
   /*background-color: #ffffff5c;*/
 
   --color-s-primary: #f08181;
@@ -719,10 +719,14 @@ h2.banner-title {
   text-shadow: -1.5px -2px 0px #ffa8a8,1.5px 2px 0px #6e1b1b, 2.5px 3px 0px #bb3333;*/
 }
 
+@media(min-width: 1024px){
+  
+}
+
+
 .gradient-1 .r-scroll:hover,
 .gradient-1 .r-scroll:active {
   height: 23rem;
-  animation-play-state: paused;
   /*background-color: #ffffff5c;*/
 
   --color-s-primary: #d281f0;
@@ -827,7 +831,7 @@ span {
   font-size: 3rem;
   transition: font-size 20s;
   display: inline-block;
-  min-width: 100vw;
+  min-width: 27vw;
   margin: 0;
   padding: 0;
 }
