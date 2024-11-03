@@ -695,6 +695,14 @@ h2.banner-title {
 .gradient-2 .m-scroll:hover,
 .gradient-2 .m-scroll:active {
   height: 23rem;
+  color: #bd2121;
+  text-shadow: -1.5px -2px 0px #ffa8a8,1.5px 2px 0px #6e1b1b, 2.5px 3px 0px #bb3333;
+}
+
+@media(min-width: 1024px){
+  .gradient-2 .m-scroll:hover,
+.gradient-2 .m-scroll:active {
+  height: 23rem;
 
   color: #865592;
   text-shadow: -1.5px -2px 0px #cba8ff, 1.5px 2px 0px #3c1b6e, 2.5px 3px 0px #7f33bb;
@@ -718,13 +726,20 @@ h2.banner-title {
   color: #bd2121;
   text-shadow: -1.5px -2px 0px #ffa8a8,1.5px 2px 0px #6e1b1b, 2.5px 3px 0px #bb3333;*/
 }
-
-@media(min-width: 1024px){
+  
   
 }
 
 
 .gradient-1 .r-scroll:hover,
+.gradient-1 .r-scroll:active {
+  height: 23rem;
+  
+  color: #d281f0;
+  text-shadow: -1.5px -2px 0px #d255ff,1.5px 2px 0px #820fac, 2.5px 3px 0px #39074b;
+}
+@media(min-width: 1024px){
+  .gradient-1 .r-scroll:hover,
 .gradient-1 .r-scroll:active {
   height: 23rem;
   /*background-color: #ffffff5c;*/
@@ -745,6 +760,7 @@ h2.banner-title {
   /*
   color: #bd2121;
   text-shadow: -1.5px -2px 0px #ffa8a8,1.5px 2px 0px #6e1b1b, 2.5px 3px 0px #bb3333;*/
+}
 }
 
 @keyframes shadowsScroll {
