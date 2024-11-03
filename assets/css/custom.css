@@ -827,7 +827,7 @@ span {
   font-size: 3rem;
   transition: font-size 20s;
   display: inline-block;
-  min-width: 80vw;
+  min-width: 100vw;
   margin: 0;
   padding: 0;
 }
