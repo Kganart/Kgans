@@ -2395,6 +2395,21 @@ a {
 	border-left: 5px solid transparent;
 }
 
+div#Northbound.card, div#Southbound.card{
+  height: 12rem;
+}
+div#Northbound.card{
+  filter: sepia(.7);
+}
+div#Southbound.card{
+  filter: sepia(.3);
+}
+@media (max-width: 550px) {
+  .div#Northbound.card, div#Southbound.card {
+      height: 9rem;
+      
+  }
+}
 @keyframes move {
   0% {
     transform: translate(0px, 0px);
