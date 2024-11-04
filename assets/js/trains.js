@@ -29,7 +29,7 @@ function myTrain() {
 
         // Build the output HTML
         //let output = "<div>";
-        let output = `<h3 class="banner-text content-text">Next Trains from ${selectedElementText} </h3>
+        let output = `<h3 class="content-text light-banner-text">Next Trains from ${selectedElementText} </h3>
         <div id="train-times" class="card-grid">
         `;
         
