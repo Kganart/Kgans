@@ -2405,7 +2405,7 @@ div#Southbound.card{
   filter: sepia(.3);
 }
 @media (max-width: 550px) {
-  .div#Northbound.card, div#Southbound.card {
+  div#Northbound.card, div#Southbound.card{
       height: 9rem;
       
   }
