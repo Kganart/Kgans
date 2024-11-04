@@ -612,10 +612,13 @@ h2.banner-title {
   height: 5rem;
   transition: height 20s;
   white-space: nowrap;
-  animation: scrollText 7s infinite linear;
   margin: 0;
   font-size: 0;
   display: inline-block;
+}
+
+.ani-ctrl-m-scroll{
+  animation: scrollText 7s infinite linear;
 }
 
 :root {
@@ -650,10 +653,12 @@ h2.banner-title {
   transition: height 20s;
   background: linear-gradient(209deg, var(--gradeint-scroll1-1), var(--gradeint-scroll1-2), var(--gradeint-scroll1-3), var(--gradeint-scroll1-4), var(--gradeint-scroll1-5), var(--gradeint-scroll1-6));
   background-size: 1200% 1200%;
+  box-shadow: inset 0px 10px 9px 0px rgba(0,0,0,0.41);
+}
+.ani-ctrl-gradient-1{
   -webkit-animation: gradientAnimation1 12s ease infinite;
   -moz-animation: gradientAnimation1 12s ease infinite;
   animation: gradientAnimation1 12s ease infinite;
-  box-shadow: inset 0px 10px 9px 0px rgba(0,0,0,0.41);
 }
 
 .gradient-1:hover,
@@ -732,17 +737,20 @@ h2.banner-title {
   transition: height 20s;
   background: linear-gradient(227deg, var(--gradeint-scroll2-1), var(--gradeint-scroll2-2), var(--gradeint-scroll2-3), var(--gradeint-scroll2-4), var(--gradeint-scroll2-5), var(--gradeint-scroll2-6));
   background-size: 1000% 1000%;
-
+  box-shadow: 0px -10px 9px 0px rgba(0,0,0,0.41);
+}
+.ani-ctrl-gradient-2{
   -webkit-animation: gradientAnimation2 12s ease infinite;
   -moz-animation: gradientAnimation2 12s ease infinite;
   animation: gradientAnimation2 12s ease infinite;
-  box-shadow: 0px -10px 9px 0px rgba(0,0,0,0.41);
 }
 .card {
 
   background: linear-gradient(227deg, var(--gradeint-scroll2-1), var(--gradeint-scroll2-2), var(--gradeint-scroll2-3), var(--gradeint-scroll2-4), var(--gradeint-scroll2-5), var(--gradeint-scroll2-6));
   background-size: 1000% 1000%;
+}
 
+.ani-ctrl-card{
   -webkit-animation: gradientAnimation2 12s ease infinite;
   -moz-animation: gradientAnimation2 12s ease infinite;
   animation: gradientAnimation2 12s ease infinite;
@@ -796,10 +804,14 @@ h2.banner-title {
   height: 5rem;
   transition: height 20s;
   white-space: nowrap;
-  animation: scrollText 8s infinite reverse linear;
   margin: 0;
   font-size: 0;
   display: inline-block;
+}
+.ani-ctrl-r-scroll{
+
+  animation: scrollText 8s infinite reverse linear;
+
 }
 
 html { scroll-behavior: smooth; }
@@ -1484,7 +1496,7 @@ body {
     margin-right: 1rem;
   }
 }
-.card-grid > div:nth-child(-n+6) > div:nth-child(1)  {
+.card-grid > div:nth-child(-n+100) > div:nth-child(1)  {
   font-size: 2rem;
   line-height: 33px;
   letter-spacing: 0.321em;
@@ -2307,66 +2319,82 @@ a {
     text-shadow: 0.1px 0.1px 0 var(--color-primary);
   }
 }
-
-/*
-.text_shadows {
-  text-shadow: 3px 3px 0 var(--color-secondary), 6px 6px 0 var(--color-tertiary),
-    9px 9px var(--color-quaternary), 12px 12px 0 var(--color-quinary);
-  font-weight: 400;
-  text-transform: uppercase;
+.train-btn {
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #c4abd8;
+  border: none;
+  font-family: "Goldman", serif;
+  font-weight: 700;
+  color: #634d76;
+  padding: 1rem 2rem;
   text-align: center;
-  margin: 0;
-  color: var(--color-invis);
-  animation: shadows 1.2s ease-in infinite, move 1.2s ease-in infinite;
-  letter-spacing: 0.4rem;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  cursor: pointer;
+}
+.train-btn:active {
+  box-shadow: inset 0 12px 16px 0 rgba(0,0,0,0.24);
+  background-color: #634d76;
+  color: #c4abd8;
+
+  transform: translateY(4px);
+}
+.train-btn:hover {
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.257), 0 6px 8px 4px rgba(0, 0, 0, 0.239)
+}
+.select-dropdown,
+.select-dropdown * {
+  font-size: 1.5rem;
+  font-family: "Goldman", serif;
+  font-weight: 700;
+  text-align: center;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	box-sizing: border-box;
+}
+.select-dropdown {
+	position: relative;
+	background-color: #c4abd8;
+  box-shadow: inset 0px 10px 7px 1px #0000005e;
+  border-radius: 10px;
+}
+.select-dropdown select option{
+  color: #865592;
+  text-shadow: -1.5px -2px 0px #cba8ff, 1.5px 1px 0px #3c1b6e, 2px 1.5px 0px #7f33bb;
+
+}
+.select-dropdown select {
+  width: 100%;
+	max-width: 100%;
+	padding: 8px 24px 8px 10px;
+	border: none;
+	background-color: transparent;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+	appearance: none;
+}
+.select-dropdown select:active, .select-dropdown select:focus {
+	outline: none;
+	box-shadow: none;
+}
+.select-dropdown:after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	width: 0;
+	height: 0;
+	margin-top: -2px;
+  border-radius: 10px;
+	border-top: 5px solid #aaa;
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
 }
 
-@keyframes shadows {
-  0% {
-    text-shadow: 0.1px 0.1px 0 var(--color-primary);
-  }
-  10% {
-    text-shadow: 3px 3px 0 var(--color-secondary);
-  }
-  20% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary);
-  }
-  30% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
-  }
-  40% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
-      12px 12px 0 var(--color-quinary);
-  }
-  50% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
-      12px 12px 0 var(--color-quinary);
-  }
-  60% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary),
-      12px 12px 0 var(--color-quinary);
-  }
-  70% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary), 9px 9px var(--color-quaternary);
-  }
-  80% {
-    text-shadow: 3px 3px 0 var(--color-secondary),
-      6px 6px 0 var(--color-tertiary);
-  }
-  90% {
-    text-shadow: 3px 3px 0 var(--color-secondary);
-  }
-  100% {
-    text-shadow: 0.1px 0.1px 0 var(--color-primary);
-  }
-}
-*/
 @keyframes move {
   0% {
     transform: translate(0px, 0px);
