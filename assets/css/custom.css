@@ -187,6 +187,8 @@ ul {
 }
 
 .navbar {
+  border-radius: 9px;
+  margin: 0.8rem;
   line-height: 1.5;
   /*max-width: 100vw;*/
   background-color: #897aa4;
@@ -197,6 +199,12 @@ ul {
   position: sticky;
   top: 0;/*
   animation: navbarAnimation 4s cubic-bezier(1,0,0,1) 0s 1 normal;*/
+}
+
+@media (max-width: 767px) {
+.navbar {
+  margin: 0.2rem;
+}
 }
 
 @keyframes navbarAnimation {
@@ -212,6 +220,7 @@ ul {
 }
 
 .nav-flex {
+  border-radius: inherit;
   display: flex;
   box-shadow: inset 0px -10px 9px 0px rgba(39, 39, 39, 0.41);
   justify-content: space-between;
@@ -1472,7 +1481,7 @@ a {
 .kgantitle {
   padding: 0 0.5rem 0.5rem 0.5rem;
   box-shadow: 2px -6px 14px 0.9px #000000ad;
-  border-radius: 1px;
+  border-radius: inherit;
 }
 .kgantitle .text_shadows {
   /*font-size: calc(1rem + 3vw);*/
