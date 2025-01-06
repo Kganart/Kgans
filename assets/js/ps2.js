@@ -8,6 +8,8 @@ const regionSelectContainer = document.getElementById("regionSelectContainer");
 const regionRadios = document.querySelectorAll('input[name="region"]');
 const startButton = document.getElementById("startButton");
 
+const titleText = document.getElementById("titleText");
+
 const swipeCardContainer = document.getElementById("swipeCardContainer");
 const dismissButton = document.getElementById("dismissButton");
 const acceptButton = document.getElementById("acceptButton");
@@ -73,6 +75,7 @@ function checkForSavedState() {
 
         // Hide region selection UI
         regionSelectContainer.style.display = "none";
+        titleText.style.display = "none";
         // Show the swipe container + buttons
         swipeCardContainer.style.display = "block";
         dismissButton.style.display = "block";
