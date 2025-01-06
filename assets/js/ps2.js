@@ -61,6 +61,8 @@ function initSwipe(filteredArray) {
   // Show container, hide finalList
   swipeCardContainer.style.display = "block";   // or remove 'display:none;'
   finalListContainer.style.display = "none";
+  acceptButton.style.display = "none";
+  dismissButton.style.display = "none";
 
   showGame(currentIndex);
 }
@@ -113,7 +115,7 @@ function showGame(index) {
   cardDiv.appendChild(pubEl);
 
   const regionEl = document.createElement("p");
-  regionEl.innerText = `JP: ${game.JP} | EU/PAL: ${game["EU/PAL"]} | NA: ${game.NA}`;
+  regionEl.innerText = `JP: ${game.JP}\nEU/PAL: ${game["EU/PAL"]}\nNA: ${game.NA}`;
   cardDiv.appendChild(regionEl);
 
   // Possibly a link
@@ -147,6 +149,8 @@ function handleAccept() {
 
 // 8) Final list
 function showFinalList() {
+    acceptButton.style.display = "none";
+  dismissButton.style.display = "none";
   swipeCardContainer.style.display = "none";
   finalListContainer.style.display = "block";
 
@@ -226,6 +230,9 @@ startButton.addEventListener("click", () => {
   // Initialize
   initSwipe(regionGames);
 
+  // Show Accept and Dissmiss
+  acceptButton.style.display = "block";
+  dismissButton.style.display = "block";
   // Hide region container if you like
   regionSelectContainer.style.display = "none";
 });
