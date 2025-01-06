@@ -209,8 +209,8 @@
       <h2 class="banner-text content-text">PS2 Game List Maker</h2>
     </div>
 
-    <!-- 1) Radio Buttons & "Start" Button -->
-  <div id="regionSelectContainer">
+   <!-- Region Selection: (Radio Buttons) + "Start" -->
+   <div id="regionSelectContainer">
     <input type="radio" id="JP" name="region" value="JP">
     <label for="JP">JP</label>
 
@@ -220,26 +220,26 @@
     <input type="radio" id="NA" name="region" value="NA">
     <label for="NA">NA</label>
 
-    <button id="startButton">Filter &amp; Start</button>
+    <button id="startButton" class="swipe-button">Filter &amp; Start</button>
   </div>
 
-  <!-- 2) The swipe card -->
-  <div id="swipeCard">
-    <!-- Card content is injected by JS -->
+  <!-- The swipe card container (Holds one .swipe-card at a time) -->
+  <div id="swipeCardContainer">
+    <!-- We dynamically create/insert .swipe-card elements here in JS -->
   </div>
 
-  <!-- 3) Buttons for "Dismiss" / "Add to List" -->
-  <div id="swipeButtons">
-    <button id="dismissButton">Dismiss</button>
-    <button id="acceptButton">Add to List</button>
+  <!-- Dismiss / Add to List Buttons -->
+  <div class="swipe-buttons">
+    <button id="dismissButton" class="swipe-button">Dismiss</button>
+    <button id="acceptButton" class="swipe-button">Add to List</button>
   </div>
 
-  <!-- 4) Final List Container -->
+  <!-- Final List Container (shown after all games) -->
   <div id="finalListContainer">
     <h2>Your Accepted Games</h2>
     <div id="finalList"></div>
 
-    <!-- Multiple Export Buttons -->
+    <!-- Export Buttons -->
     <div class="export-buttons">
       <button id="exportJsonButton" class="export-button">Export JSON</button>
       <button id="exportCsvButton" class="export-button">Export CSV</button>
