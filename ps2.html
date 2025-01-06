@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PAL Exclusive PS2 Games | Adam Keegan - kgans.com</title>
+    <title>PS2 Games List Maker | Adam Keegan - kgans.com</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -27,6 +27,10 @@
     .kgantitle .text_shadows {
         font-size: calc(sin(pi / 10)* 5vw) !important;
     }
+    #regionSelectContainer {
+      text-align: center;
+      margin: 1rem;
+    }
 
       /**********************************************
        * Swipe Card Container
@@ -39,6 +43,7 @@
       }
 
       .swipe-card {
+        display: none;
         position: relative;
         width: 100%;
         height: fit-content;
@@ -143,6 +148,25 @@
       .export-button:hover {
         background-color: #005fa3;
       }
+      .export-buttons {
+      margin-top: 1rem;
+    }
+    .export-button {
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    #swipeCard {
+      display: none; /* hidden on load */
+    }
+    #swipeButtons {
+      display: none; /* hidden on load */
+    }
+    #finalListContainer {
+      display: none; /* shown after last game */
+    }
+    
 
       /**********************************************
        * Final List Container
@@ -182,46 +206,46 @@
       </nav>
 
     <div class="banner-title">
-      <h2 class="banner-text content-text">PAL Exclusive PS2 Games</h2>
+      <h2 class="banner-text content-text">PS2 Game List Maker</h2>
     </div>
 
-    <!-- Region selection and "start" button -->
-  <div style="text-align: center;">
-    <select id="regionSelect">
-      <option value="JP">JP</option>
-      <option value="EU/PAL">EU/PAL</option>
-      <option value="NA">NA</option>
-    </select>
-    <button id="startButton">Filter & Start</button>
+    <!-- 1) Radio Buttons & "Start" Button -->
+  <div id="regionSelectContainer">
+    <input type="radio" id="JP" name="region" value="JP">
+    <label for="JP">JP</label>
+
+    <input type="radio" id="EU/PAL" name="region" value="EU/PAL">
+    <label for="EU/PAL">EU/PAL</label>
+
+    <input type="radio" id="NA" name="region" value="NA">
+    <label for="NA">NA</label>
+
+    <button id="startButton">Filter &amp; Start</button>
   </div>
-    <!-- Swipe Card Container (one card at a time) -->
-    <div id="swipeCardContainer">
-      <div class="swipe-card" id="swipeCard">
-        <!-- Overlays (initially hidden) -->
-        <div class="overlay-like">LIKE</div>
-        <div class="overlay-dislike">NOPE</div>
-        <!-- The active game's content will be dynamically inserted here -->
-      </div>
-    </div>
 
-    <!-- Buttons to 'Add to List' or 'Dismiss' -->
-    <div class="swipe-buttons">
-      <button id="dismissButton" class="swipe-button">Dismiss</button>
-      <button id="acceptButton" class="swipe-button">Add to List</button>
-    </div>
+  <!-- 2) The swipe card -->
+  <div id="swipeCard">
+    <!-- Card content is injected by JS -->
+  </div>
 
-    <!-- Final List Container (will display after last game) -->
-    <div id="finalListContainer">
-      <h3>You added these games to your list:</h3>
-      <div id="finalList"></div>
+  <!-- 3) Buttons for "Dismiss" / "Add to List" -->
+  <div id="swipeButtons">
+    <button id="dismissButton">Dismiss</button>
+    <button id="acceptButton">Add to List</button>
+  </div>
 
-      <!-- Multiple Export Buttons -->
-      <div class="export-buttons">
-        <button id="exportJsonButton" class="export-button">Export JSON</button>
-        <button id="exportCsvButton" class="export-button">Export CSV</button>
-        <button id="copyClipboardButton" class="export-button">Copy to Clipboard</button>
-      </div>
+  <!-- 4) Final List Container -->
+  <div id="finalListContainer">
+    <h2>Your Accepted Games</h2>
+    <div id="finalList"></div>
+
+    <!-- Multiple Export Buttons -->
+    <div class="export-buttons">
+      <button id="exportJsonButton" class="export-button">Export JSON</button>
+      <button id="exportCsvButton" class="export-button">Export CSV</button>
+      <button id="copyClipboardButton" class="export-button">Copy to Clipboard</button>
     </div>
+  </div>
 
     <!-- Your main JS script -->
     <script src="assets/js/ps2.js"></script>
