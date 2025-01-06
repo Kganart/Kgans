@@ -1,266 +1,290 @@
-    // -----------------------------------------------------
-    // Global references
-    // -----------------------------------------------------
-    const regionSelectContainer = document.getElementById("regionSelectContainer");
-    const regionRadios          = document.querySelectorAll('input[name="region"]');
-    const startButton           = document.getElementById("startButton");
+/*******************************************************
+ * ps2.js
+ * Using #swipeCardContainer and .swipe-card
+ *******************************************************/
 
-    const swipeCard             = document.getElementById("swipeCard");
-    const swipeButtons          = document.getElementById("swipeButtons");
-    const dismissButton         = document.getElementById("dismissButton");
-    const acceptButton          = document.getElementById("acceptButton");
+// 1) References to HTML elements
+const regionSelectContainer = document.getElementById("regionSelectContainer");
+const regionRadios = document.querySelectorAll('input[name="region"]');
+const startButton = document.getElementById("startButton");
 
-    const finalListContainer    = document.getElementById("finalListContainer");
-    const finalList             = document.getElementById("finalList");
+const swipeCardContainer = document.getElementById("swipeCardContainer");
+const dismissButton = document.getElementById("dismissButton");
+const acceptButton = document.getElementById("acceptButton");
 
-    // Export buttons
-    const exportJsonButton      = document.getElementById("exportJsonButton");
-    const exportCsvButton       = document.getElementById("exportCsvButton");
-    const copyClipboardButton   = document.getElementById("copyClipboardButton");
+const finalListContainer = document.getElementById("finalListContainer");
+const finalList = document.getElementById("finalList");
 
-    // State
-    let allGames = [];      // loaded from ps2list.json
-    let games = [];         // filtered subset
-    let acceptedGames = [];
-    let currentIndex = 0;
+// Export buttons
+const exportJsonButton = document.getElementById("exportJsonButton");
+const exportCsvButton = document.getElementById("exportCsvButton");
+const copyClipboardButton = document.getElementById("copyClipboardButton");
 
-    // For swipe
-    let startX = 0;
-    let currentX = 0;
-    let isDragging = false;
-    const SWIPE_THRESHOLD = 100; // px
+// 2) Global state
+let allGames = [];      
+let games = [];         // filtered subset
+let acceptedGames = [];
+let currentIndex = 0;
 
-    // -----------------------------------------------------
-    // Load JSON data on page load
-    // -----------------------------------------------------
-    async function loadData() {
-      try {
-        // Adjust path if needed. Must be served over HTTP.
-        const response = await fetch("assets/js/ps2list.json");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        allGames = await response.json();
-        console.log("Loaded JSON:", allGames.length, "games total");
-      } catch (err) {
-        console.error("Error loading ps2list.json:", err);
-      }
+// For swipe
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
+const SWIPE_THRESHOLD = 100; // px to consider a swipe
+
+// 3) Load the JSON data
+async function loadData() {
+  try {
+    const response = await fetch("assets/js/ps2list.json");
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    loadData(); // call immediately
+    allGames = await response.json();
+    console.log("Loaded JSON:", allGames.length, "games total");
+  } catch (err) {
+    console.error("Error loading ps2list.json:", err);
+  }
+}
 
-    // -----------------------------------------------------
-    // Filter by region
-    // -----------------------------------------------------
-    function filterByRegion(region) {
-      // Return only games "Released" in that region
-      return allGames.filter((game) => game[region] === "Released");
-    }
+// 4) Filter by region
+function filterByRegion(region) {
+  // "region" could be "JP", "EU/PAL", or "NA"
+  return allGames.filter((game) => game[region] === "Released");
+}
 
-    // -----------------------------------------------------
-    // Initialize the swipe with the filtered array
-    // -----------------------------------------------------
-    function initSwipe(filteredArray) {
-      games = filteredArray;
-      currentIndex = 0;
-      acceptedGames = [];
+// 5) Initialize the swipe with a filtered array
+function initSwipe(filteredArray) {
+  games = filteredArray;
+  currentIndex = 0;
+  acceptedGames = [];
 
-      // Hide region container, show card + buttons
-      regionSelectContainer.style.display = "none";
-      swipeCard.style.display = "block";
-      swipeButtons.style.display = "block";
-      finalListContainer.style.display = "none";
+  // Show container, hide finalList
+  swipeCardContainer.style.display = "block";   // or remove 'display:none;'
+  finalListContainer.style.display = "none";
 
-      showGame(currentIndex);
-    }
+  showGame(currentIndex);
+}
 
-    // -----------------------------------------------------
-    // Show the current game
-    // -----------------------------------------------------
-    function showGame(index) {
-      if (index >= games.length) {
-        showFinalList();
-        return;
-      }
+// 6) Show the current game
+function showGame(index) {
+  if (index >= games.length) {
+    showFinalList();
+    return;
+  }
+  // Clear previous card
+  swipeCardContainer.innerHTML = "";
 
-      // Reset any swipe transform
-      swipeCard.style.transform = "";
-      swipeCard.innerHTML = ""; // clear old content
+  // Create the new .swipe-card element
+  const cardDiv = document.createElement("div");
+  cardDiv.classList.add("swipe-card");
 
-      const game = games[index];
+  // Overlays for Like/Dislike
+  const overlayLike = document.createElement("div");
+  overlayLike.classList.add("overlay-like");
+  overlayLike.textContent = "LIKE";
 
-      const titleEl  = document.createElement("h3");
-      titleEl.textContent = game.Title;
+  const overlayDislike = document.createElement("div");
+  overlayDislike.classList.add("overlay-dislike");
+  overlayDislike.textContent = "NOPE";
 
-      const devEl = document.createElement("p");
-      devEl.textContent = "Developer: " + (game.Developer || "Unknown");
+  cardDiv.appendChild(overlayLike);
+  cardDiv.appendChild(overlayDislike);
 
-      const pubEl = document.createElement("p");
-      pubEl.textContent = "Publisher: " + (game.Publisher || "Unknown");
+  const game = games[index];
 
-      const regionEl = document.createElement("p");
-      regionEl.textContent = `JP: ${game.JP}, EU/PAL: ${game["EU/PAL"]}, NA: ${game.NA}`;
+  // Insert your game data
+  if (game.image) {
+    const img = document.createElement("img");
+    img.src = game.image;
+    img.alt = game.Title;
+    cardDiv.appendChild(img);
+  }
 
-      swipeCard.appendChild(titleEl);
-      swipeCard.appendChild(devEl);
-      swipeCard.appendChild(pubEl);
-      swipeCard.appendChild(regionEl);
-    }
+  const titleEl = document.createElement("h3");
+  titleEl.innerText = game.Title || "Unknown Title";
+  cardDiv.appendChild(titleEl);
 
-    // -----------------------------------------------------
-    // Accept / Dismiss
-    // -----------------------------------------------------
-    function handleDismiss() {
-      currentIndex++;
-      showGame(currentIndex);
-    }
+  const devEl = document.createElement("p");
+  devEl.innerText = "Developer: " + (game.Developer || "Unknown");
+  cardDiv.appendChild(devEl);
 
-    function handleAccept() {
-      acceptedGames.push(games[currentIndex]);
-      currentIndex++;
-      showGame(currentIndex);
-    }
+  const pubEl = document.createElement("p");
+  pubEl.innerText = "Publisher: " + (game.Publisher || "Unknown");
+  cardDiv.appendChild(pubEl);
 
-    // -----------------------------------------------------
-    // Final List
-    // -----------------------------------------------------
-    function showFinalList() {
-      swipeCard.style.display = "none";
-      swipeButtons.style.display = "none";
-      finalListContainer.style.display = "block";
+  const regionEl = document.createElement("p");
+  regionEl.innerText = `JP: ${game.JP} | EU/PAL: ${game["EU/PAL"]} | NA: ${game.NA}`;
+  cardDiv.appendChild(regionEl);
 
-      // Build final list
-      finalList.innerHTML = "";
-      const ul = document.createElement("ul");
-      acceptedGames.forEach((g) => {
-        const li = document.createElement("li");
-        li.textContent = g.Title;
-        ul.appendChild(li);
-      });
-      finalList.appendChild(ul);
-    }
+  // Possibly a link
+  if (game.link) {
+    const linkEl = document.createElement("a");
+    linkEl.href = game.link;
+    linkEl.target = "_blank";
+    linkEl.innerText = "More Info";
+    cardDiv.appendChild(linkEl);
+  }
 
-    // -----------------------------------------------------
-    // Swipe logic (touch events)
-    // -----------------------------------------------------
-    swipeCard.addEventListener("touchstart", onTouchStart);
-    swipeCard.addEventListener("touchmove", onTouchMove);
-    swipeCard.addEventListener("touchend", onTouchEnd);
+  // Add the card to the container
+  swipeCardContainer.appendChild(cardDiv);
 
-    function onTouchStart(e) {
-      if (!games || games.length === 0) return;
-      isDragging = true;
-      startX = e.touches[0].clientX;
-    }
+  // For swipe events (touchstart, etc.)
+  cardDiv.addEventListener("touchstart", onTouchStart);
+  cardDiv.addEventListener("touchmove", onTouchMove);
+  cardDiv.addEventListener("touchend", onTouchEnd);
+}
 
-    function onTouchMove(e) {
-      if (!isDragging) return;
-      currentX = e.touches[0].clientX;
-      const diffX = currentX - startX;
-      swipeCard.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
-    }
+// 7) Accept / Dismiss
+function handleDismiss() {
+  currentIndex++;
+  showGame(currentIndex);
+}
+function handleAccept() {
+  acceptedGames.push(games[currentIndex]);
+  currentIndex++;
+  showGame(currentIndex);
+}
 
-    function onTouchEnd() {
-      if (!isDragging) return;
-      isDragging = false;
-      swipeCard.style.transform = "";
+// 8) Final list
+function showFinalList() {
+  swipeCardContainer.style.display = "none";
+  finalListContainer.style.display = "block";
 
-      const diffX = currentX - startX;
-      if (diffX > SWIPE_THRESHOLD) {
-        handleAccept();
-      } else if (diffX < -SWIPE_THRESHOLD) {
-        handleDismiss();
-      }
-    }
+  // Build final list
+  finalList.innerHTML = "";
+  const ul = document.createElement("ul");
+  acceptedGames.forEach((g) => {
+    const li = document.createElement("li");
+    li.textContent = g.Title;
+    ul.appendChild(li);
+  });
+  finalList.appendChild(ul);
+}
 
-    // -----------------------------------------------------
-    // Keyboard arrow events
-    // -----------------------------------------------------
-    window.addEventListener("keydown", (e) => {
-      if (!games || games.length === 0) return;
-      switch (e.key) {
-        case "ArrowLeft":
-          e.preventDefault();
-          handleDismiss();
-          break;
-        case "ArrowRight":
-          e.preventDefault();
-          handleAccept();
-          break;
-      }
+// 9) Swipe logic
+function onTouchStart(e) {
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  // Remove transitions while swiping
+  e.currentTarget.classList.add("swiping");
+}
+function onTouchMove(e) {
+  if (!isDragging) return;
+  currentX = e.touches[0].clientX;
+  const diffX = currentX - startX;
+
+  const cardDiv = e.currentTarget;
+
+  // move the card
+  cardDiv.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
+
+  // show overlays if user swipes enough
+  if (diffX > 50) {
+    cardDiv.classList.add("like");
+    cardDiv.classList.remove("dislike");
+  } else if (diffX < -50) {
+    cardDiv.classList.add("dislike");
+    cardDiv.classList.remove("like");
+  } else {
+    cardDiv.classList.remove("like", "dislike");
+  }
+}
+function onTouchEnd(e) {
+  if (!isDragging) return;
+  isDragging = false;
+
+  const cardDiv = e.currentTarget;
+  cardDiv.classList.remove("swiping"); 
+  cardDiv.style.transform = ""; // reset
+
+  const diffX = currentX - startX;
+  if (diffX > SWIPE_THRESHOLD) {
+    // accept
+    handleAccept();
+  } else if (diffX < -SWIPE_THRESHOLD) {
+    // dismiss
+    handleDismiss();
+  } else {
+    // reset
+    cardDiv.classList.remove("like", "dislike");
+  }
+}
+
+// 10) Event Listeners for region + start
+startButton.addEventListener("click", () => {
+  // Which radio is checked?
+  let chosenRegion = null;
+  regionRadios.forEach((r) => {
+    if (r.checked) chosenRegion = r.value;
+  });
+  if (!chosenRegion) {
+    alert("Please select a region first.");
+    return;
+  }
+  // Filter
+  const regionGames = filterByRegion(chosenRegion);
+  // Initialize
+  initSwipe(regionGames);
+
+  // Hide region container if you like
+  regionSelectContainer.style.display = "none";
+});
+
+// 11) Dismiss / Accept button listeners
+dismissButton.addEventListener("click", handleDismiss);
+acceptButton.addEventListener("click", handleAccept);
+
+// 12) Keyboard arrow events
+window.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "ArrowLeft":
+      e.preventDefault();
+      handleDismiss();
+      break;
+    case "ArrowRight":
+      e.preventDefault();
+      handleAccept();
+      break;
+  }
+});
+
+// 13) Export logic
+exportJsonButton.addEventListener("click", () => {
+  const dataStr = "data:text/json;charset=utf-8," +
+                  encodeURIComponent(JSON.stringify(acceptedGames, null, 2));
+  const downloadAnchor = document.createElement("a");
+  downloadAnchor.setAttribute("href", dataStr);
+  downloadAnchor.setAttribute("download", "my-ps2-list.json");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+});
+
+exportCsvButton.addEventListener("click", () => {
+  let csvContent = "data:text/csv;charset=utf-8,Title,Developer,Publisher,JP,EU/PAL,NA\n";
+  acceptedGames.forEach((g) => {
+    const row = `"${g.Title}","${g.Developer}","${g.Publisher}","${g.JP}","${g["EU/PAL"]}","${g.NA}"\n`;
+    csvContent += row;
+  });
+  const encodedUri = encodeURI(csvContent);
+  const downloadAnchor = document.createElement("a");
+  downloadAnchor.setAttribute("href", encodedUri);
+  downloadAnchor.setAttribute("download", "my-ps2-list.csv");
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  downloadAnchor.remove();
+});
+
+copyClipboardButton.addEventListener("click", () => {
+  const titles = acceptedGames.map((g) => g.Title).join("\n");
+  navigator.clipboard.writeText(titles)
+    .then(() => {
+      alert("Copied to clipboard!");
+    })
+    .catch((err) => {
+      console.error("Failed to copy:", err);
     });
+});
 
-    // -----------------------------------------------------
-    // Start button (radio-based)
-    // -----------------------------------------------------
-    startButton.addEventListener("click", () => {
-      // 1) Find which radio is checked
-      let chosenRegion = null;
-      regionRadios.forEach((radio) => {
-        if (radio.checked) {
-          chosenRegion = radio.value; // "JP", "EU/PAL", "NA"
-        }
-      });
-
-      if (!chosenRegion) {
-        alert("Please select a region first!");
-        return;
-      }
-
-      // 2) Filter
-      const regionGames = filterByRegion(chosenRegion);
-      console.log(`Chosen: ${chosenRegion}, found ${regionGames.length} games`);
-      // 3) init swipe
-      initSwipe(regionGames);
-    });
-
-    // -----------------------------------------------------
-    // Dismiss / Accept button listeners
-    // -----------------------------------------------------
-    dismissButton.addEventListener("click", handleDismiss);
-    acceptButton.addEventListener("click", handleAccept);
-
-    // -----------------------------------------------------
-    // Export logic
-    // -----------------------------------------------------
-    exportJsonButton.addEventListener("click", () => {
-      // Download acceptedGames as a JSON file
-      const dataStr = "data:text/json;charset=utf-8," + 
-        encodeURIComponent(JSON.stringify(acceptedGames, null, 2));
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "my-ps2-list.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    });
-
-    exportCsvButton.addEventListener("click", () => {
-      // Download acceptedGames as CSV
-      let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Title,Developer,Publisher,JP,EU/PAL,NA\n";
-      acceptedGames.forEach((game) => {
-        // Escape quotes in fields if needed
-        const row = `"${game.Title}","${game.Developer}","${game.Publisher}","${game.JP}","${game["EU/PAL"]}","${game.NA}"\n`;
-        csvContent += row;
-      });
-
-      const encodedUri = encodeURI(csvContent);
-      const downloadAnchor = document.createElement("a");
-      downloadAnchor.setAttribute("href", encodedUri);
-      downloadAnchor.setAttribute("download", "my-ps2-list.csv");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    });
-
-    copyClipboardButton.addEventListener("click", () => {
-      // Copy titles to clipboard
-      const titles = acceptedGames.map((g) => g.Title).join("\n");
-      navigator.clipboard.writeText(titles)
-        .then(() => {
-          alert("Copied to clipboard!");
-        })
-        .catch((err) => {
-          console.error("Failed to copy:", err);
-        });
-    });
+// 14) On page load
+loadData();
