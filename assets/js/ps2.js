@@ -25,6 +25,7 @@ let allGames = [];
 let games = [];         // filtered subset
 let acceptedGames = [];
 let currentIndex = 0;
+let chosenRegion = null; // We store which region user picked
 
 // For swipe
 let startX = 0;
@@ -32,7 +33,9 @@ let currentX = 0;
 let isDragging = false;
 const SWIPE_THRESHOLD = 100; // px to consider a swipe
 
+// =====================================================
 // 3) Load the JSON data
+// =====================================================
 async function loadData() {
   try {
     const response = await fetch("assets/js/ps2list.json");
@@ -41,33 +44,91 @@ async function loadData() {
     }
     allGames = await response.json();
     console.log("Loaded JSON:", allGames.length, "games total");
+
+    // After data is loaded, check if user has a saved state in localStorage
+    checkForSavedState();
   } catch (err) {
     console.error("Error loading ps2list.json:", err);
   }
 }
 
-// 4) Filter by region
+// =====================================================
+// 4) Check for saved state in localStorage
+//    Ask user to Resume or Start Over
+// =====================================================
+function checkForSavedState() {
+  const saved = localStorage.getItem("ps2State");
+  if (saved) {
+    if (confirm("We found saved progress. Resume from where you left off?")) {
+      const state = JSON.parse(saved);
+
+      // Restore variables
+      currentIndex = state.currentIndex || 0;
+      acceptedGames = state.acceptedGames || [];
+      chosenRegion = state.chosenRegion || null;
+
+      // If we have a chosenRegion, re-filter games
+      if (chosenRegion) {
+        games = filterByRegion(chosenRegion);
+
+        // Hide region selection UI
+        regionSelectContainer.style.display = "none";
+        // Show the swipe container + buttons
+        swipeCardContainer.style.display = "block";
+        dismissButton.style.display = "block";
+        acceptButton.style.display = "block";
+
+        showGame(currentIndex);
+      }
+    } else {
+      // User wants a fresh start
+      localStorage.removeItem("ps2State");
+    }
+  }
+  // If no saved state, do nothing special -> user picks region normally
+}
+
+// =====================================================
+// 5) Save progress to localStorage after each action
+// =====================================================
+function saveProgress() {
+  const state = {
+    currentIndex,
+    acceptedGames,
+    chosenRegion
+  };
+  localStorage.setItem("ps2State", JSON.stringify(state));
+}
+
+// =====================================================
+// 6) Filter by region
+// =====================================================
 function filterByRegion(region) {
-  // "region" could be "JP", "EU/PAL", or "NA"
   return allGames.filter((game) => game[region] === "Released");
 }
 
-// 5) Initialize the swipe with a filtered array
+// =====================================================
+// 7) Initialize the swipe with a filtered array
+// =====================================================
 function initSwipe(filteredArray) {
   games = filteredArray;
   currentIndex = 0;
   acceptedGames = [];
 
   // Show container, hide finalList
-  swipeCardContainer.style.display = "block";   // or remove 'display:none;'
+  swipeCardContainer.style.display = "block";
   finalListContainer.style.display = "none";
   acceptButton.style.display = "none";
   dismissButton.style.display = "none";
 
   showGame(currentIndex);
+  // Right after we init, save so we remember chosenRegion & empties
+  saveProgress();
 }
 
-// 6) Show the current game
+// =====================================================
+// 8) Show the current game
+// =====================================================
 function showGame(index) {
   if (index >= games.length) {
     showFinalList();
@@ -94,10 +155,12 @@ function showGame(index) {
 
   const game = games[index];
 
-    // IMAGE fallback
-   const imgEl = document.createElement("img");
-   imgEl.src = game.Image || "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/24f3a9d9-bac5-4e1d-8525-bf6bc74a9376/dgfovyu-11ec8720-4bf0-41ad-82d2-971c8b75cc3d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI0ZjNhOWQ5LWJhYzUtNGUxZC04NTI1LWJmNmJjNzRhOTM3NlwvZGdmb3Z5dS0xMWVjODcyMC00YmYwLTQxYWQtODJkMi05NzFjOGI3NWNjM2QucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.b4vZxUJL7RMBcCypnvS_2LyFhXbP_HQlGAgidd-lMBc";
-   cardDiv.appendChild(imgEl);
+  // IMAGE fallback
+  const imgEl = document.createElement("img");
+  imgEl.src =
+    game.Image ||
+    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/24f3a9d9-bac5-4e1d-8525-bf6bc74a9376/dgfovyu-11ec8720-4bf0-41ad-82d2-971c8b75cc3d.png";
+  cardDiv.appendChild(imgEl);
 
   const titleEl = document.createElement("h3");
   titleEl.innerText = game.Title || "Unknown Title";
@@ -133,20 +196,27 @@ function showGame(index) {
   cardDiv.addEventListener("touchend", onTouchEnd);
 }
 
-// 7) Accept / Dismiss
+// =====================================================
+// 9) Accept / Dismiss
+//    After each action, saveProgress() so we remember
+// =====================================================
 function handleDismiss() {
   currentIndex++;
   showGame(currentIndex);
+  saveProgress();
 }
 function handleAccept() {
   acceptedGames.push(games[currentIndex]);
   currentIndex++;
   showGame(currentIndex);
+  saveProgress();
 }
 
-// 8) Final list
+// =====================================================
+// 10) Final list
+// =====================================================
 function showFinalList() {
-    acceptButton.style.display = "none";
+  acceptButton.style.display = "none";
   dismissButton.style.display = "none";
   swipeCardContainer.style.display = "none";
   finalListContainer.style.display = "block";
@@ -162,12 +232,13 @@ function showFinalList() {
   finalList.appendChild(ul);
 }
 
-// 9) Swipe logic
+// =====================================================
+// 11) Swipe logic
+// =====================================================
 function onTouchStart(e) {
   isDragging = true;
   startX = e.touches[0].clientX;
-  // Remove transitions while swiping
-  e.currentTarget.classList.add("swiping");
+  e.currentTarget.classList.add("swiping"); // disable transitions
 }
 function onTouchMove(e) {
   if (!isDragging) return;
@@ -175,11 +246,8 @@ function onTouchMove(e) {
   const diffX = currentX - startX;
 
   const cardDiv = e.currentTarget;
-
-  // move the card
   cardDiv.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
 
-  // show overlays if user swipes enough
   if (diffX > 50) {
     cardDiv.classList.add("like");
     cardDiv.classList.remove("dislike");
@@ -195,50 +263,61 @@ function onTouchEnd(e) {
   isDragging = false;
 
   const cardDiv = e.currentTarget;
-  cardDiv.classList.remove("swiping"); 
-  cardDiv.style.transform = ""; // reset
+  cardDiv.classList.remove("swiping");
+  cardDiv.style.transform = "";
 
   const diffX = currentX - startX;
   if (diffX > SWIPE_THRESHOLD) {
-    // accept
     handleAccept();
   } else if (diffX < -SWIPE_THRESHOLD) {
-    // dismiss
     handleDismiss();
   } else {
-    // reset
     cardDiv.classList.remove("like", "dislike");
   }
 }
 
-// 10) Event Listeners for region + start
+// =====================================================
+// 12) Event Listeners for region + start
+//     Also store chosenRegion in localStorage
+// =====================================================
 startButton.addEventListener("click", () => {
   // Which radio is checked?
-  let chosenRegion = null;
+  let pickedRegion = null;
   regionRadios.forEach((r) => {
-    if (r.checked) chosenRegion = r.value;
+    if (r.checked) pickedRegion = r.value;
   });
-  if (!chosenRegion) {
+  if (!pickedRegion) {
     alert("Please select a region first.");
     return;
   }
+  chosenRegion = pickedRegion; // store globally
+
   // Filter
   const regionGames = filterByRegion(chosenRegion);
+
   // Initialize
   initSwipe(regionGames);
 
-  // Show Accept and Dissmiss
+  // Show Accept and Dismiss
   acceptButton.style.display = "block";
   dismissButton.style.display = "block";
-  // Hide region container if you like
+
+  // Hide region container
   regionSelectContainer.style.display = "none";
+
+  // Save progress now that we have chosenRegion
+  saveProgress();
 });
 
-// 11) Dismiss / Accept button listeners
+// =====================================================
+// 13) Dismiss / Accept button listeners
+// =====================================================
 dismissButton.addEventListener("click", handleDismiss);
 acceptButton.addEventListener("click", handleAccept);
 
-// 12) Keyboard arrow events
+// =====================================================
+// 14) Keyboard arrow events
+// =====================================================
 window.addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowLeft":
@@ -252,10 +331,13 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// 13) Export logic
+// =====================================================
+// 15) Export logic
+// =====================================================
 exportJsonButton.addEventListener("click", () => {
-  const dataStr = "data:text/json;charset=utf-8," +
-                  encodeURIComponent(JSON.stringify(acceptedGames, null, 2));
+  const dataStr =
+    "data:text/json;charset=utf-8," +
+    encodeURIComponent(JSON.stringify(acceptedGames, null, 2));
   const downloadAnchor = document.createElement("a");
   downloadAnchor.setAttribute("href", dataStr);
   downloadAnchor.setAttribute("download", "my-ps2-list.json");
@@ -281,7 +363,8 @@ exportCsvButton.addEventListener("click", () => {
 
 copyClipboardButton.addEventListener("click", () => {
   const titles = acceptedGames.map((g) => g.Title).join("\n");
-  navigator.clipboard.writeText(titles)
+  navigator.clipboard
+    .writeText(titles)
     .then(() => {
       alert("Copied to clipboard!");
     })
@@ -290,5 +373,7 @@ copyClipboardButton.addEventListener("click", () => {
     });
 });
 
-// 14) On page load
+// =====================================================
+// 16) On page load, fetch data
+// =====================================================
 loadData();
