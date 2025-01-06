@@ -94,13 +94,10 @@ function showGame(index) {
 
   const game = games[index];
 
-  // Insert your game data
-  if (game.image) {
-    const img = document.createElement("img");
-    img.src = game.image;
-    img.alt = game.Title;
-    cardDiv.appendChild(img);
-  }
+    // IMAGE fallback
+   const imgEl = document.createElement("img");
+   imgEl.src = game.Image || "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/24f3a9d9-bac5-4e1d-8525-bf6bc74a9376/dgfovyu-11ec8720-4bf0-41ad-82d2-971c8b75cc3d.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI0ZjNhOWQ5LWJhYzUtNGUxZC04NTI1LWJmNmJjNzRhOTM3NlwvZGdmb3Z5dS0xMWVjODcyMC00YmYwLTQxYWQtODJkMi05NzFjOGI3NWNjM2QucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.b4vZxUJL7RMBcCypnvS_2LyFhXbP_HQlGAgidd-lMBc";
+   cardDiv.appendChild(imgEl);
 
   const titleEl = document.createElement("h3");
   titleEl.innerText = game.Title || "Unknown Title";
