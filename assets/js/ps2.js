@@ -59,7 +59,7 @@ async function loadData() {
 function checkForSavedState() {
   const saved = localStorage.getItem("ps2State");
   if (saved) {
-    if (confirm("We found saved progress. Resume from where you left off?")) {
+    if (confirm("HEY YOU!\nThere is saved progress.\n\nResume from where you left off?")) {
       const state = JSON.parse(saved);
 
       // Restore variables
