@@ -1,247 +1,266 @@
-/*******************************************************
- *  script.js
- *  Loads ps2list.json, filters by region, and runs
- *  a swipe-based accept/dismiss interface.
- *******************************************************/
+    // -----------------------------------------------------
+    // Global references
+    // -----------------------------------------------------
+    const regionSelectContainer = document.getElementById("regionSelectContainer");
+    const regionRadios          = document.querySelectorAll('input[name="region"]');
+    const startButton           = document.getElementById("startButton");
 
-// -----------------------------------------------------
-// 1) Global variables / references
-// -----------------------------------------------------
-let allGames = [];        // Holds entire JSON from ps2list.json
-let games = [];           // Will be the filtered array for the chosen region
-let currentIndex = 0;     // Tracks which game the user is currently on
-let acceptedGames = [];   // Stores games the user has "accepted"
+    const swipeCard             = document.getElementById("swipeCard");
+    const swipeButtons          = document.getElementById("swipeButtons");
+    const dismissButton         = document.getElementById("dismissButton");
+    const acceptButton          = document.getElementById("acceptButton");
 
-const regionSelect       = document.getElementById("regionSelect");
-const startButton        = document.getElementById("startButton");
-const swipeCard          = document.getElementById("swipeCard");
-const dismissButton      = document.getElementById("dismissButton");
-const acceptButton       = document.getElementById("acceptButton");
-const finalListContainer = document.getElementById("finalListContainer");
-const finalList          = document.getElementById("finalList");
+    const finalListContainer    = document.getElementById("finalListContainer");
+    const finalList             = document.getElementById("finalList");
 
-// For swipe
-let startX = 0;
-let currentX = 0;
-let isDragging = false;
-const SWIPE_THRESHOLD = 100; // px to consider a swipe
+    // Export buttons
+    const exportJsonButton      = document.getElementById("exportJsonButton");
+    const exportCsvButton       = document.getElementById("exportCsvButton");
+    const copyClipboardButton   = document.getElementById("copyClipboardButton");
 
-// -----------------------------------------------------
-// 2) Load data from ps2list.json
-// -----------------------------------------------------
-async function loadData() {
-  try {
-    // Adjust the path if needed (./ps2list.json, /data/ps2list.json, etc.)
-    const response = await fetch("assets/js/ps2list.json");
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    // State
+    let allGames = [];      // loaded from ps2list.json
+    let games = [];         // filtered subset
+    let acceptedGames = [];
+    let currentIndex = 0;
+
+    // For swipe
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    const SWIPE_THRESHOLD = 100; // px
+
+    // -----------------------------------------------------
+    // Load JSON data on page load
+    // -----------------------------------------------------
+    async function loadData() {
+      try {
+        // Adjust path if needed. Must be served over HTTP.
+        const response = await fetch("assets/js/ps2list.json");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        allGames = await response.json();
+        console.log("Loaded JSON:", allGames.length, "games total");
+      } catch (err) {
+        console.error("Error loading ps2list.json:", err);
+      }
     }
-    allGames = await response.json();
-    console.log("JSON loaded, total games:", allGames.length);
-  } catch (error) {
-    console.error("Error loading ps2list.json:", error);
-  }
-}
+    loadData(); // call immediately
 
-// -----------------------------------------------------
-// 3) Filter by region ("JP", "EU/PAL", or "NA")
-// -----------------------------------------------------
-function filterByRegion(region) {
-  // Keep only games that have "Released" in that region column
-  return allGames.filter((game) => game[region] === "Released");
-}
+    // -----------------------------------------------------
+    // Filter by region
+    // -----------------------------------------------------
+    function filterByRegion(region) {
+      // Return only games "Released" in that region
+      return allGames.filter((game) => game[region] === "Released");
+    }
 
-// -----------------------------------------------------
-// 4) Initialize the swipe interface with a subset
-// -----------------------------------------------------
-function initSwipe(filteredArray) {
-  games = filteredArray;
-  currentIndex = 0;
-  acceptedGames = [];
+    // -----------------------------------------------------
+    // Initialize the swipe with the filtered array
+    // -----------------------------------------------------
+    function initSwipe(filteredArray) {
+      games = filteredArray;
+      currentIndex = 0;
+      acceptedGames = [];
 
-  // Make sure swipe card is visible again, etc.
-  swipeCard.style.display          = "block";
-  dismissButton.style.display      = "inline-block";
-  acceptButton.style.display       = "inline-block";
-  finalListContainer.style.display = "none";
+      // Hide region container, show card + buttons
+      regionSelectContainer.style.display = "none";
+      swipeCard.style.display = "block";
+      swipeButtons.style.display = "block";
+      finalListContainer.style.display = "none";
 
-  showGame(currentIndex);
-}
+      showGame(currentIndex);
+    }
 
-// -----------------------------------------------------
-// 5) Show the current game
-// -----------------------------------------------------
-function showGame(index) {
-  if (index >= games.length) {
-    // No more games to show
-    showFinalList();
-    return;
-  }
+    // -----------------------------------------------------
+    // Show the current game
+    // -----------------------------------------------------
+    function showGame(index) {
+      if (index >= games.length) {
+        showFinalList();
+        return;
+      }
 
-  // Reset any swipe effects
-  swipeCard.classList.remove("like", "dislike", "swiping");
-  swipeCard.style.transform = "";
+      // Reset any swipe transform
+      swipeCard.style.transform = "";
+      swipeCard.innerHTML = ""; // clear old content
 
-  // Clear and build the new card content
-  swipeCard.innerHTML = `
-    <!-- Overlays for visual feedback (optional) -->
-    <div class="overlay-like">LIKE</div>
-    <div class="overlay-dislike">NOPE</div>
-  `;
+      const game = games[index];
 
-  // Grab the current game
-  const game = games[index];
+      const titleEl  = document.createElement("h3");
+      titleEl.textContent = game.Title;
 
-  // Create elements
-  const cardImg = document.createElement("img");
-  cardImg.src = game.image || "";
-  cardImg.alt = game.Title || "PS2 Game";
+      const devEl = document.createElement("p");
+      devEl.textContent = "Developer: " + (game.Developer || "Unknown");
 
-  const cardTitle = document.createElement("h3");
-  cardTitle.innerText = game.Title;
+      const pubEl = document.createElement("p");
+      pubEl.textContent = "Publisher: " + (game.Publisher || "Unknown");
 
-  const cardDev = document.createElement("p");
-  cardDev.innerText = `Developer: ${game.Developer ?? "Unknown"}`;
+      const regionEl = document.createElement("p");
+      regionEl.textContent = `JP: ${game.JP}, EU/PAL: ${game["EU/PAL"]}, NA: ${game.NA}`;
 
-  const cardPub = document.createElement("p");
-  cardPub.innerText = `Publisher: ${game.Publisher ?? "Unknown"}`;
+      swipeCard.appendChild(titleEl);
+      swipeCard.appendChild(devEl);
+      swipeCard.appendChild(pubEl);
+      swipeCard.appendChild(regionEl);
+    }
 
-  const cardDates = document.createElement("p");
-  cardDates.innerText = `First released: ${game["First released"] || "Unknown"}`;
+    // -----------------------------------------------------
+    // Accept / Dismiss
+    // -----------------------------------------------------
+    function handleDismiss() {
+      currentIndex++;
+      showGame(currentIndex);
+    }
 
-  // Maybe show region statuses, e.g. JP: Released/Unreleased
-  const cardRegions = document.createElement("p");
-  cardRegions.innerText = `JP: ${game.JP}, EU/PAL: ${game["EU/PAL"]}, NA: ${game.NA}`;
+    function handleAccept() {
+      acceptedGames.push(games[currentIndex]);
+      currentIndex++;
+      showGame(currentIndex);
+    }
 
-  // Append them
-  swipeCard.appendChild(cardImg);
-  swipeCard.appendChild(cardTitle);
-  swipeCard.appendChild(cardDev);
-  swipeCard.appendChild(cardPub);
-  swipeCard.appendChild(cardDates);
-  swipeCard.appendChild(cardRegions);
-}
+    // -----------------------------------------------------
+    // Final List
+    // -----------------------------------------------------
+    function showFinalList() {
+      swipeCard.style.display = "none";
+      swipeButtons.style.display = "none";
+      finalListContainer.style.display = "block";
 
-// -----------------------------------------------------
-// 6) Handle Accept / Dismiss
-// -----------------------------------------------------
-function handleDismiss() {
-  currentIndex++;
-  showGame(currentIndex);
-}
+      // Build final list
+      finalList.innerHTML = "";
+      const ul = document.createElement("ul");
+      acceptedGames.forEach((g) => {
+        const li = document.createElement("li");
+        li.textContent = g.Title;
+        ul.appendChild(li);
+      });
+      finalList.appendChild(ul);
+    }
 
-function handleAccept() {
-  // Add the current game to the accepted list
-  acceptedGames.push(games[currentIndex]);
-  currentIndex++;
-  showGame(currentIndex);
-}
+    // -----------------------------------------------------
+    // Swipe logic (touch events)
+    // -----------------------------------------------------
+    swipeCard.addEventListener("touchstart", onTouchStart);
+    swipeCard.addEventListener("touchmove", onTouchMove);
+    swipeCard.addEventListener("touchend", onTouchEnd);
 
-// -----------------------------------------------------
-// 7) Swipe logic (touch events)
-// -----------------------------------------------------
-swipeCard.addEventListener("touchstart", onTouchStart);
-swipeCard.addEventListener("touchmove", onTouchMove);
-swipeCard.addEventListener("touchend", onTouchEnd);
+    function onTouchStart(e) {
+      if (!games || games.length === 0) return;
+      isDragging = true;
+      startX = e.touches[0].clientX;
+    }
 
-function onTouchStart(e) {
-  if (!games || games.length === 0) return; // no games to swipe
-  isDragging = true;
-  startX = e.touches[0].clientX;
-  swipeCard.classList.add("swiping"); // disable transition while swiping
-}
+    function onTouchMove(e) {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const diffX = currentX - startX;
+      swipeCard.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
+    }
 
-function onTouchMove(e) {
-  if (!isDragging) return;
-  currentX = e.touches[0].clientX;
-  const diffX = currentX - startX;
+    function onTouchEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      swipeCard.style.transform = "";
 
-  // Move the card in the X direction
-  swipeCard.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
+      const diffX = currentX - startX;
+      if (diffX > SWIPE_THRESHOLD) {
+        handleAccept();
+      } else if (diffX < -SWIPE_THRESHOLD) {
+        handleDismiss();
+      }
+    }
 
-  // Show overlays if user swipes enough
-  if (diffX > 50) {
-    swipeCard.classList.add("like");
-    swipeCard.classList.remove("dislike");
-  } else if (diffX < -50) {
-    swipeCard.classList.add("dislike");
-    swipeCard.classList.remove("like");
-  } else {
-    swipeCard.classList.remove("like", "dislike");
-  }
-}
+    // -----------------------------------------------------
+    // Keyboard arrow events
+    // -----------------------------------------------------
+    window.addEventListener("keydown", (e) => {
+      if (!games || games.length === 0) return;
+      switch (e.key) {
+        case "ArrowLeft":
+          e.preventDefault();
+          handleDismiss();
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          handleAccept();
+          break;
+      }
+    });
 
-function onTouchEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  swipeCard.classList.remove("swiping"); // re-enable transition
+    // -----------------------------------------------------
+    // Start button (radio-based)
+    // -----------------------------------------------------
+    startButton.addEventListener("click", () => {
+      // 1) Find which radio is checked
+      let chosenRegion = null;
+      regionRadios.forEach((radio) => {
+        if (radio.checked) {
+          chosenRegion = radio.value; // "JP", "EU/PAL", "NA"
+        }
+      });
 
-  const diffX = currentX - startX;
-  swipeCard.style.transform = ""; // reset transform
+      if (!chosenRegion) {
+        alert("Please select a region first!");
+        return;
+      }
 
-  if (diffX > SWIPE_THRESHOLD) {
-    // Swiped right -> Accept
-    handleAccept();
-  } else if (diffX < -SWIPE_THRESHOLD) {
-    // Swiped left -> Dismiss
-    handleDismiss();
-  } else {
-    // Not enough swipe -> reset
-    swipeCard.classList.remove("like", "dislike");
-  }
-}
+      // 2) Filter
+      const regionGames = filterByRegion(chosenRegion);
+      console.log(`Chosen: ${chosenRegion}, found ${regionGames.length} games`);
+      // 3) init swipe
+      initSwipe(regionGames);
+    });
 
-// -----------------------------------------------------
-// 8) Show final list once the user runs out of games
-// -----------------------------------------------------
-function showFinalList() {
-  swipeCard.style.display     = "none";
-  dismissButton.style.display = "none";
-  acceptButton.style.display  = "none";
+    // -----------------------------------------------------
+    // Dismiss / Accept button listeners
+    // -----------------------------------------------------
+    dismissButton.addEventListener("click", handleDismiss);
+    acceptButton.addEventListener("click", handleAccept);
 
-  finalListContainer.style.display = "block";
+    // -----------------------------------------------------
+    // Export logic
+    // -----------------------------------------------------
+    exportJsonButton.addEventListener("click", () => {
+      // Download acceptedGames as a JSON file
+      const dataStr = "data:text/json;charset=utf-8," + 
+        encodeURIComponent(JSON.stringify(acceptedGames, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "my-ps2-list.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
 
-  // Clear any old content
-  finalList.innerHTML = "";
+    exportCsvButton.addEventListener("click", () => {
+      // Download acceptedGames as CSV
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Title,Developer,Publisher,JP,EU/PAL,NA\n";
+      acceptedGames.forEach((game) => {
+        // Escape quotes in fields if needed
+        const row = `"${game.Title}","${game.Developer}","${game.Publisher}","${game.JP}","${game["EU/PAL"]}","${game.NA}"\n`;
+        csvContent += row;
+      });
 
-  // Build the final list
-  const ul = document.createElement("ul");
-  acceptedGames.forEach((g) => {
-    const li = document.createElement("li");
-    li.innerText = g.Title; // or g.Title + " - " + g.Developer, etc.
-    ul.appendChild(li);
-  });
-  finalList.appendChild(ul);
-}
+      const encodedUri = encodeURI(csvContent);
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", encodedUri);
+      downloadAnchor.setAttribute("download", "my-ps2-list.csv");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
 
-// -----------------------------------------------------
-// 9) Optional: Keyboard arrow events
-// -----------------------------------------------------
-window.addEventListener("keydown", (e) => {
-  switch (e.key) {
-    case "ArrowLeft":
-      e.preventDefault();
-      handleDismiss();
-      break;
-    case "ArrowRight":
-      e.preventDefault();
-      handleAccept();
-      break;
-  }
-});
-
-// -----------------------------------------------------
-// 10) Event listeners: region select & start
-// -----------------------------------------------------
-startButton.addEventListener("click", () => {
-  // Which region did the user pick?
-  const region = regionSelect.value; // "JP", "EU/PAL", or "NA"
-  const regionGames = filterByRegion(region);
-  console.log(`User chose ${region}, found ${regionGames.length} games.`);
-  initSwipe(regionGames);
-});
-
-// -----------------------------------------------------
-// 11) On page load, fetch the data
-// -----------------------------------------------------
-loadData();  
+    copyClipboardButton.addEventListener("click", () => {
+      // Copy titles to clipboard
+      const titles = acceptedGames.map((g) => g.Title).join("\n");
+      navigator.clipboard.writeText(titles)
+        .then(() => {
+          alert("Copied to clipboard!");
+        })
+        .catch((err) => {
+          console.error("Failed to copy:", err);
+        });
+    });
