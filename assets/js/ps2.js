@@ -159,7 +159,7 @@ function showGame(index) {
   const imgEl = document.createElement("img");
   imgEl.src =
     game.Image ||
-    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/24f3a9d9-bac5-4e1d-8525-bf6bc74a9376/dgfovyu-11ec8720-4bf0-41ad-82d2-971c8b75cc3d.png";
+    "assets/placeholder.png";
   cardDiv.appendChild(imgEl);
 
   const titleEl = document.createElement("h3");
