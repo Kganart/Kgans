@@ -307,6 +307,7 @@ startButton.addEventListener("click", () => {
 
   // Hide region container
   regionSelectContainer.style.display = "none";
+  titleText.style.display = "none";
 
   // Save progress now that we have chosenRegion
   saveProgress();
