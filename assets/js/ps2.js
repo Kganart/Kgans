@@ -1,9 +1,14 @@
 /*******************************************************
  * ps2.js
- * With ARIA for accessibility
+ * Using #swipeCardContainer and .swipe-card
+ * JSON Example:
+ *   {
+ *     "SLES-53007": { developer, genre, language, publisher, region, release_date, title },
+ *     ...
+ *   }
  *******************************************************/
 
-// Toggles the "More" dropdown by click
+// This snippet toggles the "More" dropdown by click
 const dropdownToggle = document.querySelector(".dropdown-toggle");
 dropdownToggle.addEventListener("click", (e) => {
   e.preventDefault();
@@ -31,10 +36,10 @@ const copyClipboardButton = document.getElementById("copyClipboardButton");
 const navbar = document.getElementById("navbar");
 const gameCountRadios = document.querySelectorAll('input[name="gameCount"]');
 
-// The behind-the-scenes progress bar
+// The progress bar
 const progressBar = document.getElementById("progressBar");
 
-// 2) Global state
+// 2) Global State
 let allGames = {};
 let gamesArray = [];
 let filteredGames = [];
@@ -44,16 +49,19 @@ let currentIndex = 0;
 let chosenRegion = null;
 let chosenGenre = null;
 
+// For swipe
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
-const SWIPE_THRESHOLD = 100;
+
+// *** Increased swipe threshold from 100 to 150 ***
+const SWIPE_THRESHOLD = 150;
 
 let inSwipeSession = false;
 let totalGamesCount = 0;
 
 /*******************************************************
- * A) loadCoverImage
+ * A) loadCoverImage fallback
  *******************************************************/
 function loadCoverImage(gameId, imgEl) {
   const baseUrl1 = "https://psxdatacenter.com/psx2/images2/covers/";
@@ -61,12 +69,19 @@ function loadCoverImage(gameId, imgEl) {
     "https://raw.githubusercontent.com/xlenore/ps2-covers/refs/heads/main/covers/default/";
   const placeholder = "assets/placeholder.png";
 
-  imgEl.src = baseUrl1 + gameId + ".jpg";
+  // 1) Build URL strings first
+  const firstUrl = baseUrl1 + gameId + ".jpg";
+  const secondUrl = baseUrl2 + gameId + ".jpg";
+
+  // 2) Try first URL
+  imgEl.src = firstUrl;
+
+  // 3) If the first fails, we fallback to second, and if that fails, fallback to placeholder
   imgEl.onerror = function handleFirstError() {
     imgEl.onerror = function handleSecondError() {
       imgEl.src = placeholder;
     };
-    imgEl.src = baseUrl2 + gameId + ".jpg";
+    imgEl.src = secondUrl;
   };
 }
 
@@ -80,6 +95,7 @@ function shuffleArray(arr) {
   }
   return arr;
 }
+
 function getRandomSubset(array, n) {
   if (n >= array.length) {
     return shuffleArray(array.slice());
@@ -141,7 +157,6 @@ function checkForSavedState() {
 
         inSwipeSession = true;
 
-        // show the progress bar
         progressBar.style.display = "block";
         updateProgressBar(currentIndex, totalGamesCount);
 
@@ -187,7 +202,7 @@ function initSwipe(games) {
   filteredGames = games;
   currentIndex = 0;
   acceptedGames = [];
-  totalGamesCount = games.length;
+  totalGamesCount = filteredGames.length;
 
   swipeCardContainer.style.display = "block";
   finalListContainer.style.display = "none";
@@ -196,7 +211,6 @@ function initSwipe(games) {
 
   inSwipeSession = true;
 
-  // show progress bar at 0%
   progressBar.style.display = "block";
   updateProgressBar(0, totalGamesCount);
 
@@ -215,10 +229,9 @@ function showGame(index) {
 
   swipeCardContainer.innerHTML = "";
 
-  // Make a .swipe-card that is focusable
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("swipe-card");
-  cardDiv.setAttribute("tabindex", "0"); // ADDED for keyboard focus
+  cardDiv.setAttribute("tabindex", "0"); // focusable for keyboard
 
   const overlayLike = document.createElement("div");
   overlayLike.classList.add("overlay-like");
@@ -280,24 +293,10 @@ function showGame(index) {
   cardDiv.appendChild(cardBoxDiv);
   swipeCardContainer.appendChild(cardDiv);
 
-  // touch swiping
+  // SWIPE events only (no click => left/right logic)
   cardDiv.addEventListener("touchstart", onTouchStart);
   cardDiv.addEventListener("touchmove", onTouchMove);
   cardDiv.addEventListener("touchend", onTouchEnd);
-
-  // click => left half dismiss, right half accept
-  cardDiv.addEventListener("click", (e) => {
-    if (!inSwipeSession) return;
-    const rect = cardDiv.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const halfWidth = rect.width / 2;
-
-    if (clickX < halfWidth) {
-      handleDismiss();
-    } else {
-      handleAccept();
-    }
-  });
 }
 
 /*******************************************************
@@ -331,14 +330,12 @@ function showFinalList() {
   inSwipeSession = false;
   progressBar.style.display = "none";
 
-  // Build final list with role="listitem"
   finalList.innerHTML = "";
   const ul = document.createElement("ul");
-  ul.setAttribute("role", "list"); // a11y
-
+  ul.setAttribute("role", "list"); // accessibility
   acceptedGames.forEach((g) => {
     const li = document.createElement("li");
-    li.setAttribute("role", "listitem"); // a11y
+    li.setAttribute("role", "listitem"); // accessibility
     li.textContent = g.title;
     ul.appendChild(li);
   });
@@ -354,7 +351,6 @@ function onTouchStart(e) {
   startX = e.touches[0].clientX;
   e.currentTarget.classList.add("swiping");
 }
-
 function onTouchMove(e) {
   if (!isDragging || !inSwipeSession) return;
   currentX = e.touches[0].clientX;
@@ -373,7 +369,6 @@ function onTouchMove(e) {
     cardDiv.classList.remove("like", "dislike");
   }
 }
-
 function onTouchEnd(e) {
   if (!isDragging || !inSwipeSession) return;
   isDragging = false;
@@ -383,6 +378,8 @@ function onTouchEnd(e) {
   cardDiv.style.transform = "";
 
   const diffX = currentX - startX;
+
+  // We increased SWIPE_THRESHOLD to 150
   if (diffX > SWIPE_THRESHOLD) {
     handleAccept();
   } else if (diffX < -SWIPE_THRESHOLD) {
@@ -436,7 +433,6 @@ startButton.addEventListener("click", () => {
   navbar.style.display = "none";
 
   inSwipeSession = true;
-
   saveProgress();
 });
 
