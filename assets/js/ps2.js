@@ -1,14 +1,10 @@
 /*******************************************************
  * ps2.js
- * Using #swipeCardContainer and .swipe-card
- * JSON Example:
- *   {
- *     "SLES-53007": { developer, genre, language, publisher, region, release_date, title },
- *     ...
- *   }
+ * Disabling pointer events on <img> to avoid iOS Safari
+ * accidental "tap" dismiss.
  *******************************************************/
 
-// This snippet toggles the "More" dropdown by click
+/** Toggles the "More" dropdown by click (unchanged) */
 const dropdownToggle = document.querySelector(".dropdown-toggle");
 dropdownToggle.addEventListener("click", (e) => {
   e.preventDefault();
@@ -35,8 +31,6 @@ const copyClipboardButton = document.getElementById("copyClipboardButton");
 
 const navbar = document.getElementById("navbar");
 const gameCountRadios = document.querySelectorAll('input[name="gameCount"]');
-
-// The progress bar
 const progressBar = document.getElementById("progressBar");
 
 // 2) Global State
@@ -49,19 +43,21 @@ let currentIndex = 0;
 let chosenRegion = null;
 let chosenGenre = null;
 
-// For swipe
 let startX = 0;
+let startY = 0;
 let currentX = 0;
+let currentY = 0;
 let isDragging = false;
 
-// *** Increased swipe threshold from 100 to 150 ***
+// High threshold to prevent accidental swipes
 const SWIPE_THRESHOLD = 150;
+// or 200, if you want it even bigger
 
 let inSwipeSession = false;
 let totalGamesCount = 0;
 
 /*******************************************************
- * A) loadCoverImage fallback
+ * loadCoverImage
  *******************************************************/
 function loadCoverImage(gameId, imgEl) {
   const baseUrl1 = "https://psxdatacenter.com/psx2/images2/covers/";
@@ -69,14 +65,10 @@ function loadCoverImage(gameId, imgEl) {
     "https://raw.githubusercontent.com/xlenore/ps2-covers/refs/heads/main/covers/default/";
   const placeholder = "assets/placeholder.png";
 
-  // 1) Build URL strings first
   const firstUrl = baseUrl1 + gameId + ".jpg";
   const secondUrl = baseUrl2 + gameId + ".jpg";
 
-  // 2) Try first URL
   imgEl.src = firstUrl;
-
-  // 3) If the first fails, we fallback to second, and if that fails, fallback to placeholder
   imgEl.onerror = function handleFirstError() {
     imgEl.onerror = function handleSecondError() {
       imgEl.src = placeholder;
@@ -86,7 +78,7 @@ function loadCoverImage(gameId, imgEl) {
 }
 
 /*******************************************************
- * B) random subset + shuffling
+ * random subset + shuffling
  *******************************************************/
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -95,7 +87,6 @@ function shuffleArray(arr) {
   }
   return arr;
 }
-
 function getRandomSubset(array, n) {
   if (n >= array.length) {
     return shuffleArray(array.slice());
@@ -116,7 +107,6 @@ async function loadData() {
     allGames = await response.json();
     console.log("Loaded JSON (keys):", Object.keys(allGames).length);
 
-    // convert to array
     gamesArray = Object.keys(allGames).map((key) => ({
       id: key,
       ...allGames[key],
@@ -163,7 +153,6 @@ function checkForSavedState() {
         showGame(currentIndex);
       }
     } else {
-      // user wants fresh start
       localStorage.removeItem("ps2State");
     }
   }
@@ -202,7 +191,7 @@ function initSwipe(games) {
   filteredGames = games;
   currentIndex = 0;
   acceptedGames = [];
-  totalGamesCount = filteredGames.length;
+  totalGamesCount = games.length;
 
   swipeCardContainer.style.display = "block";
   finalListContainer.style.display = "none";
@@ -231,7 +220,10 @@ function showGame(index) {
 
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("swipe-card");
-  cardDiv.setAttribute("tabindex", "0"); // focusable for keyboard
+  // Make sure the user can't tap on the image to cause a separate event:
+  // We also set pointerEvents=none on the image below.
+  cardDiv.style.touchAction = "none";
+  cardDiv.setAttribute("tabindex", "0");
 
   const overlayLike = document.createElement("div");
   overlayLike.classList.add("overlay-like");
@@ -246,12 +238,13 @@ function showGame(index) {
 
   const game = filteredGames[index];
 
-  // fallback covers
   const imgEl = document.createElement("img");
+  imgEl.style.pointerEvents = "none"; // <--- CRITICAL to avoid iOS tap on image
   loadCoverImage(game.id, imgEl);
   cardDiv.appendChild(imgEl);
 
   const cardBoxDiv = document.createElement("div");
+  cardBoxDiv.classList.add("swipe-card-shadow");
 
   // Title
   const titleEl = document.createElement("h3");
@@ -293,10 +286,10 @@ function showGame(index) {
   cardDiv.appendChild(cardBoxDiv);
   swipeCardContainer.appendChild(cardDiv);
 
-  // SWIPE events only (no click => left/right logic)
-  cardDiv.addEventListener("touchstart", onTouchStart);
-  cardDiv.addEventListener("touchmove", onTouchMove);
-  cardDiv.addEventListener("touchend", onTouchEnd);
+  // SWIPE events only
+  cardDiv.addEventListener("touchstart", onTouchStart, { passive: false });
+  cardDiv.addEventListener("touchmove", onTouchMove, { passive: false });
+  cardDiv.addEventListener("touchend", onTouchEnd, { passive: false });
 }
 
 /*******************************************************
@@ -308,7 +301,6 @@ function handleDismiss() {
   showGame(currentIndex);
   saveProgress();
 }
-
 function handleAccept() {
   acceptedGames.push(filteredGames[currentIndex]);
   currentIndex++;
@@ -332,10 +324,10 @@ function showFinalList() {
 
   finalList.innerHTML = "";
   const ul = document.createElement("ul");
-  ul.setAttribute("role", "list"); // accessibility
+  ul.setAttribute("role", "list");
   acceptedGames.forEach((g) => {
     const li = document.createElement("li");
-    li.setAttribute("role", "listitem"); // accessibility
+    li.setAttribute("role", "listitem");
     li.textContent = g.title;
     ul.appendChild(li);
   });
@@ -345,16 +337,34 @@ function showFinalList() {
 /*******************************************************
  * 11) Swipe logic
  *******************************************************/
+let touchStartTime = 0;
+
 function onTouchStart(e) {
   if (!inSwipeSession) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  touchStartTime = Date.now();
+
   isDragging = true;
   startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
   e.currentTarget.classList.add("swiping");
 }
+
 function onTouchMove(e) {
   if (!isDragging || !inSwipeSession) return;
+  e.preventDefault();
+  e.stopPropagation();
+
   currentX = e.touches[0].clientX;
+  currentY = e.touches[0].clientY;
+
   const diffX = currentX - startX;
+  const diffY = currentY - startY;
+
+  // If user hasn't moved horizontally enough, or vertical is bigger, do nothing
+  if (Math.abs(diffX) < 40 || Math.abs(diffY) > Math.abs(diffX)) return;
 
   const cardDiv = e.currentTarget;
   cardDiv.style.transform = `translateX(${diffX}px) rotate(${diffX * 0.03}deg)`;
@@ -369,8 +379,12 @@ function onTouchMove(e) {
     cardDiv.classList.remove("like", "dislike");
   }
 }
+
 function onTouchEnd(e) {
   if (!isDragging || !inSwipeSession) return;
+  e.preventDefault();
+  e.stopPropagation();
+
   isDragging = false;
 
   const cardDiv = e.currentTarget;
@@ -378,13 +392,41 @@ function onTouchEnd(e) {
   cardDiv.style.transform = "";
 
   const diffX = currentX - startX;
+  const diffY = currentY - startY;
+  const elapsed = Date.now() - touchStartTime; // how many ms?
+  console.log("startX =", startX, "currentX =", currentX);
+  console.log("diffX =", diffX);
+  console.log("elapsed =", elapsed);
+  // If user completed the tap in under ~150 ms but we see large diffX,
+  // likely a glitch => ignore
+  if (elapsed < 130 && Math.abs(diffX) > 150) {
+    // treat as a tap, do nothing
+    cardDiv.classList.remove("like", "dislike");
+    return;
+  }
+  console.log("elapsed Triggered=", elapsed);
+  // If horizontal movement was small or overshadowed by vertical => no action
+  if (Math.abs(diffX) < 40 || Math.abs(diffY) > Math.abs(diffX)) {
+    cardDiv.classList.remove("like", "dislike");
+    return;
+  }
 
-  // We increased SWIPE_THRESHOLD to 150
-  if (diffX > SWIPE_THRESHOLD) {
-    handleAccept();
-  } else if (diffX < -SWIPE_THRESHOLD) {
+  const absDiffX = Math.abs(diffX);
+  if (Math.abs(diffX) < 40 || Math.abs(diffY) > Math.abs(diffX)) {
+    // treat as a tap or vertical scroll, do nothing
+    cardDiv.classList.remove("like", "dislike");
+    return;
+  }
+
+  // if user swiped left beyond threshold
+  if (diffX < -SWIPE_THRESHOLD && absDiffX > SWIPE_THRESHOLD) {
     handleDismiss();
+  }
+  // else if user swiped right beyond threshold
+  else if (diffX > SWIPE_THRESHOLD && absDiffX > SWIPE_THRESHOLD) {
+    handleAccept();
   } else {
+    // reset
     cardDiv.classList.remove("like", "dislike");
   }
 }
