@@ -4,7 +4,13 @@
     <title>PS2 Games List Maker | Adam Keegan - kgans.com</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <!-- Import custom font from Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Goldman:wght@400;700&family=Honk&family=Limelight&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&Bebas+Neue&Nova+Square&family=Press+Start+2P&family=Monoton&family=Rubik+Bubbles&family=Six+Caps&family=Allerta+Stencil&family=DotGothic16&display=swap"
+      rel="stylesheet"
+    />
     <!-- Your usual CSS links ... -->
     <link rel="stylesheet" href="assets/css/custom.css" />
 
@@ -20,23 +26,22 @@
       .navbar,
       .banner-title {
         text-align: center;
-        margin: 1rem 0;
+        margin: 0rem 0.2rem 0.1rem 00.2rem;
       }
 
-
-    .kgantitle .text_shadows {
-        font-size: calc(sin(pi / 10)* 5vw) !important;
-    }
-    #regionSelectContainer {
-      text-align: center;
-      margin: 1rem;
-    }
-    #acceptButton {
-      display: none;
-    }
-    #dismissButton {
-      display: none;
-    }
+      .kgantitle .text_shadows {
+        font-size: calc(sin(pi / 10) * 5vw) !important;
+      }
+      #regionSelectContainer {
+        text-align: center;
+        margin: 1rem;
+      }
+      #acceptButton {
+        display: none;
+      }
+      #dismissButton {
+        display: none;
+      }
 
       /**********************************************
        * Swipe Card Container
@@ -44,7 +49,7 @@
       #swipeCardContainer {
         width: 320px;
         max-width: 90%;
-        margin: 2rem auto;
+        margin: 0.15rem auto;
         position: relative;
       }
 
@@ -61,14 +66,17 @@
       }
       .swipe-card img {
         width: 100%;
-        height: auto;
+        height: fit-content;
         max-height: fit-content;
         object-fit: cover;
+      }
+      .swipe-card > div {
+        box-shadow: inset 0px 8px 5px -5px #00000070;
       }
       .swipe-card h3 {
         justify-self: center;
         text-align: center;
-        margin: 0.5rem 0 0.25rem;
+        margin: -0.45rem 0 0.25rem;
       }
       .swipe-card p {
         justify-self: center;
@@ -154,24 +162,23 @@
         background-color: #005fa3;
       }
       .export-buttons {
-      margin-top: 1rem;
-    }
-    .export-button {
-      margin: 0 0.5rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-    }
+        margin-top: 1rem;
+      }
+      .export-button {
+        margin: 0 0.5rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
 
-    #swipeCard {
-      display: none; /* hidden on load */
-    }
-    #swipeButtons {
-      display: none; /* hidden on load */
-    }
-    #finalListContainer {
-      display: none; /* shown after last game */
-    }
-    
+      #swipeCard {
+        display: none; /* hidden on load */
+      }
+      #swipeButtons {
+        display: none; /* hidden on load */
+      }
+      #finalListContainer {
+        display: none; /* shown after last game */
+      }
 
       /**********************************************
        * Final List Container
@@ -191,66 +198,292 @@
         border-bottom: 1px solid #ccc;
         padding: 0.5rem;
       }
+      /*
+      CHANGE
+      */
+      :root {
+        --form-control-color: rebeccapurple;
+      }
+      form {
+        display: block ruby;
+        place-content: center;
+      }
+
+      .form-control {
+        font-family: "Goldman", serif;
+        font-size: 1.6rem;
+        font-weight: bold;
+        line-height: 1.1;
+        gap: 0.5em;
+      }
+      .form-control + .form-control {
+        margin-top: 1em;
+      }
+
+      .form-control:focus-within {
+        color: var(--form-control-color);
+      }
+
+      input[type="radio"] {
+        /* Add if not using autoprefixer */
+        -webkit-appearance: none;
+        /* Remove most all native input styles */
+        appearance: none;
+        /* For iOS < 15 */
+        background-color: var(--form-background);
+        /* Not removed via appearance */
+        margin: 0;
+
+        font: inherit;
+        color: currentColor;
+        width: 1.15em;
+        height: 1.15em;
+        border: 0.15em solid currentColor;
+        border-radius: 50%;
+        transform: translateY(-0.275em);
+
+        display: grid;
+        place-content: center;
+      }
+
+      input[type="radio"]::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--form-control-color);
+        /* Windows High Contrast Mode */
+        background-color: CanvasText;
+      }
+
+      input[type="radio"]:checked::before {
+        transform: scale(1);
+      }
+
+      input[type="radio"]:focus {
+        outline: max(2px, 0.15em) solid currentColor;
+        outline-offset: max(2px, 0.15em);
+      }
+      @media (max-width: 767px) {
+        .form-control {
+          font-size: 1rem;
+        }
+        input[type="radio"] {
+          transform: translateY(0em);
+        }
+      }
+      /* 1) Parent .dropdown must be relatively positioned */
+      .nav-item.dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      /* 2) The 'More' link is our .dropdown-toggle. 
+   We'll ensure it has the same style you mentioned 
+   (which you partly inline'd, but let's keep it in CSS). */
+      .nav-item.dropdown .dropdown-toggle {
+        padding: 0 1vw;
+        align-self: center;
+        /*box-shadow: inset 0px 10px 9px 3px rgba(0, 0, 0, 0.51);*/
+        margin: 0 0.3rem;
+        border-radius: 7px;
+        /* background-color: transparent;*/ /* or #897aa4 if you prefer */
+        cursor: pointer;
+        position: relative; /* needed so we can measure width in an absolute child */
+        /*color: #fff;*/ /* text color to contrast the navbar background */
+      }
+
+      /* 3) The dropdown-menu (the hidden <ul>):
+   We'll set min-width to the EXACT width of .dropdown-toggle. 
+   We'll do that by absolute positioning, plus a small trick with "width: 100%" 
+   if we nest it properly. */
+      .dropdown-menu {
+        position: absolute;
+        top: 90%;
+        left: 0;
+        width: 100%;
+        background-color: #897aa4;
+        box-shadow: inset 0px -5px 4px 1px rgba(0, 0, 0, 0.51);
+        border-radius: 25px;
+        /* padding: 0.3rem 0.5rem; */
+        margin: 0;
+        list-style: none;
+        z-index: 999;
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      /* 4) Show the menu on hover of .dropdown */
+      .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* 5) Style the menu items */
+      .dropdown-menu li {
+        margin: 0.25rem 0;
+      }
+      .dropdown-menu li a {
+        border-radius: 25px;
+        display: block;
+        text-decoration: none;
+        padding: 0.25rem 0.5rem;
+        color: #fff; /* white text to contrast #897aa4 background */
+        transition: background-color 0.2s ease;
+      }
+      .dropdown-menu li a:hover {
+        border-radius: 25px;
+        background-color: #6a4674; /* or any darker shade for hover effect */
+      }
+      #progressBar {
+        position: fixed;
+        top: 0; /* or bottom: 0 if you prefer at the bottom */
+        left: 0;
+        width: 0%; /* starts at 0% */
+        height: 8px; /* bar thickness */
+        border-radius: 0px 0 6px 0px;
+        background: #7428a7; /* color (green) or any color you like */
+        z-index: -1; /* behind all other content */
+        display: none; /* hidden until user starts swiping */
+        transition: width 0.5s linear;
+      }
     </style>
   </head>
 
   <body>
-    <nav class="navbar">
-        <div class="nav-flex">
-          <div class="kgantitle">
-            <a class="text_shadows navbar-brand">Adam</a>
-            <br />
-            <a class="text_shadows navbar-brand">Keegan</a>
-          </div>
-          <ul class="nav-flex-sub nav nav-pills navbar-push">
-            <li class="nav-item">
-              <a class="nav-link nav2" href="https://www.kgans.com">Home</a>
-            </li>
-          </ul>
+    <nav id="navbar" class="navbar">
+      <div class="nav-flex">
+        <div class="kgantitle">
+          <a class="text_shadows navbar-brand">Adam</a>
+          <br />
+          <a class="text_shadows navbar-brand">Keegan</a>
         </div>
-      </nav>
+        <ul class="nav-flex-sub nav nav-pills navbar-push">
+          <li class="nav-item">
+            <a class="nav-link nav2" href="https://www.kgans.com">Home</a>
+          </li>
+
+          <!-- Our "More" dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link nav2 dropdown-toggle">More</a>
+            <ul class="dropdown-menu">
+              <li><a href="#">N64</a></li>
+              <li><a href="#">GBA</a></li>
+              <li><a href="#">GBC</a></li>
+              <li><a href="#">GB</a></li>
+              <li><a href="#">NES</a></li>
+              <li><a href="#">Wii</a></li>
+              <li><a href="#">SNES</a></li>
+              <li><a href="#">PSX</a></li>
+              <li><a href="#">PS2</a></li>
+              <li><a href="#">PSP</a></li>
+              <li><a href="#">XBOX</a></li>
+              <li><a href="#">XBOX 360</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
     <div id="titleText" class="banner-title">
-      <h2 id="titleText" class="banner-text content-text">PS2 Game List Maker</h2>
+      <h2 id="titleText" class="banner-text content-text">
+        PS2 Game List Maker
+      </h2>
     </div>
 
-   <!-- Region Selection: (Radio Buttons) + "Start" -->
-   <div id="regionSelectContainer">
-    <input type="radio" id="JP" name="region" value="JP">
-    <label for="JP">JP</label>
+    <!-- Region + Genre Selection and "Start" button -->
+    <div id="regionSelectContainer">
+      <p>What region?</p>
+      <form action="">
+        <!-- REGION radios -->
+        <input type="radio" id="PAL" name="region" value="PAL" />
+        <label class="form-control" for="PAL">PAL</label>
 
-    <input type="radio" id="EU/PAL" name="region" value="EU/PAL">
-    <label for="EU/PAL">EU/PAL</label>
+        <input type="radio" id="NTSC-J" name="region" value="NTSC-J" />
+        <label class="form-control" for="NTSC-J">NTSC-J</label>
 
-    <input type="radio" id="NA" name="region" value="NA">
-    <label for="NA">NA</label>
+        <input type="radio" id="NTSC-U" name="region" value="NTSC-U" />
+        <label class="form-control" for="NTSC-U">NTSC-U</label>
+        <br />
+      </form>
 
-    <button id="startButton" class="swipe-button">Filter &amp; Start</button>
-  </div>
+      <!-- Amount of games select -->
+      <div id="countSelectContainer" style="text-align: center; margin: 1rem">
+        <p>How many games?</p>
+        <form action="">
+          <input type="radio" id="count25" name="gameCount" value="25" />
+          <label class="form-control" for="count25">25</label>
 
-  <!-- The swipe card container (Holds one .swipe-card at a time) -->
-  <div id="swipeCardContainer">
-    <!-- We dynamically create/insert .swipe-card elements here in JS -->
-  </div>
+          <input type="radio" id="count50" name="gameCount" value="50" />
+          <label class="form-control" for="count50">50</label>
 
-  <!-- Dismiss / Add to List Buttons -->
-  <div class="swipe-buttons">
-    <button id="dismissButton" class="swipe-button">Dismiss</button>
-    <button id="acceptButton" class="swipe-button">Add to List</button>
-  </div>
+          <input type="radio" id="count100" name="gameCount" value="100" />
+          <label class="form-control" for="count100">100</label>
 
-  <!-- Final List Container (shown after all games) -->
-  <div id="finalListContainer">
-    <h2>Your Accepted Games</h2>
-    <div id="finalList"></div>
+          <input type="radio" id="count200" name="gameCount" value="200" />
+          <label class="form-control" for="count200">200</label>
 
-    <!-- Export Buttons -->
-    <div class="export-buttons">
-      <button id="exportJsonButton" class="export-button">Export JSON</button>
-      <button id="exportCsvButton" class="export-button">Export CSV</button>
-      <button id="copyClipboardButton" class="export-button">Copy to Clipboard</button>
+          <input type="radio" id="count500" name="gameCount" value="500" />
+          <label class="form-control" for="count500">500</label>
+
+          <input type="radio" id="countAll" name="gameCount" value="ALL" />
+          <label class="form-control" for="countAll">ALL</label>
+        </form>
+      </div>
+      <p>Genre</p>
+      <!-- GENRE dropdown -->
+      <select id="genreSelect">
+        <option value="All">All (No Genre Filter)</option>
+        <option value="Action">Action</option>
+        <option value="Action RPG">Action RPG</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Fighting">Fighting</option>
+        <option value="Platformer">Platformer</option>
+        <option value="RPG">RPG</option>
+        <option value="Racing">Racing</option>
+        <option value="Shoot 'Em Up">Shoot 'Em Up</option>
+        <option value="Shooter">Shooter</option>
+        <option value="Strategy">Strategy</option>
+        <option value="Survival Horror">Survival Horror</option>
+        <!-- add more? -->
+      </select>
+      <br />
+      <br />
+
+      <button id="startButton" class="swipe-button">Filter &amp; Start</button>
     </div>
-  </div>
+
+    <!-- The swipe card container (Holds one .swipe-card at a time) -->
+    <div id="swipeCardContainer">
+      <!-- We dynamically create/insert .swipe-card elements here in JS -->
+    </div>
+
+    <!-- Dismiss / Add to List Buttons -->
+    <div class="swipe-buttons">
+      <button id="dismissButton" class="swipe-button">Dismiss</button>
+      <button id="acceptButton" class="swipe-button">Add to List</button>
+    </div>
+
+    <!-- Final List Container (shown after all games) -->
+    <div id="finalListContainer">
+      <h2>Your Accepted Games</h2>
+      <div id="finalList"></div>
+
+      <!-- Export Buttons -->
+      <div class="export-buttons">
+        <button id="exportJsonButton" class="export-button">Export JSON</button>
+        <button id="exportCsvButton" class="export-button">Export CSV</button>
+        <button id="copyClipboardButton" class="export-button">
+          Copy to Clipboard
+        </button>
+      </div>
+    </div>
+    <div id="progressBar"></div>
 
     <!-- Your main JS script -->
     <script src="assets/js/ps2.js"></script>

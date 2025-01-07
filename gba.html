@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GBA Games List Maker | Adam Keegan - kgans.com</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Import custom font from Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geo:ital@0;1&family=Goldman:wght@400;700&family=Honk&family=Limelight&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&Bebas+Neue&Nova+Square&family=Press+Start+2P&family=Monoton&family=Rubik+Bubbles&family=Six+Caps&family=Allerta+Stencil&family=DotGothic16&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Your usual CSS links ... -->
+    <link rel="stylesheet" href="assets/css/custom.css" />
+
+    <style>
+      /**********************************************
+       * Basic Layout
+       **********************************************/
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: #f1f1f1;
+      }
+      .navbar,
+      .banner-title {
+        text-align: center;
+        margin: 1rem 0;
+      }
+
+      .kgantitle .text_shadows {
+        font-size: calc(sin(pi / 10) * 5vw) !important;
+      }
+      #regionSelectContainer {
+        text-align: center;
+        margin: 1rem;
+      }
+      #acceptButton {
+        display: none;
+      }
+      #dismissButton {
+        display: none;
+      }
+
+      /**********************************************
+       * Swipe Card Container
+       **********************************************/
+      #swipeCardContainer {
+        width: 320px;
+        max-width: 90%;
+        margin: 2rem auto;
+        position: relative;
+      }
+
+      .swipe-card {
+        position: relative;
+        width: 100%;
+        height: fit-content;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        touch-action: pan-y; /* helps with vertical scrolling on mobile */
+      }
+      .swipe-card img {
+        width: 100%;
+        height: fit-content;
+        max-height: fit-content;
+        object-fit: cover;
+      }
+      .swipe-card h3 {
+        justify-self: center;
+        text-align: center;
+        margin: 0.5rem 0 0.25rem;
+      }
+      .swipe-card p {
+        justify-self: center;
+        text-align: center;
+        margin: 0.25rem 0 0.5rem;
+        padding: 0 1rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+      .swipe-card a {
+        justify-self: center;
+        text-align: center;
+        display: block;
+        margin: 0.5rem 0;
+        color: #007acc;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* Add some rotation/translation as the user swipes. */
+      .swipe-card.swiping {
+        transition: none; /* disable smooth transition while swiping */
+      }
+
+      /**********************************************
+       * Overlays indicating Like / Dislike
+       **********************************************/
+      .overlay-like,
+      .overlay-dislike {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        font-weight: 700;
+        padding: 0.5rem 1rem;
+        border: 3px solid #fff;
+        border-radius: 8px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .overlay-like {
+        left: 10%;
+        color: #28a745; /* green */
+        border-color: #28a745;
+      }
+      .overlay-dislike {
+        right: 10%;
+        color: #dc3545; /* red */
+        border-color: #dc3545;
+      }
+
+      /* Show overlays when swiping far enough */
+      .swipe-card.like .overlay-like {
+        opacity: 1;
+      }
+      .swipe-card.dislike .overlay-dislike {
+        opacity: 1;
+      }
+
+      /**********************************************
+       * Buttons
+       **********************************************/
+      .swipe-buttons,
+      .export-buttons {
+        display: flex;
+        justify-content: center;
+        margin: 1rem 0;
+      }
+      .swipe-button,
+      .export-button {
+        background-color: #007acc;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        margin: 0 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .swipe-button:hover,
+      .export-button:hover {
+        background-color: #005fa3;
+      }
+      .export-buttons {
+        margin-top: 1rem;
+      }
+      .export-button {
+        margin: 0 0.5rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+
+      #swipeCard {
+        display: none; /* hidden on load */
+      }
+      #swipeButtons {
+        display: none; /* hidden on load */
+      }
+      #finalListContainer {
+        display: none; /* shown after last game */
+      }
+
+      /**********************************************
+       * Final List Container
+       **********************************************/
+      #finalListContainer {
+        display: none;
+        margin: 2rem auto;
+        text-align: center;
+        max-width: 500px;
+      }
+      #finalList ul {
+        list-style: none;
+        padding: 0;
+      }
+      #finalList li {
+        margin: 0.25rem 0;
+        border-bottom: 1px solid #ccc;
+        padding: 0.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav id="navbar" class="navbar">
+      <div class="nav-flex">
+        <div class="kgantitle">
+          <a class="text_shadows navbar-brand">Adam</a>
+          <br />
+          <a class="text_shadows navbar-brand">Keegan</a>
+        </div>
+        <ul class="nav-flex-sub nav nav-pills navbar-push">
+          <li class="nav-item">
+            <a class="nav-link nav2" href="https://www.kgans.com">Home</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="titleText" class="banner-title">
+      <h2 id="titleText" class="banner-text content-text">
+        GBA Game List Maker
+      </h2>
+    </div>
+
+    <!-- Region + Genre Selection and "Start" button -->
+    <div id="regionSelectContainer">
+      <!-- REGION radios -->
+      <input type="radio" id="PAL" name="region" value="PAL" />
+      <label for="PAL">PAL</label>
+
+      <input type="radio" id="NTSC-J" name="region" value="NTSC-J" />
+      <label for="NTSC-J">NTSC-J</label>
+
+      <input type="radio" id="NTSC-U" name="region" value="NTSC-U" />
+      <label for="NTSC-U">NTSC-U</label>
+
+      <button id="startButton" class="swipe-button">Filter &amp; Start</button>
+    </div>
+
+    <!-- The swipe card container (Holds one .swipe-card at a time) -->
+    <div id="swipeCardContainer">
+      <!-- We dynamically create/insert .swipe-card elements here in JS -->
+    </div>
+
+    <!-- Dismiss / Add to List Buttons -->
+    <div class="swipe-buttons">
+      <button id="dismissButton" class="swipe-button">Dismiss</button>
+      <button id="acceptButton" class="swipe-button">Add to List</button>
+    </div>
+
+    <!-- Final List Container (shown after all games) -->
+    <div id="finalListContainer">
+      <h2>Your Accepted Games</h2>
+      <div id="finalList"></div>
+
+      <!-- Export Buttons -->
+      <div class="export-buttons">
+        <button id="exportJsonButton" class="export-button">Export JSON</button>
+        <button id="exportCsvButton" class="export-button">Export CSV</button>
+        <button id="copyClipboardButton" class="export-button">
+          Copy to Clipboard
+        </button>
+      </div>
+    </div>
+
+    <!-- Your main JS script -->
+    <script src="assets/js/gba.js"></script>
+  </body>
+</html>
