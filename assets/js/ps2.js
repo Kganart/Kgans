@@ -1,21 +1,16 @@
 /*******************************************************
  * ps2.js
- * Using #swipeCardContainer and .swipe-card
- * JSON Example:
- *   {
- *     "SLES-53007": { developer, genre, language, publisher, region, release_date, title },
- *     ...
- *   }
+ * With ARIA for accessibility
  *******************************************************/
 
-// This snippet toggles the "More" dropdown by click
+// Toggles the "More" dropdown by click
 const dropdownToggle = document.querySelector(".dropdown-toggle");
 dropdownToggle.addEventListener("click", (e) => {
-  e.preventDefault(); // prevent default anchor behavior
+  e.preventDefault();
   dropdownToggle.parentElement.classList.toggle("show");
 });
 
-// 1) References to HTML elements
+// 1) References
 const regionSelectContainer = document.getElementById("regionSelectContainer");
 const regionRadios = document.querySelectorAll('input[name="region"]');
 const genreSelect = document.getElementById("genreSelect");
@@ -29,44 +24,36 @@ const acceptButton = document.getElementById("acceptButton");
 const finalListContainer = document.getElementById("finalListContainer");
 const finalList = document.getElementById("finalList");
 
-// Export buttons
 const exportJsonButton = document.getElementById("exportJsonButton");
 const exportCsvButton = document.getElementById("exportCsvButton");
 const copyClipboardButton = document.getElementById("copyClipboardButton");
 
-// Navbar
 const navbar = document.getElementById("navbar");
-
-// References for "How many games?" radio buttons
 const gameCountRadios = document.querySelectorAll('input[name="gameCount"]');
 
-// ADDED for progress bar:
+// The behind-the-scenes progress bar
 const progressBar = document.getElementById("progressBar");
 
 // 2) Global state
-let allGames = {}; // entire JSON object
-let gamesArray = []; // converted array
-let filteredGames = []; // after region/genre filter
+let allGames = {};
+let gamesArray = [];
+let filteredGames = [];
 let acceptedGames = [];
 let currentIndex = 0;
 
-let chosenRegion = null; // region user picked
-let chosenGenre = null; // genre user picked
+let chosenRegion = null;
+let chosenGenre = null;
 
-// For swipe
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
 const SWIPE_THRESHOLD = 100;
 
-// Track if user is swiping (arrow keys, etc.)
 let inSwipeSession = false;
-
-// ADDED for progress bar: store total number of games
 let totalGamesCount = 0;
 
 /*******************************************************
- * A) loadCoverImage fallback
+ * A) loadCoverImage
  *******************************************************/
 function loadCoverImage(gameId, imgEl) {
   const baseUrl1 = "https://psxdatacenter.com/psx2/images2/covers/";
@@ -74,15 +61,12 @@ function loadCoverImage(gameId, imgEl) {
     "https://raw.githubusercontent.com/xlenore/ps2-covers/refs/heads/main/covers/default/";
   const placeholder = "assets/placeholder.png";
 
-  const firstUrl = baseUrl1 + gameId + ".jpg";
-  const secondUrl = baseUrl2 + gameId + ".jpg";
-
-  imgEl.src = firstUrl;
+  imgEl.src = baseUrl1 + gameId + ".jpg";
   imgEl.onerror = function handleFirstError() {
     imgEl.onerror = function handleSecondError() {
       imgEl.src = placeholder;
     };
-    imgEl.src = secondUrl;
+    imgEl.src = baseUrl2 + gameId + ".jpg";
   };
 }
 
@@ -96,7 +80,6 @@ function shuffleArray(arr) {
   }
   return arr;
 }
-
 function getRandomSubset(array, n) {
   if (n >= array.length) {
     return shuffleArray(array.slice());
@@ -139,15 +122,15 @@ function checkForSavedState() {
   if (saved) {
     if (confirm("HEY YOU!\nSaved progress found.\nResume?")) {
       const state = JSON.parse(saved);
+
       currentIndex = state.currentIndex || 0;
       acceptedGames = state.acceptedGames || [];
       chosenRegion = state.chosenRegion || null;
       chosenGenre = state.chosenGenre || null;
+      filteredGames = state.filteredGames || [];
+      totalGamesCount = state.totalGamesCount || 0;
 
-      if (chosenRegion && chosenGenre) {
-        filteredGames = filterByRegionAndGenre(chosenRegion, chosenGenre);
-        totalGamesCount = filteredGames.length; // ADDED
-
+      if (filteredGames.length > 0) {
         regionSelectContainer.style.display = "none";
         titleText.style.display = "none";
         navbar.style.display = "none";
@@ -158,12 +141,14 @@ function checkForSavedState() {
 
         inSwipeSession = true;
 
-        // Start bar at current progress
+        // show the progress bar
+        progressBar.style.display = "block";
         updateProgressBar(currentIndex, totalGamesCount);
 
         showGame(currentIndex);
       }
     } else {
+      // user wants fresh start
       localStorage.removeItem("ps2State");
     }
   }
@@ -178,6 +163,8 @@ function saveProgress() {
     acceptedGames,
     chosenRegion,
     chosenGenre,
+    filteredGames,
+    totalGamesCount,
   };
   localStorage.setItem("ps2State", JSON.stringify(state));
 }
@@ -200,7 +187,7 @@ function initSwipe(games) {
   filteredGames = games;
   currentIndex = 0;
   acceptedGames = [];
-  totalGamesCount = games.length; // ADDED for progress bar usage
+  totalGamesCount = games.length;
 
   swipeCardContainer.style.display = "block";
   finalListContainer.style.display = "none";
@@ -209,7 +196,7 @@ function initSwipe(games) {
 
   inSwipeSession = true;
 
-  // ADDED: show progress bar at 0% initially
+  // show progress bar at 0%
   progressBar.style.display = "block";
   updateProgressBar(0, totalGamesCount);
 
@@ -228,8 +215,10 @@ function showGame(index) {
 
   swipeCardContainer.innerHTML = "";
 
+  // Make a .swipe-card that is focusable
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("swipe-card");
+  cardDiv.setAttribute("tabindex", "0"); // ADDED for keyboard focus
 
   const overlayLike = document.createElement("div");
   overlayLike.classList.add("overlay-like");
@@ -244,6 +233,7 @@ function showGame(index) {
 
   const game = filteredGames[index];
 
+  // fallback covers
   const imgEl = document.createElement("img");
   loadCoverImage(game.id, imgEl);
   cardDiv.appendChild(imgEl);
@@ -290,10 +280,12 @@ function showGame(index) {
   cardDiv.appendChild(cardBoxDiv);
   swipeCardContainer.appendChild(cardDiv);
 
+  // touch swiping
   cardDiv.addEventListener("touchstart", onTouchStart);
   cardDiv.addEventListener("touchmove", onTouchMove);
   cardDiv.addEventListener("touchend", onTouchEnd);
 
+  // click => left half dismiss, right half accept
   cardDiv.addEventListener("click", (e) => {
     if (!inSwipeSession) return;
     const rect = cardDiv.getBoundingClientRect();
@@ -313,7 +305,7 @@ function showGame(index) {
  *******************************************************/
 function handleDismiss() {
   currentIndex++;
-  updateProgressBar(currentIndex, totalGamesCount); // ADDED
+  updateProgressBar(currentIndex, totalGamesCount);
   showGame(currentIndex);
   saveProgress();
 }
@@ -321,7 +313,7 @@ function handleDismiss() {
 function handleAccept() {
   acceptedGames.push(filteredGames[currentIndex]);
   currentIndex++;
-  updateProgressBar(currentIndex, totalGamesCount); // ADDED
+  updateProgressBar(currentIndex, totalGamesCount);
   showGame(currentIndex);
   saveProgress();
 }
@@ -337,14 +329,16 @@ function showFinalList() {
   finalListContainer.style.display = "block";
 
   inSwipeSession = false;
-
-  // ADDED: hide progress bar
   progressBar.style.display = "none";
 
+  // Build final list with role="listitem"
   finalList.innerHTML = "";
   const ul = document.createElement("ul");
+  ul.setAttribute("role", "list"); // a11y
+
   acceptedGames.forEach((g) => {
     const li = document.createElement("li");
+    li.setAttribute("role", "listitem"); // a11y
     li.textContent = g.title;
     ul.appendChild(li);
   });
@@ -518,10 +512,10 @@ copyClipboardButton.addEventListener("click", () => {
 loadData();
 
 /*******************************************************
- * ADDED FOR PROGRESS BAR: updateProgressBar()
+ * PROGRESS BAR: updateProgressBar()
  *******************************************************/
 function updateProgressBar(currentIndex, totalCount) {
-  if (!totalCount) return; // avoid divide-by-zero
+  if (!totalCount) return;
   const fraction = currentIndex / totalCount;
   const percentage = Math.floor(fraction * 100);
   progressBar.style.width = percentage + "%";
