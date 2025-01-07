@@ -1,0 +1,338 @@
+[
+  {
+    "Genre": "Action"
+  },
+  {
+    "Genre": "Action RPG"
+  },
+  {
+    "Genre": "Action-Adventure"
+  },
+  {
+    "Genre": "Action-RPG"
+  },
+  {
+    "Genre": "Action."
+  },
+  {
+    "Genre": "Adventure"
+  },
+  {
+    "Genre": "Adventure."
+  },
+  {
+    "Genre": "Arcade"
+  },
+  {
+    "Genre": "Aventura."
+  },
+  {
+    "Genre": "Baseball"
+  },
+  {
+    "Genre": "Baseball Simulation."
+  },
+  {
+    "Genre": "Baseball."
+  },
+  {
+    "Genre": "Basketball"
+  },
+  {
+    "Genre": "Basketball."
+  },
+  {
+    "Genre": "Beat 'Em Up"
+  },
+  {
+    "Genre": "Beat'em Up"
+  },
+  {
+    "Genre": "Beat'em Up."
+  },
+  {
+    "Genre": "Board"
+  },
+  {
+    "Genre": "Board."
+  },
+  {
+    "Genre": "Boxing."
+  },
+  {
+    "Genre": "Breakout"
+  },
+  {
+    "Genre": "Breeding"
+  },
+  {
+    "Genre": "Building"
+  },
+  {
+    "Genre": "Card Battle."
+  },
+  {
+    "Genre": "Cards."
+  },
+  {
+    "Genre": "Casino"
+  },
+  {
+    "Genre": "Chess."
+  },
+  {
+    "Genre": "Classic"
+  },
+  {
+    "Genre": "Constructing"
+  },
+  {
+    "Genre": "Dancing"
+  },
+  {
+    "Genre": "Dancing."
+  },
+  {
+    "Genre": "Data"
+  },
+  {
+    "Genre": "Dating"
+  },
+  {
+    "Genre": "Driving"
+  },
+  {
+    "Genre": "Driving."
+  },
+  {
+    "Genre": "Educational"
+  },
+  {
+    "Genre": "Edutainment"
+  },
+  {
+    "Genre": "Exercise"
+  },
+  {
+    "Genre": "Fighting"
+  },
+  {
+    "Genre": "Fighting."
+  },
+  {
+    "Genre": "First Person Shooter"
+  },
+  {
+    "Genre": "First Person Shooter."
+  },
+  {
+    "Genre": "First-person Shooter"
+  },
+  {
+    "Genre": "Fishing."
+  },
+  {
+    "Genre": "Flight Simulator"
+  },
+  {
+    "Genre": "Flight Simulator."
+  },
+  {
+    "Genre": "Football."
+  },
+  {
+    "Genre": "Gambling"
+  },
+  {
+    "Genre": "Gambling."
+  },
+  {
+    "Genre": "Golf"
+  },
+  {
+    "Genre": "Golf."
+  },
+  {
+    "Genre": "Gun"
+  },
+  {
+    "Genre": "Gun."
+  },
+  {
+    "Genre": "Horse Racing"
+  },
+  {
+    "Genre": "Horse Racing."
+  },
+  {
+    "Genre": "Hunting."
+  },
+  {
+    "Genre": "Interactive Movie"
+  },
+  {
+    "Genre": "Jigsaw Puzzle."
+  },
+  {
+    "Genre": "Light Gun Shooter"
+  },
+  {
+    "Genre": "Mahjong"
+  },
+  {
+    "Genre": "Mahjong."
+  },
+  {
+    "Genre": "Mini Games"
+  },
+  {
+    "Genre": "Mini Games."
+  },
+  {
+    "Genre": "MMORPG"
+  },
+  {
+    "Genre": "Music"
+  },
+  {
+    "Genre": "Music."
+  },
+  {
+    "Genre": "Other"
+  },
+  {
+    "Genre": "Party"
+  },
+  {
+    "Genre": "Pinball"
+  },
+  {
+    "Genre": "Pinball."
+  },
+  {
+    "Genre": "Platform."
+  },
+  {
+    "Genre": "Platformer"
+  },
+  {
+    "Genre": "Puzzle"
+  },
+  {
+    "Genre": "Puzzle."
+  },
+  {
+    "Genre": "Quiz"
+  },
+  {
+    "Genre": "Quiz."
+  },
+  {
+    "Genre": "Racing"
+  },
+  {
+    "Genre": "Racing."
+  },
+  {
+    "Genre": "Rhythm"
+  },
+  {
+    "Genre": "Rhythm."
+  },
+  {
+    "Genre": "RPG"
+  },
+  {
+    "Genre": "RPG."
+  },
+  {
+    "Genre": "Rugby."
+  },
+  {
+    "Genre": "Shoot 'Em Up"
+  },
+  {
+    "Genre": "Shooter"
+  },
+  {
+    "Genre": "Shooter."
+  },
+  {
+    "Genre": "Simulation"
+  },
+  {
+    "Genre": "Simulation."
+  },
+  {
+    "Genre": "Sing."
+  },
+  {
+    "Genre": "Skateboarding."
+  },
+  {
+    "Genre": "Skiing"
+  },
+  {
+    "Genre": "Snowboarding"
+  },
+  {
+    "Genre": "Snowboarding."
+  },
+  {
+    "Genre": "Soccer"
+  },
+  {
+    "Genre": "Soccer Manager."
+  },
+  {
+    "Genre": "Soccer."
+  },
+  {
+    "Genre": "Sports"
+  },
+  {
+    "Genre": "Sports."
+  },
+  {
+    "Genre": "Strategy"
+  },
+  {
+    "Genre": "Strategy."
+  },
+  {
+    "Genre": "Survival Horror"
+  },
+  {
+    "Genre": "Survival Horror."
+  },
+  {
+    "Genre": "Survival horror."
+  },
+  {
+    "Genre": "Tactical RPG"
+  },
+  {
+    "Genre": "Tactical RPG."
+  },
+  {
+    "Genre": "Tennis"
+  },
+  {
+    "Genre": "Tennis."
+  },
+  {
+    "Genre": "Third-person Shooter"
+  },
+  {
+    "Genre": "Trivia"
+  },
+  {
+    "Genre": "Visual Novel"
+  },
+  {
+    "Genre": "Visual Novel."
+  },
+  {
+    "Genre": "Wrestling."
+  }
+]
