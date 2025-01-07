@@ -16,8 +16,8 @@
 
     <style>
       /**********************************************
-       * Basic Layout
-       **********************************************/
+             * Basic Layout
+             **********************************************/
       body {
         margin: 0;
         font-family: "Poppins", sans-serif;
@@ -36,16 +36,10 @@
         text-align: center;
         margin: 1rem;
       }
-      #acceptButton {
-        display: none;
-      }
-      #dismissButton {
-        display: none;
-      }
 
       /**********************************************
-       * Swipe Card Container
-       **********************************************/
+             * Swipe Card Container
+             **********************************************/
       #swipeCardContainer {
         width: 320px;
         max-width: 90%;
@@ -101,8 +95,8 @@
       }
 
       /**********************************************
-       * Overlays indicating Like / Dislike
-       **********************************************/
+             * Overlays indicating Like / Dislike
+             **********************************************/
       .overlay-like,
       .overlay-dislike {
         position: absolute;
@@ -137,8 +131,8 @@
       }
 
       /**********************************************
-       * Buttons
-       **********************************************/
+             * Buttons
+             **********************************************/
       .swipe-buttons,
       .export-buttons {
         display: flex;
@@ -147,6 +141,7 @@
       }
       .swipe-button,
       .export-button {
+        font-family: "Goldman", serif;
         background-color: #007acc;
         color: #fff;
         border: none;
@@ -154,6 +149,9 @@
         margin: 0 0.5rem;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 3rem;
+      }
+      .export-button {
         font-size: 1rem;
       }
       .swipe-button:hover,
@@ -178,10 +176,53 @@
       #finalListContainer {
         display: none; /* shown after last game */
       }
+      #acceptButton {
+        display: none;
+      }
+      #dismissButton {
+        display: none;
+      }
+      @media (min-width: 810px) {
+        .swipe-button {
+          margin: 0;
+          border-radius: 0;
+        }
+        #acceptButton {
+          position: absolute;
+          right: 0;
+          top: 0;
+          height: 100%;
+          width: 30vw;
+          background-color: #a900cc;
+          margin: 0;
+          border-radius: 0;
+        }
+        #dismissButton {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 30vw;
+          background-color: #ff6000;
+          margin: 0;
+          border-radius: 0;
+        }
+      }
+      @media (max-width: 809px) {
+        .swipe-card {
+          height: 89vh;
+        }
+        .swipe-card p {
+          line-height: 1.5rem;
+        }
+        .swipe-button {
+          font-size: 1rem;
+        }
+      }
 
       /**********************************************
-       * Final List Container
-       **********************************************/
+             * Final List Container
+             **********************************************/
       #finalListContainer {
         display: none;
         margin: 2rem auto;
@@ -198,8 +239,8 @@
         padding: 0.5rem;
       }
       /*
-      CHANGE
-      */
+            CHANGE
+            */
       :root {
         --form-control-color: rebeccapurple;
       }
@@ -279,9 +320,9 @@
         display: inline-block;
       }
 
-      /* 2) The 'More' link is our .dropdown-toggle. 
-   We'll ensure it has the same style you mentioned 
-   (which you partly inline'd, but let's keep it in CSS). */
+      /* 2) The 'More' link is our .dropdown-toggle.
+         We'll ensure it has the same style you mentioned
+         (which you partly inline'd, but let's keep it in CSS). */
       .nav-item.dropdown .dropdown-toggle {
         padding: 0 1vw;
         align-self: center;
@@ -295,9 +336,9 @@
       }
 
       /* 3) The dropdown-menu (the hidden <ul>):
-   We'll set min-width to the EXACT width of .dropdown-toggle. 
-   We'll do that by absolute positioning, plus a small trick with "width: 100%" 
-   if we nest it properly. */
+         We'll set min-width to the EXACT width of .dropdown-toggle.
+         We'll do that by absolute positioning, plus a small trick with "width: 100%"
+         if we nest it properly. */
       .dropdown-menu {
         position: absolute;
         top: 90%;
@@ -346,10 +387,28 @@
         width: 0%; /* starts at 0% */
         height: 8px; /* bar thickness */
         border-radius: 0px 0 6px 0px;
-        background: #7428a7; /* color (green) or any color you like */
-        z-index: -1; /* behind all other content */
+        z-index: 2; /* behind all other content */
         display: none; /* hidden until user starts swiping */
         transition: width 0.5s linear;
+        background: linear-gradient(
+          90deg,
+          #9046af,
+          #5200ff,
+          #69c6ff,
+          #3752ff,
+          #9046af
+        );
+        background-size: 300% 300%;
+        animation: gradient-animation 11s linear infinite normal;
+      }
+
+      @keyframes gradient-animation {
+        0% {
+          background-position: 300% 50%;
+        }
+        100% {
+          background-position: -300% 50%;
+        }
       }
     </style>
   </head>
@@ -396,17 +455,35 @@
     </div>
 
     <!-- Region + Genre Selection and "Start" button -->
-    <div id="regionSelectContainer">
+    <div id="regionSelectContainer" aria-label="Game Filter Options">
       <p>What region?</p>
       <form action="">
         <!-- REGION radios -->
-        <input type="radio" id="PAL" name="region" value="PAL" />
+        <input
+          type="radio"
+          id="PAL"
+          name="region"
+          value="PAL"
+          aria-label="Choose PAL region"
+        />
         <label class="form-control" for="PAL">PAL</label>
 
-        <input type="radio" id="NTSC-J" name="region" value="NTSC-J" />
+        <input
+          type="radio"
+          id="NTSC-J"
+          name="region"
+          value="NTSC-J"
+          aria-label="Choose NTSC-J region"
+        />
         <label class="form-control" for="NTSC-J">NTSC-J</label>
 
-        <input type="radio" id="NTSC-U" name="region" value="NTSC-U" />
+        <input
+          type="radio"
+          id="NTSC-U"
+          name="region"
+          value="NTSC-U"
+          aria-label="Choose NTSC-U region"
+        />
         <label class="form-control" for="NTSC-U">NTSC-U</label>
         <br />
       </form>
@@ -415,28 +492,64 @@
       <div id="countSelectContainer" style="text-align: center; margin: 1rem">
         <p>How many games?</p>
         <form action="">
-          <input type="radio" id="count25" name="gameCount" value="25" />
+          <input
+            type="radio"
+            id="count25"
+            name="gameCount"
+            value="25"
+            aria-label="Select 25 games"
+          />
           <label class="form-control" for="count25">25</label>
 
-          <input type="radio" id="count50" name="gameCount" value="50" />
+          <input
+            type="radio"
+            id="count50"
+            name="gameCount"
+            value="50"
+            aria-label="Select 50 games"
+          />
           <label class="form-control" for="count50">50</label>
 
-          <input type="radio" id="count100" name="gameCount" value="100" />
+          <input
+            type="radio"
+            id="count100"
+            name="gameCount"
+            value="100"
+            aria-label="Select 100 games"
+          />
           <label class="form-control" for="count100">100</label>
 
-          <input type="radio" id="count200" name="gameCount" value="200" />
+          <input
+            type="radio"
+            id="count200"
+            name="gameCount"
+            value="200"
+            aria-label="Select 200 games"
+          />
           <label class="form-control" for="count200">200</label>
 
-          <input type="radio" id="count500" name="gameCount" value="500" />
+          <input
+            type="radio"
+            id="count500"
+            name="gameCount"
+            value="500"
+            aria-label="Select 500 games"
+          />
           <label class="form-control" for="count500">500</label>
 
-          <input type="radio" id="countAll" name="gameCount" value="ALL" />
+          <input
+            type="radio"
+            id="countAll"
+            name="gameCount"
+            value="ALL"
+            aria-label="Select all games"
+          />
           <label class="form-control" for="countAll">ALL</label>
         </form>
       </div>
       <p>Genre</p>
       <!-- GENRE dropdown -->
-      <select id="genreSelect">
+      <select id="genreSelect" aria-label="Select genre">
         <option value="All">All (No Genre Filter)</option>
         <option value="Action">Action</option>
         <option value="Action RPG">Action RPG</option>
@@ -449,42 +562,87 @@
         <option value="Shooter">Shooter</option>
         <option value="Strategy">Strategy</option>
         <option value="Survival Horror">Survival Horror</option>
-        <!-- add more? -->
       </select>
       <br />
       <br />
 
-      <button id="startButton" class="swipe-button">Filter &amp; Start</button>
+      <button
+        id="startButton"
+        class="swipe-button"
+        aria-label="Start filtering and show games"
+      >
+        Filter &amp; Start
+      </button>
     </div>
 
-    <!-- The swipe card container (Holds one .swipe-card at a time) -->
-    <div id="swipeCardContainer">
-      <!-- We dynamically create/insert .swipe-card elements here in JS -->
+    <!-- The swipe card container -->
+    <div
+      id="swipeCardContainer"
+      role="region"
+      aria-live="polite"
+      aria-label="Swipe through games"
+    >
+      <!-- Cards are dynamically inserted -->
     </div>
 
     <!-- Dismiss / Add to List Buttons -->
     <div class="swipe-buttons">
-      <button id="dismissButton" class="swipe-button">Dismiss</button>
-      <button id="acceptButton" class="swipe-button">Add to List</button>
+      <button
+        id="dismissButton"
+        class="swipe-button"
+        aria-label="Dismiss current game"
+      >
+        Nope
+      </button>
+      <button
+        id="acceptButton"
+        class="swipe-button"
+        aria-label="Accept current game"
+      >
+        Like
+      </button>
     </div>
 
     <!-- Final List Container (shown after all games) -->
-    <div id="finalListContainer">
+    <div
+      id="finalListContainer"
+      aria-label="Final accepted games"
+      aria-live="polite"
+    >
       <h2>Your Accepted Games</h2>
-      <div id="finalList"></div>
+      <!-- The final list -->
+      <div id="finalList" role="list"></div>
 
       <!-- Export Buttons -->
       <div class="export-buttons">
-        <button id="exportJsonButton" class="export-button">Export JSON</button>
-        <button id="exportCsvButton" class="export-button">Export CSV</button>
-        <button id="copyClipboardButton" class="export-button">
+        <button
+          id="exportJsonButton"
+          class="export-button"
+          aria-label="Export your list as JSON"
+        >
+          Export JSON
+        </button>
+        <button
+          id="exportCsvButton"
+          class="export-button"
+          aria-label="Export your list as CSV"
+        >
+          Export CSV
+        </button>
+        <button
+          id="copyClipboardButton"
+          class="export-button"
+          aria-label="Copy your list to the clipboard"
+        >
           Copy to Clipboard
         </button>
       </div>
     </div>
-    <div id="progressBar"></div>
 
-    <!-- Your main JS script -->
+    <!-- The behind-the-scenes progress bar -->
+    <div id="progressBar" aria-hidden="true"></div>
+
+    <!-- The main JS file -->
     <script src="assets/js/ps2.js"></script>
   </body>
 </html>
