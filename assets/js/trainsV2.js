@@ -1,288 +1,288 @@
+/**
+ * Train Times Application - Main Controller
+ * Handles station selection, settings management, and real-time data fetching
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
+    // DOM element references
     const settingsModal = document.getElementById("settingsModal");
     const openModalBtn = document.getElementById("settingsBtn");
     const closeModalBtn = document.getElementById("closeModalBtn");
     const saveSettingsBtn = document.getElementById("saveSettingsBtn");
-  
+    const toggleStationsBtn = document.getElementById("toggleStationsBtn");
+    const stationsWrapper = document.getElementById("stationsWrapper");
+    const stationCardsContainer = document.getElementById("stationCardsContainer");
+    const stationCards = stationCardsContainer.querySelectorAll(".station-card");
+    const stationSearchInput = document.getElementById("stationSearch");
+
+    // Initialize direction columns as hidden
+    document.getElementById("northboundColumn").style.display = "none";
+    document.getElementById("southboundColumn").style.display = "none";
+
+    // Event handlers for settings modal
     openModalBtn.addEventListener("click", () => {
-      settingsModal.style.display = "block";
-      loadSettingsIntoModal();
+        settingsModal.style.display = "block";
+        loadSettingsIntoModal();
     });
-  
+
     closeModalBtn.addEventListener("click", () => {
-      settingsModal.style.display = "none";
+        settingsModal.style.display = "none";
     });
 
     window.addEventListener("click", (e) => {
-      if (e.target === settingsModal) {
-        settingsModal.style.display = "none";
-      }
+        if (e.target === settingsModal) settingsModal.style.display = "none";
     });
 
     saveSettingsBtn.addEventListener("click", () => {
-      saveSettings();
-      settingsModal.style.display = "none";
+        saveSettings();
+        settingsModal.style.display = "none";
     });
-  
-  
-    const toggleStationsBtn = document.getElementById("toggleStationsBtn");
-    const stationsWrapper = document.getElementById("stationsWrapper");
-  
+
+    // Station list management
     toggleStationsBtn.addEventListener("click", () => {
-      if (stationsWrapper.classList.contains("active")) {
-        stationsWrapper.classList.remove("active");
-        toggleStationsBtn.textContent = "Show Stations";
-      } else {
-        stationsWrapper.classList.add("active");
-        toggleStationsBtn.textContent = "Hide Stations";
-      }
+        const isActive = stationsWrapper.classList.toggle("active");
+        toggleStationsBtn.textContent = isActive ? "Hide Stations" : "Show Stations";
     });
-  
-    const stationCardsContainer = document.getElementById("stationCardsContainer");
-    const stationCards = stationCardsContainer.querySelectorAll(".station-card");
+
+    // Station card interactions
     stationCards.forEach(card => {
-      card.addEventListener("click", () => {
-        const stationValue = card.getAttribute("data-station");
-        fetchBothDirections(stationValue);
-
-        stationsWrapper.classList.remove("active");
-        toggleStationsBtn.textContent = "Show Stations";
-      });
+        card.addEventListener("click", () => {
+            const stationValue = card.getAttribute("data-station");
+            fetchBothDirections(stationValue);
+            stationsWrapper.classList.remove("active");
+            toggleStationsBtn.textContent = "Show Stations";
+            document.getElementById("northboundColumn").style.display = "block";
+            document.getElementById("southboundColumn").style.display = "block";
+        });
     });
-  
 
-    const stationSearchInput = document.getElementById("stationSearch");
+    // Station search functionality
     stationSearchInput.addEventListener("keyup", () => {
-      const query = stationSearchInput.value.toLowerCase();
-      stationCards.forEach(card => {
-        const stationName = card.textContent.toLowerCase();
-        if (stationName.includes(query)) {
-          card.style.display = "inline-block";
-        } else {
-          card.style.display = "none";
-        }
-      });
+        const query = stationSearchInput.value.toLowerCase();
+        stationCards.forEach(card => {
+            card.style.display = card.textContent.toLowerCase().includes(query) 
+                ? "inline-block" 
+                : "none";
+        });
     });
-  
 
+    // Initial load logic
     autoLoadBasedOnTime();
-  });
-  
-  // ================================================
-  //     SETTINGS MODAL: LOAD & SAVE
-  // ================================================
-  function loadSettingsIntoModal() {
-    // read from localStorage (if any) and fill the modal inputs
-    const morningStation = localStorage.getItem("morningStation") || "";
-    const morningDirection = localStorage.getItem("morningDirection") || "";
-    const morningTimeFrom = localStorage.getItem("morningTimeFrom") || "05:00";
-    const morningTimeTo = localStorage.getItem("morningTimeTo") || "11:00";
-  
-    const eveningStation = localStorage.getItem("eveningStation") || "";
-    const eveningDirection = localStorage.getItem("eveningDirection") || "";
-    const eveningTimeFrom = localStorage.getItem("eveningTimeFrom") || "12:00";
-    const eveningTimeTo = localStorage.getItem("eveningTimeTo") || "20:00";
-  
-    document.getElementById("morningStationSelect").value = morningStation;
-    document.getElementById("morningDirectionSelect").value = morningDirection;
-    document.getElementById("morningTimeFrom").value = morningTimeFrom;
-    document.getElementById("morningTimeTo").value = morningTimeTo;
-  
-    document.getElementById("eveningStationSelect").value = eveningStation;
-    document.getElementById("eveningDirectionSelect").value = eveningDirection;
-    document.getElementById("eveningTimeFrom").value = eveningTimeFrom;
-    document.getElementById("eveningTimeTo").value = eveningTimeTo;
-  }
-  
-  function saveSettings() {
-    // read values from modal inputs, store them to localStorage
-    const morningStation = document.getElementById("morningStationSelect").value;
-    const morningDirection = document.getElementById("morningDirectionSelect").value;
-    const morningTimeFrom = document.getElementById("morningTimeFrom").value; 
-    const morningTimeTo = document.getElementById("morningTimeTo").value;
-  
-    const eveningStation = document.getElementById("eveningStationSelect").value;
-    const eveningDirection = document.getElementById("eveningDirectionSelect").value;
-    const eveningTimeFrom = document.getElementById("eveningTimeFrom").value;
-    const eveningTimeTo = document.getElementById("eveningTimeTo").value;
-  
-    localStorage.setItem("morningStation", morningStation);
-    localStorage.setItem("morningDirection", morningDirection);
-    localStorage.setItem("morningTimeFrom", morningTimeFrom);
-    localStorage.setItem("morningTimeTo", morningTimeTo);
-  
-    localStorage.setItem("eveningStation", eveningStation);
-    localStorage.setItem("eveningDirection", eveningDirection);
-    localStorage.setItem("eveningTimeFrom", eveningTimeFrom);
-    localStorage.setItem("eveningTimeTo", eveningTimeTo);
     
-    alert("Settings saved!");
-  }
-  
-  // ================================================
-  //    AUTO LOAD BASED ON TIME 
-  // ================================================
-  function autoLoadBasedOnTime() {
-    const morningStation = localStorage.getItem("morningStation");
-    const morningDirection = localStorage.getItem("morningDirection");
-    const morningTimeFrom = localStorage.getItem("morningTimeFrom"); // e.g. "05:00"
-    const morningTimeTo = localStorage.getItem("morningTimeTo");     // e.g. "11:00"
-  
-    const eveningStation = localStorage.getItem("eveningStation");
-    const eveningDirection = localStorage.getItem("eveningDirection");
-    const eveningTimeFrom = localStorage.getItem("eveningTimeFrom"); // e.g. "12:00"
-    const eveningTimeTo = localStorage.getItem("eveningTimeTo");     // e.g. "20:00"
-  
-    if (!morningStation || !morningDirection || !morningTimeFrom || !morningTimeTo ||
-        !eveningStation || !eveningDirection || !eveningTimeFrom || !eveningTimeTo) {
-      return; // no settings yet
-    }
-  
-    // Current time in HH:MM
-    const now = new Date();
-    const currentHM = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
-  
-    if (currentHM >= morningTimeFrom && currentHM <= morningTimeTo) {
-      // morning range
-      fetchStationWithDirection(morningStation, morningDirection);
-    } else if (currentHM >= eveningTimeFrom && currentHM <= eveningTimeTo) {
-      // evening range
-      fetchStationWithDirection(eveningStation, eveningDirection);
-    }
-  }
-  
-  // helper to load a single direction, or both. 
-  function fetchStationWithDirection(stationName, direction) {
-    
-    updateStationHeader(stationName);
+    // Show stations if no auto-load occurred
+    setTimeout(() => {
+        if (!document.getElementById("selectedStationHeader").textContent) {
+            stationsWrapper.classList.add("active");
+            toggleStationsBtn.textContent = "Hide Stations";
+        }
+    }, 100);
+});
 
-    document.getElementById("northboundResults").innerHTML = "";
-    document.getElementById("southboundResults").innerHTML = "";
-  
-    if (direction === "Northbound") {
-      getTrainsForDirection(stationName, "Northbound");
-    } else {
-      getTrainsForDirection(stationName, "Southbound");
-    }
-  }
-  function updateStationHeader(stationName) {
-    const decodedName = decodeURIComponent(stationName);
-    document.getElementById('selectedStationHeader').textContent = `Current Station: ${decodedName}`;
-  }
-  async function fetchBothDirections(stationName) {
+// ================================================
+// Settings Management
+// ================================================
+
+/**
+ * Loads user settings from localStorage into modal form
+ */
+function loadSettingsIntoModal() {
+    const loadSetting = (key, defaultValue) => localStorage.getItem(key) || defaultValue;
     
+    // Morning settings
+    document.getElementById("morningStationSelect").value = loadSetting("morningStation", "");
+    document.getElementById("morningDirectionSelect").value = loadSetting("morningDirection", "");
+    document.getElementById("morningTimeFrom").value = loadSetting("morningTimeFrom", "05:00");
+    document.getElementById("morningTimeTo").value = loadSetting("morningTimeTo", "11:00");
+
+    // Evening settings
+    document.getElementById("eveningStationSelect").value = loadSetting("eveningStation", "");
+    document.getElementById("eveningDirectionSelect").value = loadSetting("eveningDirection", "");
+    document.getElementById("eveningTimeFrom").value = loadSetting("eveningTimeFrom", "12:00");
+    document.getElementById("eveningTimeTo").value = loadSetting("eveningTimeTo", "20:00");
+}
+
+/**
+ * Saves user settings from modal form to localStorage
+ */
+function saveSettings() {
+    const getValue = id => document.getElementById(id).value;
+    
+    // Morning settings
+    localStorage.setItem("morningStation", getValue("morningStationSelect"));
+    localStorage.setItem("morningDirection", getValue("morningDirectionSelect"));
+    localStorage.setItem("morningTimeFrom", getValue("morningTimeFrom"));
+    localStorage.setItem("morningTimeTo", getValue("morningTimeTo"));
+
+    // Evening settings
+    localStorage.setItem("eveningStation", getValue("eveningStationSelect"));
+    localStorage.setItem("eveningDirection", getValue("eveningDirectionSelect"));
+    localStorage.setItem("eveningTimeFrom", getValue("eveningTimeFrom"));
+    localStorage.setItem("eveningTimeTo", getValue("eveningTimeTo"));
+
+    alert("Settings saved!");
+}
+
+// ================================================
+// Core Application Logic
+// ================================================
+
+/**
+ * Automatically loads trains based on time of day and user settings
+ */
+function autoLoadBasedOnTime() {
+    const getSetting = key => localStorage.getItem(key);
+    const now = new Date();
+    const currentHM = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+    // Check morning time window
+    if (currentHM >= getSetting("morningTimeFrom") && currentHM <= getSetting("morningTimeTo")) {
+        fetchStationWithDirection(getSetting("morningStation"), getSetting("morningDirection"));
+    } 
+    // Check evening time window
+    else if (currentHM >= getSetting("eveningTimeFrom") && currentHM <= getSetting("eveningTimeTo")) {
+        fetchStationWithDirection(getSetting("eveningStation"), getSetting("eveningDirection"));
+    }
+}
+
+/**
+ * Fetches train data for a single direction
+ * @param {string} stationName - Selected station name
+ * @param {string} direction - Northbound/Southbound
+ */
+function fetchStationWithDirection(stationName, direction) {
     updateStationHeader(stationName);
-  
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
-  
+    getTrainsForDirection(stationName, direction);
+}
+
+/**
+ * Fetches train data for both directions
+ * @param {string} stationName - Selected station name
+ */
+async function fetchBothDirections(stationName) {
+    updateStationHeader(stationName);
+    document.getElementById("northboundResults").innerHTML = "";
+    document.getElementById("southboundResults").innerHTML = "";
+
     if (window.innerWidth < 600) {
-      document.getElementById("trainContainer").style.display = "none";
-      document.getElementById("directionChoice").style.display = "block";
-      window.selectedStationForMobile = stationName;
+        // Mobile view - show direction choice
+        document.getElementById("trainContainer").style.display = "none";
+        document.getElementById("directionChoice").style.display = "block";
+        window.selectedStationForMobile = stationName;
+        document.getElementById("mobileSwitchDirection").style.display = "none";
     } else {
-      document.getElementById("trainContainer").style.display = "flex";
-      document.getElementById("directionChoice").style.display = "none";
-      await getTrainsForDirection(stationName, "Northbound");
-      await getTrainsForDirection(stationName, "Southbound");
+        // Desktop view - show both directions
+        document.getElementById("trainContainer").style.display = "flex";
+        document.getElementById("directionChoice").style.display = "none";
+        document.getElementById("northboundColumn").style.display = "block";
+        document.getElementById("southboundColumn").style.display = "block";
+        await getTrainsForDirection(stationName, "Northbound");
+        await getTrainsForDirection(stationName, "Southbound");
     }
-  }
-  
-  function showDirection(direction) {
-    
-    updateStationHeader(window.selectedStationForMobile);
-    
+}
+
+/**
+ * Handles mobile direction selection
+ * @param {string} direction - Selected direction (Northbound/Southbound)
+ */
+function showDirection(direction) {
     document.getElementById("trainContainer").style.display = "flex";
     document.getElementById("directionChoice").style.display = "none";
-  
+    document.getElementById("mobileSwitchDirection").style.display = "block";
+
+    // Clear existing results and show selected direction
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
-  
+    
     if (direction === "Northbound") {
-      getTrainsForDirection(window.selectedStationForMobile, "Northbound");
+        document.getElementById("northboundColumn").style.display = "block";
+        getTrainsForDirection(window.selectedStationForMobile, "Northbound");
     } else {
-      getTrainsForDirection(window.selectedStationForMobile, "Southbound");
+        document.getElementById("southboundColumn").style.display = "block";
+        getTrainsForDirection(window.selectedStationForMobile, "Southbound");
     }
-  }
-  
-  async function getTrainsForDirection(stationName, direction) {
-    const apiUrl = `https://corsproxy.io/?http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${stationName}`;
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.text();
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(data, "text/xml");
-  
-      const trains = Array.from(xmlDoc.getElementsByTagName("objStationData"));
-      const directionTrains = trains.filter(t => {
-        const dir = t.getElementsByTagName("Direction")[0]?.textContent;
-        return dir === direction;
-      });
-      
+}
 
-      directionTrains.sort((a,b) => {
-        const dueA = parseInt(a.getElementsByTagName("Duein")[0]?.textContent || "999");
-        const dueB = parseInt(b.getElementsByTagName("Duein")[0]?.textContent || "999");
-        return dueA - dueB;
-      });
-  
-      const nextFour = directionTrains.slice(0,4);
-  
-      // Build HTML
-      let html = "";
-      nextFour.forEach(train => {
-        const destination = train.getElementsByTagName("Destination")[0]?.textContent;
-        const dueIn = train.getElementsByTagName("Duein")[0]?.textContent;
-        const late = train.getElementsByTagName("Late")[0]?.textContent;
-        const status = parseInt(late) > 0 ? `${late} min late` : "On time";
-  
-        html += `
-          <div class="train-card" style="margin-bottom:1rem;">
+/**
+ * Toggles direction display for mobile view
+ */
+function toggleMobileDirection() {
+    const currentDirection = document.getElementById("northboundColumn").style.display === "block" 
+        ? "Northbound" 
+        : "Southbound";
+    showDirection(currentDirection === "Northbound" ? "Southbound" : "Northbound");
+}
+
+// ================================================
+// Data Fetching & UI Helpers
+// ================================================
+
+/**
+ * Fetches and displays train data for a specific direction
+ * @param {string} stationName - Selected station name
+ * @param {string} direction - Northbound/Southbound
+ */
+async function getTrainsForDirection(stationName, direction) {
+    try {
+        const apiUrl = `https://corsproxy.io/?http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${stationName}`;
+        const response = await fetch(apiUrl);
+        const xmlDoc = new DOMParser().parseFromString(await response.text(), "text/xml");
+        
+        // Process XML data
+        const trains = Array.from(xmlDoc.getElementsByTagName("objStationData"))
+            .filter(t => t.getElementsByTagName("Direction")[0]?.textContent === direction)
+            .sort((a, b) => {
+                const dueA = parseInt(a.getElementsByTagName("Duein")[0]?.textContent || 999;
+                const dueB = parseInt(b.getElementsByTagName("Duein")[0]?.textContent || 999;
+                return dueA - dueB;
+            })
+            .slice(0, 4);
+
+        // Generate HTML for train cards
+        const html = trains.length > 0 
+            ? trains.map(train => generateTrainCard(train, direction)).join("") 
+            : `<p>No upcoming trains for ${direction} at this station.</p>`;
+
+        // Update appropriate results column
+        document.getElementById(`${direction.toLowerCase()}Results`).innerHTML = html;
+    } catch (err) {
+        console.error("Error fetching train data:", err);
+        document.getElementById(`${direction.toLowerCase()}Results`).innerHTML = "Error loading data";
+    }
+}
+
+/**
+ * Generates HTML for a train card
+ * @param {Element} train - XML train data element
+ * @param {string} direction - Train direction
+ */
+function generateTrainCard(train, direction) {
+    const destination = train.getElementsByTagName("Destination")[0]?.textContent;
+    const dueIn = train.getElementsByTagName("Duein")[0]?.textContent;
+    const late = parseInt(train.getElementsByTagName("Late")[0]?.textContent || 0);
+
+    return `
+        <div class="train-card" style="margin-bottom:1rem;">
             <div class="train-banner-text" style="font-size:1.2rem;">${direction}</div>
             <div class="card-body">
-              <h5 class="card-title train-banner-text">Dest: ${destination}</h5>
-              <p class="card-text train-banner-text nova-text">
-                Due in: ${dueIn} mins
-              </p>
-              <p class="card-text" style="font-size:0.85rem; margin-top: 0.7rem;">Status: ${status}</p>
+                <h5 class="card-title train-banner-text">Dest: ${destination}</h5>
+                <p class="card-text train-banner-text nova-text">
+                    Due in: ${dueIn} mins
+                </p>
+                <p class="card-text" style="font-size:0.85rem; margin-top: 0.7rem;">
+                    Status: ${late > 0 ? `${late} min late` : "On time"}
+                </p>
             </div>
-          </div>
-        `;
-      });
-  
-      if (nextFour.length === 0) {
-        html = `<p>No upcoming trains for ${direction} at this station.</p>`;
-      }
-  
-      if (direction === "Northbound") {
-        document.getElementById("northboundResults").innerHTML = html;
-      } else {
-        document.getElementById("southboundResults").innerHTML = html;
-      }
-    } catch (err) {
-      console.error("Error fetching train data:", err);
-      if (direction === "Northbound") {
-        document.getElementById("northboundResults").innerHTML = "Error loading data";
-      } else {
-        document.getElementById("southboundResults").innerHTML = "Error loading data";
-      }
-    }
-  }
-  
-  function configureUserSettings() {
+        </div>
+    `;
+}
 
-    const morningStation = prompt("Enter your morning station (exact name):", localStorage.getItem("morningStation") || "Howth");
-    const eveningStation = prompt("Enter your evening station (exact name):", localStorage.getItem("eveningStation") || "Raheny");
-    const morningRange = prompt("Enter morning range (e.g. 05-11 for 5am-11am):", localStorage.getItem("morningRange") || "05-11");
-    const eveningRange = prompt("Enter evening range (e.g. 12-20 for 12pm-8pm):", localStorage.getItem("eveningRange") || "12-20");
-  
-    if (morningStation && eveningStation && morningRange && eveningRange) {
-      localStorage.setItem("morningStation", morningStation);
-      localStorage.setItem("eveningStation", eveningStation);
-      localStorage.setItem("morningRange", morningRange);
-      localStorage.setItem("eveningRange", eveningRange);
-      alert("Settings saved!");
-    } else {
-      alert("Settings not saved, missing some values.");
-    }
-  }
+/**
+ * Updates the station header display
+ * @param {string} stationName - Selected station name
+ */
+function updateStationHeader(stationName) {
+    document.getElementById('selectedStationHeader').textContent = 
+        `Current Station: ${decodeURIComponent(stationName)}`;
+}
