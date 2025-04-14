@@ -416,7 +416,7 @@ function showDirection(direction) {
 async function getTrainsForDirection(stationName, direction) {
 
     const encodedStationName = encodeURIComponent(stationName);
-    const apiUrl = `https:
+    const apiUrl = `https://corsproxy.io/?http://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML?StationDesc=${encodedStationName}`;
     const resultsDivId = direction === "Northbound" ? "northboundResults" : "southboundResults";
     const resultsDiv = document.getElementById(resultsDivId);
 
