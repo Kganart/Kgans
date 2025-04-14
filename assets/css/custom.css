@@ -92,7 +92,7 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
   .train-card {
     border-radius: 16px;
     display: grid;
-    height: 12rem;
+    height: 8rem;
   }
 }
 
