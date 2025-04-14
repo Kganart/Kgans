@@ -58,14 +58,15 @@ const observerCallback = (entries) => {
 };
 
 // Create the Intersection Observer instance
-const observer = new IntersectionObserver(observerCallback, options);
+const animationObserver = new IntersectionObserver(observerCallback, options);
+
 
 // Observe each card pair
-aniCtrl.forEach((aniCtrlObecjt) => observer.observe(aniCtrlObecjt));
+aniCtrl.forEach((aniCtrlObject) => animationObserver.observe(aniCtrlObject));
 
-// Optional: You could add a resize event listener to re-evaluate the logic when the screen is resized
+
 window.addEventListener("resize", () => {
   // Re-run the observer callback on resize (to handle screen size changes dynamically)
-  observer.disconnect(); // Stop observing
-  aniCtrl.forEach((aniCtrlObecjt) => observer.observe(aniCtrlObecjt)); // Re-observe after resize
+  animationObserver.disconnect(); // Stop observing
+  aniCtrl.forEach((aniCtrlObject) => animationObserver.observe(aniCtrlObject)); // Re-observe after resize
 });
