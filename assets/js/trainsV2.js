@@ -1,13 +1,61 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const stationSearchInput = document.getElementById("stationSearch");
+    const settingsModal = document.getElementById("settingsModal");
+    const openModalBtn = document.getElementById("settingsBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const saveSettingsBtn = document.getElementById("saveSettingsBtn");
+  
+    openModalBtn.addEventListener("click", () => {
+      settingsModal.style.display = "block";
+      loadSettingsIntoModal();
+    });
+  
+    closeModalBtn.addEventListener("click", () => {
+      settingsModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.style.display = "none";
+      }
+    });
+
+    saveSettingsBtn.addEventListener("click", () => {
+      saveSettings();
+      settingsModal.style.display = "none";
+    });
+  
+  
+    const toggleStationsBtn = document.getElementById("toggleStationsBtn");
+    const stationsWrapper = document.getElementById("stationsWrapper");
+  
+    toggleStationsBtn.addEventListener("click", () => {
+      if (stationsWrapper.classList.contains("active")) {
+        stationsWrapper.classList.remove("active");
+        toggleStationsBtn.textContent = "Show Stations";
+      } else {
+        stationsWrapper.classList.add("active");
+        toggleStationsBtn.textContent = "Hide Stations";
+      }
+    });
+  
     const stationCardsContainer = document.getElementById("stationCardsContainer");
     const stationCards = stationCardsContainer.querySelectorAll(".station-card");
+    stationCards.forEach(card => {
+      card.addEventListener("click", () => {
+        const stationValue = card.getAttribute("data-station");
+        fetchBothDirections(stationValue);
 
+        stationsWrapper.classList.remove("active");
+        toggleStationsBtn.textContent = "Show Stations";
+      });
+    });
+  
+
+    const stationSearchInput = document.getElementById("stationSearch");
     stationSearchInput.addEventListener("keyup", () => {
       const query = stationSearchInput.value.toLowerCase();
       stationCards.forEach(card => {
         const stationName = card.textContent.toLowerCase();
-        // Hide/show if it contains query
         if (stationName.includes(query)) {
           card.style.display = "inline-block";
         } else {
@@ -16,56 +64,135 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   
-    // When a station card is clicked, fetch data for that station
-    stationCards.forEach(card => {
-      card.addEventListener("click", () => {
-        const stationValue = card.getAttribute("data-station");
-        fetchBothDirections(stationValue);
-      });
-    });
-  
-    const settingsBtn = document.getElementById("settingsBtn");
-    settingsBtn.addEventListener("click", () => {
-      configureUserSettings();
-    });
 
     autoLoadBasedOnTime();
   });
   
+  // ================================================
+  //     SETTINGS MODAL: LOAD & SAVE
+  // ================================================
+  function loadSettingsIntoModal() {
+    // read from localStorage (if any) and fill the modal inputs
+    const morningStation = localStorage.getItem("morningStation") || "";
+    const morningDirection = localStorage.getItem("morningDirection") || "";
+    const morningTimeFrom = localStorage.getItem("morningTimeFrom") || "05:00";
+    const morningTimeTo = localStorage.getItem("morningTimeTo") || "11:00";
+  
+    const eveningStation = localStorage.getItem("eveningStation") || "";
+    const eveningDirection = localStorage.getItem("eveningDirection") || "";
+    const eveningTimeFrom = localStorage.getItem("eveningTimeFrom") || "12:00";
+    const eveningTimeTo = localStorage.getItem("eveningTimeTo") || "20:00";
+  
+    document.getElementById("morningStationSelect").value = morningStation;
+    document.getElementById("morningDirectionSelect").value = morningDirection;
+    document.getElementById("morningTimeFrom").value = morningTimeFrom;
+    document.getElementById("morningTimeTo").value = morningTimeTo;
+  
+    document.getElementById("eveningStationSelect").value = eveningStation;
+    document.getElementById("eveningDirectionSelect").value = eveningDirection;
+    document.getElementById("eveningTimeFrom").value = eveningTimeFrom;
+    document.getElementById("eveningTimeTo").value = eveningTimeTo;
+  }
+  
+  function saveSettings() {
+    // read values from modal inputs, store them to localStorage
+    const morningStation = document.getElementById("morningStationSelect").value;
+    const morningDirection = document.getElementById("morningDirectionSelect").value;
+    const morningTimeFrom = document.getElementById("morningTimeFrom").value; 
+    const morningTimeTo = document.getElementById("morningTimeTo").value;
+  
+    const eveningStation = document.getElementById("eveningStationSelect").value;
+    const eveningDirection = document.getElementById("eveningDirectionSelect").value;
+    const eveningTimeFrom = document.getElementById("eveningTimeFrom").value;
+    const eveningTimeTo = document.getElementById("eveningTimeTo").value;
+  
+    localStorage.setItem("morningStation", morningStation);
+    localStorage.setItem("morningDirection", morningDirection);
+    localStorage.setItem("morningTimeFrom", morningTimeFrom);
+    localStorage.setItem("morningTimeTo", morningTimeTo);
+  
+    localStorage.setItem("eveningStation", eveningStation);
+    localStorage.setItem("eveningDirection", eveningDirection);
+    localStorage.setItem("eveningTimeFrom", eveningTimeFrom);
+    localStorage.setItem("eveningTimeTo", eveningTimeTo);
+    
+    alert("Settings saved!");
+  }
+  
+  // ================================================
+  //    AUTO LOAD BASED ON TIME 
+  // ================================================
+  function autoLoadBasedOnTime() {
+    const morningStation = localStorage.getItem("morningStation");
+    const morningDirection = localStorage.getItem("morningDirection");
+    const morningTimeFrom = localStorage.getItem("morningTimeFrom"); // e.g. "05:00"
+    const morningTimeTo = localStorage.getItem("morningTimeTo");     // e.g. "11:00"
+  
+    const eveningStation = localStorage.getItem("eveningStation");
+    const eveningDirection = localStorage.getItem("eveningDirection");
+    const eveningTimeFrom = localStorage.getItem("eveningTimeFrom"); // e.g. "12:00"
+    const eveningTimeTo = localStorage.getItem("eveningTimeTo");     // e.g. "20:00"
+  
+    if (!morningStation || !morningDirection || !morningTimeFrom || !morningTimeTo ||
+        !eveningStation || !eveningDirection || !eveningTimeFrom || !eveningTimeTo) {
+      return; // no settings yet
+    }
+  
+    // Current time in HH:MM
+    const now = new Date();
+    const currentHM = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+  
+    if (currentHM >= morningTimeFrom && currentHM <= morningTimeTo) {
+      // morning range
+      fetchStationWithDirection(morningStation, morningDirection);
+    } else if (currentHM >= eveningTimeFrom && currentHM <= eveningTimeTo) {
+      // evening range
+      fetchStationWithDirection(eveningStation, eveningDirection);
+    }
+  }
+  
+  // helper to load a single direction, or both. 
+  function fetchStationWithDirection(stationName, direction) {
 
-  async function fetchBothDirections(stationName) {
-    // Clear existing
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
   
-    // For large screens (desktop), show both columns by default
-    // For small screens, display a directionChoice prompt
+    if (direction === "Northbound") {
+      getTrainsForDirection(stationName, "Northbound");
+    } else {
+      getTrainsForDirection(stationName, "Southbound");
+    }
+  }
+  
+ 
+  async function fetchBothDirections(stationName) {
+  
+    document.getElementById("northboundResults").innerHTML = "";
+    document.getElementById("southboundResults").innerHTML = "";
+  
     if (window.innerWidth < 600) {
       document.getElementById("trainContainer").style.display = "none";
       document.getElementById("directionChoice").style.display = "block";
-  
-      // Temporarily store stationName in a global or local variable
       window.selectedStationForMobile = stationName;
     } else {
       document.getElementById("trainContainer").style.display = "flex";
       document.getElementById("directionChoice").style.display = "none";
-  
       await getTrainsForDirection(stationName, "Northbound");
       await getTrainsForDirection(stationName, "Southbound");
     }
   }
   
-  async function showDirection(direction) {
+  function showDirection(direction) {
     document.getElementById("trainContainer").style.display = "flex";
     document.getElementById("directionChoice").style.display = "none";
   
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
-
+  
     if (direction === "Northbound") {
-      await getTrainsForDirection(window.selectedStationForMobile, "Northbound");
+      getTrainsForDirection(window.selectedStationForMobile, "Northbound");
     } else {
-      await getTrainsForDirection(window.selectedStationForMobile, "Southbound");
+      getTrainsForDirection(window.selectedStationForMobile, "Southbound");
     }
   }
   
@@ -101,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const status = parseInt(late) > 0 ? `${late} min late` : "On time";
   
         html += `
-          <div class="card ani-ctrl-gradient-2" style="margin-bottom:1rem;">
+          <div class="card" style="margin-bottom:1rem;">
             <div class="light-banner-text" style="font-size:1.2rem;">${direction}</div>
             <div class="card-body">
               <h5 class="card-title light-banner-text">Dest: ${destination}</h5>
