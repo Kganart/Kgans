@@ -1097,13 +1097,13 @@ body {
   font-family: "Goldman", serif;
   font-weight: 700;
   font-style: normal;
-
-  background: radial-gradient(circle, #3b0f3f, #5f203a, #692f2f, #512a58, #47174e, #010002);
+  background-color: #897aa4;
+  /*background: radial-gradient(circle, #3b0f3f, #5f203a, #692f2f, #512a58, #47174e, #010002);
   background-size: 1200% 1200%;
 
   -webkit-animation: backgroundGradient 22s ease infinite alternate-reverse;
   -moz-animation: backgroundGradient 22s ease infinite alternate-reverse;
-  animation: backgroundGradient 22s ease infinite alternate-reverse;
+  animation: backgroundGradient 22s ease infinite alternate-reverse;*/
 }
 
 @-webkit-keyframes backgroundGradient {
