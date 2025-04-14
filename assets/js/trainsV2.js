@@ -168,18 +168,38 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // helper to load a single direction, or both. 
   function fetchStationWithDirection(stationName, direction) {
-    
+  
     updateStationHeader(stationName);
-
+  
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
   
+    // Determine which column to show and hide the other
+    const northCol = document.getElementById("northboundColumn");
+    const southCol = document.getElementById("southboundColumn");
+    const trainContainer = document.getElementById("trainContainer"); // Get container too
+  
     if (direction === "Northbound") {
+      northCol.style.display = "block"; // Make Northbound column visible
+      southCol.style.display = "none";  // Ensure Southbound is hidden
       getTrainsForDirection(stationName, "Northbound");
-    } else {
+    } else { // Assumes "Southbound" 
+      southCol.style.display = "block"; // Make Southbound column visible
+      northCol.style.display = "none";  // Ensure Northbound is hidden
       getTrainsForDirection(stationName, "Southbound");
     }
+    
+    // Ensure the main container is visible and mobile choice is hidden
+    trainContainer.style.display = "flex";
+    document.getElementById("directionChoice").style.display = "none"; 
+    
+    // Hide the station selector if a station is auto-loaded
+     const stationsWrapper = document.getElementById("stationsWrapper");
+     const toggleStationsBtn = document.getElementById("toggleStationsBtn");
+     stationsWrapper.classList.remove("active");
+     toggleStationsBtn.textContent = "Show Stations";
   }
+
   function updateStationHeader(stationName) {
     const decodedName = decodeURIComponent(stationName);
     document.getElementById('selectedStationHeader').textContent = `Current Station: ${decodedName}`;
