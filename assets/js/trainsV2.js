@@ -277,32 +277,3 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Settings not saved, missing some values.");
     }
   }
-  function autoLoadBasedOnTime() {
-    const morningStation = localStorage.getItem("morningStation");
-    const eveningStation = localStorage.getItem("eveningStation");
-    const morningRange = localStorage.getItem("morningRange"); // e.g. "05-11"
-    const eveningRange = localStorage.getItem("eveningRange"); // e.g. "12-20"
-    
-    if (!morningStation || !eveningStation || !morningRange || !eveningRange) {
-      return; 
-    }
-  
-    const now = new Date();
-    const hour = now.getHours();
-    
-    const [morningMin, morningMax] = morningRange.split("-").map(n=>parseInt(n,10));
-    const [eveningMin, eveningMax] = eveningRange.split("-").map(n=>parseInt(n,10));
-  
-    let stationToUse = null;
-  
-    if (hour >= morningMin && hour <= morningMax) {
-      stationToUse = morningStation;
-    } else if (hour >= eveningMin && hour <= eveningMax) {
-      stationToUse = eveningStation;
-    }
-  
-    if (stationToUse) {
-      fetchBothDirections(stationToUse);
-    }
-  }
-  
