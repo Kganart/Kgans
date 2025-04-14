@@ -23,6 +23,11 @@ opacity: 0;
     flex: 1 0 100%; 
     min-width: auto; /* override the min-width:300px if it’s too wide for small phones */
   }
+  .train-card {
+    border-radius: 16px;
+    display: grid;
+    height: 12rem;
+  }
 }
 @keyframes cardFadeIn {
 from {
