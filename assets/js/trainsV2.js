@@ -228,14 +228,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const status = parseInt(late) > 0 ? `${late} min late` : "On time";
   
         html += `
-          <div class="card" style="margin-bottom:1rem;">
-            <div class="light-banner-text" style="font-size:1.2rem;">${direction}</div>
+          <div class="train-card" style="margin-bottom:1rem;">
+            <div class="train-banner-text" style="font-size:1.2rem;">${direction}</div>
             <div class="card-body">
-              <h5 class="card-title light-banner-text">Dest: ${destination}</h5>
-              <p class="card-text light-banner-text nova-text">
+              <h5 class="card-title train-banner-text">Dest: ${destination}</h5>
+              <p class="card-text train-banner-text nova-text">
                 Due in: ${dueIn} mins
               </p>
-              <p class="card-text" style="font-size:0.85rem;">Status: ${status}</p>
+              <p class="card-text" style="font-size:0.85rem; margin-top: 0.7rem;">Status: ${status}</p>
             </div>
           </div>
         `;
