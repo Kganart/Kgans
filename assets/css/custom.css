@@ -110,6 +110,7 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
 
 
 .modal-content {
+  text-align: center;
   background-color: #faf9f6;
   margin: 10% auto;
   padding: 1rem;
@@ -119,12 +120,15 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
   position: relative;
 }
 
+.modal-content h2{
+  font-size: 1.2rem
+}
 
 .close {
   color: #333;
-  position: absolute;
+  /*position: absolute;
   top: 0.5rem;
-  right: 1rem;
+  right: 1rem;*/
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
