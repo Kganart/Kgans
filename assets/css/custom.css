@@ -9,6 +9,40 @@ h1 {
 
 }
 
+#northboundResults, #southboundResults {
+transition: opacity 0.3s ease-in-out;
+opacity: 1;
+position: relative;
+}
+#northboundResults.fade-out, #southboundResults.fade-out {
+opacity: 0;
+}
+@keyframes cardFadeIn {
+from {
+opacity: 0;
+transform: translateY(10px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+.train-card.train-card-animate {
+animation: cardFadeIn 0.5s ease-out forwards;
+}
+.train-card {
+border-radius: 16px;
+display: grid;
+height: 18rem;
+flex: calc(50% - 2rem);
+padding: 0.5rem;
+background-color: #f1efff;
+box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.51);
+margin: 0;
+opacity: 1;
+transform: translateY(0);
+transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
 .station-card {
   display: inline-block;
   background: #c4abd8;
@@ -1220,16 +1254,6 @@ body {
   text-shadow: -1.5px -2px 0px #cba8ff, 1.5px 2px 0px #3c1b6e, 2.5px 3px 0px #7f33bb;
 }
 
-.train-card {
-  border-radius: 16px;
-  display: grid;
-  height: 18rem;
-  flex: calc(50% - 2rem);
-  padding: 0.5rem;
-  background-color: #f1efff;
-  box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.51);
-  margin: 0;
-}
 
 .train-banner-text {
   margin: 0;
