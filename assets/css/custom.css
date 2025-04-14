@@ -18,17 +18,6 @@ position: relative;
 opacity: 0;
 }
 
-@media (max-width: 600px) {
-  #northboundColumn, #southboundColumn {
-    flex: 1 0 100%; 
-    min-width: auto; /* override the min-width:300px if it’s too wide for small phones */
-  }
-  .train-card {
-    border-radius: 16px;
-    display: grid;
-    height: 12rem;
-  }
-}
 @keyframes cardFadeIn {
 from {
 opacity: 0;
@@ -92,6 +81,18 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
 @media (max-width: 600px) {
   #mobileSwitchDirection {
     display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  #northboundColumn, #southboundColumn {
+    flex: 1 0 100%; 
+    min-width: auto; /* override the min-width:300px if it’s too wide for small phones */
+  }
+  .train-card {
+    border-radius: 16px;
+    display: grid;
+    height: 12rem;
   }
 }
 
