@@ -28,6 +28,21 @@ h1 {
   color: #c4abd8;
 }
 
+#northboundColumn, #southboundColumn {
+  display: none;
+}
+
+#mobileSwitchDirection {
+  display: none;
+  margin: 1rem auto;
+}
+
+@media (max-width: 600px) {
+  #mobileSwitchDirection {
+    display: block;
+  }
+}
+
 .modal {
   display: none;
   position: fixed;
