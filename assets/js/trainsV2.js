@@ -153,6 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // helper to load a single direction, or both. 
   function fetchStationWithDirection(stationName, direction) {
+    
+    updateStationHeader(stationName);
 
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
@@ -163,9 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
       getTrainsForDirection(stationName, "Southbound");
     }
   }
-  
- 
+  function updateStationHeader(stationName) {
+    const decodedName = decodeURIComponent(stationName);
+    document.getElementById('selectedStationHeader').textContent = `Current Station: ${decodedName}`;
+  }
   async function fetchBothDirections(stationName) {
+    
+    updateStationHeader(stationName);
   
     document.getElementById("northboundResults").innerHTML = "";
     document.getElementById("southboundResults").innerHTML = "";
@@ -183,6 +189,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function showDirection(direction) {
+    
+    updateStationHeader(window.selectedStationForMobile);
+    
     document.getElementById("trainContainer").style.display = "flex";
     document.getElementById("directionChoice").style.display = "none";
   
