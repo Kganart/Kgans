@@ -510,7 +510,7 @@ async function getTrainsForDirection(stationName, direction) {
       setTimeout(() => {
          resultsDiv.innerHTML = `<p style="padding: 1rem; color: red;">Error loading ${direction} data. Please try again later.</p>`; 
          resultsDiv.classList.remove('fade-out'); 
-      }, 150);
+      }, 300);
       throw err; 
     }
 }
