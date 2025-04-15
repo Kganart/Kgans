@@ -1666,6 +1666,7 @@ a {
   font-size: 1.8rem;
   margin: 1rem 2rem;
   cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.55, 0.06, 0.68, 0.19);
 }
 .train-btn:hover {
   margin: 1rem 3rem;
