@@ -52,6 +52,16 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
   text-align: center;
   transition: 0.2s all;
 }
+div#stationCardsContainer {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+div#stationSearchContainer {
+  margin-top: 1rem;
+}
 @media (max-width: 600px) {
   .station-card {
     font-size: 1rem;
@@ -72,7 +82,7 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 h2#selectedStationHeader {
   padding: 2rem 0;
-  font-size: 5rem;
+  font-size: calc(3vw + 3.42vh);
   background: #26004d;
   background-clip: text;
   text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
@@ -89,7 +99,7 @@ h2#selectedStationHeader {
 }
 #mobileSwitchDirection {
   display: none;
-  margin: 1rem auto;
+  margin: 0 auto;
 }
 input#stationSearch{
   width: 75%;
@@ -100,7 +110,7 @@ input#stationSearch{
 @media (max-width: 600px) {
   h2#selectedStationHeader {
     padding: 0;
-    font-size: 4rem;
+    font-size: calc(3vw + 3.42vh);
     background: #26004d;
     background-clip: text;
     text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
