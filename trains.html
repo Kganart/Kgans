@@ -47,7 +47,6 @@
     <!-- Import custom CSS -->
     <link rel="stylesheet" href="assets/css/custom.css" />
     <script src="assets/js/animation-control.js" defer></script>
-    <script src="assets/js/trains.js"></script>
     <!-- Define navigation bar -->
     <nav class="navbar">
       <div class="nav-flex">
@@ -100,7 +99,6 @@
           <div class="content-block box-shadow">
             <!-- SETTINGS BUTTON -->
             <button id="settingsBtn" class="train-btn">Settings</button>
-
             <button
               id="toggleStationsBtn"
               class="train-btn"
@@ -108,7 +106,6 @@
             >
               Show Stations
             </button>
-
             <div id="stationsWrapper" class="stations-collapsible">
               <div id="stationSearchContainer" style="margin-top: 1rem;">
                 <input
@@ -118,7 +115,6 @@
                   style="width: 100%; padding: 0.5rem; border-radius: 5px; font-size: 1.2rem;"
                 />
               </div>
-
               <!-- STATION CARDS -->
               <div
                 id="stationCardsContainer"
@@ -202,9 +198,7 @@
                 <div class="station-card" data-station="Malahide">Malahide</div>
               </div>
             </div>
-            
             <h2 id="selectedStationHeader" class="content-text light-banner-text" style="margin: 1rem 0;"></h2>
-
             <div
               id="directionChoice"
               style="display:none; text-align:center; margin-top:2rem;"
@@ -217,7 +211,6 @@
                 Southbound
               </button>
             </div>
-
             <div
               id="trainContainer"
               style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:2rem;"
@@ -225,7 +218,6 @@
             <button id="mobileSwitchDirection" class="train-btn" onclick="toggleMobileDirection()" style="display: none;">
               Switch Direction
             </button>
-            
               <div id="northboundColumn" style="flex:1; min-width:300px;">
                 <h3 class="content-text light-banner-text">Northbound</h3>
                 <div id="northboundResults"></div>
@@ -297,9 +289,7 @@
     <div id="settingsModal" class="modal">
       <div class="modal-content">
         <span id="closeModalBtn" class="close">&times;</span>
-
         <h2>Configure Your Stations & Times</h2>
-
         <label for="morningStationSelect">Morning Station:</label>
         <select id="morningStationSelect">
           <option value="">Select station</option>
@@ -337,7 +327,6 @@
           <option>Tara Street</option>
         </select>
         <br /><br />
-
         <label for="morningDirectionSelect">Morning Direction:</label>
         <select id="morningDirectionSelect">
           <option value="">Select direction</option>
@@ -345,15 +334,12 @@
           <option value="Southbound">Southbound</option>
         </select>
         <br /><br />
-
         <label for="morningTimeFrom">Morning Start Time:</label>
         <input type="time" id="morningTimeFrom" value="05:00" />
         <label for="morningTimeTo">Morning End Time:</label>
         <input type="time" id="morningTimeTo" value="11:00" />
         <br /><br />
-
         <hr />
-
         <label for="eveningStationSelect">Evening Station:</label>
         <select id="eveningStationSelect">
           <option value="">Select station</option>
@@ -391,7 +377,6 @@
           <option>Tara Street</option>
         </select>
         <br /><br />
-
         <label for="eveningDirectionSelect">Evening Direction:</label>
         <select id="eveningDirectionSelect">
           <option value="">Select direction</option>
@@ -399,13 +384,11 @@
           <option value="Southbound">Southbound</option>
         </select>
         <br /><br />
-
         <label for="eveningTimeFrom">Evening Start Time:</label>
         <input type="time" id="eveningTimeFrom" value="12:00" />
         <label for="eveningTimeTo">Evening End Time:</label>
         <input type="time" id="eveningTimeTo" value="20:00" />
         <br /><br />
-
         <button id="saveSettingsBtn" class="train-btn">Save</button>
       </div>
     </div>
