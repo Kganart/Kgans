@@ -16,22 +16,22 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsModal.style.opacity = "1";
     loadSettingsIntoModal();
   });
-  closeModalBtn.addEventListener("click", () => {
+  closeModalBtn.addEventListener("click", async () => {
     settingsModal.style.opacity = "0";
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(resolve => setTimeout(resolve, 200));
     settingsModal.style.display = "none";
-  });
-  window.addEventListener("click", (e) => {
+});
+  window.addEventListener("click", async (e) => {
     if (e.target === settingsModal) {
       settingsModal.style.opacity = "0";
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
       settingsModal.style.display = "none";
     }
   });
-  saveSettingsBtn.addEventListener("click", () => {
+  saveSettingsBtn.addEventListener("click", async () => {
     saveSettings();
     settingsModal.style.opacity = "0";
-    await new Promise(r => setTimeout(r, 200));
+    await new Promise(resolve => setTimeout(resolve, 200));
     settingsModal.style.display = "none";
     autoLoadBasedOnTime();
   });
