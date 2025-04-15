@@ -13,18 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("mobileSwitchDirection").style.display = "none";
   openModalBtn.addEventListener("click", () => {
     settingsModal.style.display = "block";
+    settingsModal.style.opacity = "1";
     loadSettingsIntoModal();
   });
   closeModalBtn.addEventListener("click", () => {
+    settingsModal.style.opacity = "0";
+    await new Promise(r => setTimeout(r, 200));
     settingsModal.style.display = "none";
   });
   window.addEventListener("click", (e) => {
     if (e.target === settingsModal) {
+      settingsModal.style.opacity = "0";
+      await new Promise(r => setTimeout(r, 200));
       settingsModal.style.display = "none";
     }
   });
   saveSettingsBtn.addEventListener("click", () => {
     saveSettings();
+    settingsModal.style.opacity = "0";
+    await new Promise(r => setTimeout(r, 200));
     settingsModal.style.display = "none";
     autoLoadBasedOnTime();
   });

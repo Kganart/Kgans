@@ -112,7 +112,6 @@
                   type="text"
                   id="stationSearch"
                   placeholder="Search stations..."
-                  style="width: 100%; padding: 0.5rem; border-radius: 5px; font-size: 1.2rem;"
                 />
               </div>
               <!-- STATION CARDS -->
@@ -288,108 +287,141 @@
     <!-- SETTINGS MODAL (hidden by default) -->
     <div id="settingsModal" class="modal">
       <div class="modal-content">
-        <span id="closeModalBtn" class="close">&times;</span>
-        <h2>Configure Your Stations & Times</h2>
-        <label for="morningStationSelect">Morning Station:</label>
-        <select id="morningStationSelect">
-          <option value="">Select station</option>
-          <option>Bayside</option>
-          <option>Blackrock</option>
-          <option>Booterstown</option>
-          <option>Bray</option>
-          <option>Clongriffin</option>
-          <option>Clontarf Road</option>
-          <option>Dalkey</option>
-          <option>Dublin Connolly</option>
-          <option>Dublin Pearse</option>
-          <option>Dun Laoghaire</option>
-          <option>Glenageary</option>
-          <option>Grand Canal Dock</option>
-          <option>Greystones</option>
-          <option>Harmonstown</option>
-          <option>Howth</option>
-          <option>Howth Junction</option>
-          <option>Kilbarrack</option>
-          <option>Kilcoole</option>
-          <option>Killester</option>
-          <option>Killiney</option>
-          <option>Lansdowne Road</option>
-          <option>Malahide</option>
-          <option>Portmarnock</option>
-          <option>Raheny</option>
-          <option>Salthill and Monkstown</option>
-          <option>Sandycove</option>
-          <option>Sandymount</option>
-          <option>Seapoint</option>
-          <option>Shankill</option>
-          <option>Sutton</option>
-          <option>Sydney Parade</option>
-          <option>Tara Street</option>
-        </select>
-        <br /><br />
-        <label for="morningDirectionSelect">Morning Direction:</label>
-        <select id="morningDirectionSelect">
-          <option value="">Select direction</option>
-          <option value="Northbound">Northbound</option>
-          <option value="Southbound">Southbound</option>
-        </select>
-        <br /><br />
-        <label for="morningTimeFrom">Morning Start Time:</label>
-        <input type="time" id="morningTimeFrom" value="05:00" />
-        <label for="morningTimeTo">Morning End Time:</label>
-        <input type="time" id="morningTimeTo" value="11:00" />
-        <br /><br />
-        <hr />
-        <label for="eveningStationSelect">Evening Station:</label>
-        <select id="eveningStationSelect">
-          <option value="">Select station</option>
-          <option>Bayside</option>
-          <option>Blackrock</option>
-          <option>Booterstown</option>
-          <option>Bray</option>
-          <option>Clongriffin</option>
-          <option>Clontarf Road</option>
-          <option>Dalkey</option>
-          <option>Dublin Connolly</option>
-          <option>Dublin Pearse</option>
-          <option>Dun Laoghaire</option>
-          <option>Glenageary</option>
-          <option>Grand Canal Dock</option>
-          <option>Greystones</option>
-          <option>Harmonstown</option>
-          <option>Howth</option>
-          <option>Howth Junction</option>
-          <option>Kilbarrack</option>
-          <option>Kilcoole</option>
-          <option>Killester</option>
-          <option>Killiney</option>
-          <option>Lansdowne Road</option>
-          <option>Malahide</option>
-          <option>Portmarnock</option>
-          <option>Raheny</option>
-          <option>Salthill and Monkstown</option>
-          <option>Sandycove</option>
-          <option>Sandymount</option>
-          <option>Seapoint</option>
-          <option>Shankill</option>
-          <option>Sutton</option>
-          <option>Sydney Parade</option>
-          <option>Tara Street</option>
-        </select>
-        <br /><br />
-        <label for="eveningDirectionSelect">Evening Direction:</label>
-        <select id="eveningDirectionSelect">
-          <option value="">Select direction</option>
-          <option value="Northbound">Northbound</option>
-          <option value="Southbound">Southbound</option>
-        </select>
-        <br /><br />
-        <label for="eveningTimeFrom">Evening Start Time:</label>
-        <input type="time" id="eveningTimeFrom" value="12:00" />
-        <label for="eveningTimeTo">Evening End Time:</label>
-        <input type="time" id="eveningTimeTo" value="20:00" />
-        <br /><br />
-        <button id="saveSettingsBtn" class="train-btn">Save</button>
+
+        <div class="modal-element"><span id="closeModalBtn" class="close">&times;</span></div>
+        
+        <div class="modal-element">
+          <h2>Configure Dart Stations & Times</h2>
+        </div>
+
+        <div class="modal-element">
+          <h2>Morning Dart</h2>
+        </div>
+
+        <div class="modal-selection">
+          <label for="morningStationSelect">Morning Station:</label>
+          <select id="morningStationSelect">
+            <option value="">Select station</option>
+            <option>Bayside</option>
+            <option>Blackrock</option>
+            <option>Booterstown</option>
+            <option>Bray</option>
+            <option>Clongriffin</option>
+            <option>Clontarf Road</option>
+            <option>Dalkey</option>
+            <option>Dublin Connolly</option>
+            <option>Dublin Pearse</option>
+            <option>Dun Laoghaire</option>
+            <option>Glenageary</option>
+            <option>Grand Canal Dock</option>
+            <option>Greystones</option>
+            <option>Harmonstown</option>
+            <option>Howth</option>
+            <option>Howth Junction</option>
+            <option>Kilbarrack</option>
+            <option>Kilcoole</option>
+            <option>Killester</option>
+            <option>Killiney</option>
+            <option>Lansdowne Road</option>
+            <option>Malahide</option>
+            <option>Portmarnock</option>
+            <option>Raheny</option>
+            <option>Salthill and Monkstown</option>
+            <option>Sandycove</option>
+            <option>Sandymount</option>
+            <option>Seapoint</option>
+            <option>Shankill</option>
+            <option>Sutton</option>
+            <option>Sydney Parade</option>
+            <option>Tara Street</option>
+          </select>
+        </div>
+
+        <div class="modal-selection">
+          <label for="morningDirectionSelect">Morning Direction:</label>
+          <select id="morningDirectionSelect">
+            <option value="">Select direction</option>
+            <option value="Northbound">Northbound</option>
+            <option value="Southbound">Southbound</option>
+          </select>
+        </div>
+
+        <div class="modal-selection">
+          <label for="morningTimeFrom">Morning Start Time:</label>
+          <input type="time" id="morningTimeFrom" value="05:00" />
+        </div>
+
+        <div class="modal-selection">
+          <label for="morningTimeTo">Morning End Time:</label>
+          <input type="time" id="morningTimeTo" value="11:00" />
+        </div>
+        
+        <hr/>
+
+        <div class="modal-element">
+          <h2>Evening Dart</h2>
+        </div>
+
+        <div class="modal-selection">
+          <label for="eveningStationSelect">Station:</label>
+          <select id="eveningStationSelect">
+            <option value="">Select station</option>
+            <option>Bayside</option>
+            <option>Blackrock</option>
+            <option>Booterstown</option>
+            <option>Bray</option>
+            <option>Clongriffin</option>
+            <option>Clontarf Road</option>
+            <option>Dalkey</option>
+            <option>Dublin Connolly</option>
+            <option>Dublin Pearse</option>
+            <option>Dun Laoghaire</option>
+            <option>Glenageary</option>
+            <option>Grand Canal Dock</option>
+            <option>Greystones</option>
+            <option>Harmonstown</option>
+            <option>Howth</option>
+            <option>Howth Junction</option>
+            <option>Kilbarrack</option>
+            <option>Kilcoole</option>
+            <option>Killester</option>
+            <option>Killiney</option>
+            <option>Lansdowne Road</option>
+            <option>Malahide</option>
+            <option>Portmarnock</option>
+            <option>Raheny</option>
+            <option>Salthill and Monkstown</option>
+            <option>Sandycove</option>
+            <option>Sandymount</option>
+            <option>Seapoint</option>
+            <option>Shankill</option>
+            <option>Sutton</option>
+            <option>Sydney Parade</option>
+            <option>Tara Street</option>
+          </select>
+        </div>
+
+        <div class="modal-selection">
+          <label for="eveningDirectionSelect">Direction:</label>
+          <select id="eveningDirectionSelect">
+            <option value="">direction</option>
+            <option value="Northbound">Northbound</option>
+            <option value="Southbound">Southbound</option>
+          </select>
+        </div>
+
+        <div class="modal-selection">
+          <label for="eveningTimeFrom">Evening Start Time:</label>
+          <input type="time" id="eveningTimeFrom" value="12:00" />
+        </div>
+
+        <div class="modal-selection">
+          <label for="eveningTimeTo">Evening End Time:</label>
+          <input type="time" id="eveningTimeTo" value="20:00" />
+        </div>
+
+        <div class="modal-element"><button id="saveSettingsBtn" class="train-btn">Save</button></div>
+
       </div>
     </div>
     <script src="assets/js/trainsV2.js"></script>
