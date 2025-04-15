@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("southboundColumn").style.display = "none";
   document.getElementById("mobileSwitchDirection").style.display = "none";
   openModalBtn.addEventListener("click", () => {
+    settingsModal.style.opacity = "0";
     settingsModal.style.display = "block";
+    settingsModal.style.opacity = "0";
     settingsModal.style.opacity = "1";
     loadSettingsIntoModal();
   });
