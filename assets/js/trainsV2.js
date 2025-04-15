@@ -244,7 +244,7 @@ function updateStationHeader(stationName) {
   const decodedName = decodeURIComponent(stationName);
   document.getElementById(
     "selectedStationHeader"
-  ).textContent = `Current Station: ${decodedName}`;
+  ).textContent = `${decodedName}`;
 }
 function fetchStationWithDirection(stationName, direction) {
   updateStationHeader(stationName);

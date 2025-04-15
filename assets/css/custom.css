@@ -58,6 +58,28 @@ transition: background-color 0.2s ease, box-shadow 0.2s ease;
     padding: 0.4rem 0.7rem;
   }
 }
+#trainContainer h3 {
+  font-size: 3rem;
+  padding: 0;
+  margin: 0;
+  font-weight: 900;
+  color: transparent;
+  background: #02415a;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
+}
+h2#selectedStationHeader {
+  padding: 2rem 0;
+  font-size: 5rem;
+  background: #26004d;
+  background-clip: text;
+  text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
+  margin: 0;
+  font-weight: 900;
+  color: transparent;
+}
 .station-card:hover {
   background: #634d76;
   color: #c4abd8;
@@ -76,6 +98,16 @@ input#stationSearch{
   font-size: 1.2rem;
 }
 @media (max-width: 600px) {
+  h2#selectedStationHeader {
+    padding: 0;
+    font-size: 4rem;
+    background: #26004d;
+    background-clip: text;
+    text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
+    margin: 0;
+    font-weight: 900;
+    color: transparent;
+  }
   #mobileSwitchDirection {
     display: block;
   }
