@@ -39,8 +39,10 @@
     display: grid;
     height: auto;
     padding: clamp(0.5rem, 2vw, 1.5rem);
-    background-color: #88af46;
-    box-shadow: inset 18px 0 8px -3px #75895f, inset -18px 0 8px -3px #75895f, inset 0 -12px 8px -3px #75895f, inset 0 12px 8px -3px #75895f;
+    /*background-color: #88af46;*/
+    background-color: #396c1b;
+    /*
+    box-shadow: inset 18px 0 8px -3px #75895f, inset -18px 0 8px -3px #75895f, inset 0 -12px 8px -3px #75895f, inset 0 12px 8px -3px #75895f;*/
     margin: 0 auto;
     opacity: 1;
     transform: translateY(0);
@@ -186,76 +188,99 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(34 24 55 / 71%);
-  }
-  .modal-content * {
-    font-family: "Goldman", serif;
+    background-color: rgb(24 26 27 / 88%); /* Use --display-bg with opacity */
+    backdrop-filter: blur(2px) brightness(0.9);
   }
   .modal-content {
-    box-shadow: inset 0 -4px 8px -2px #000000a3, inset 0 1px 5px -3px #797979f0;
-    border-color: #ffffff #d5d5d5 #33333380 #d5d5d5;
-    border-style: solid;
-    border-width: 2px 6px 19px 6px;
+    background: var(--display-panel);
+    color: var(--display-green);
+    border: 3px solid var(--display-green);
+    border-radius: 18px;
+    box-shadow: 0 0 32px 0 var(--display-green), 0 0 0 2px var(--display-border) inset;
+    margin: 7% auto;
+    padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+    width: 95%;
+    max-width: 480px;
     display: flex;
-    text-align: center;
-    background-color: #faf9f6;
-    margin: 10% auto;
-    padding: 1rem 1.5rem; /* Add padding to prevent child elements from touching edges */
-    border-radius: 8px;
-    width: 90%;
-    max-width: 969px;
-    position: relative;
-    flex-wrap: wrap;
     flex-direction: column;
+    align-items: center;
+    font-family: 'Share Tech Mono', 'Consolas', monospace;
+    position: relative;
+    gap: 0.2rem;
+    animation: cardFadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
   }
-
-  .modal > * {
-    margin: 0.5rem 0; /* Add margin to child elements for spacing */
-  }
-  .modal-content h2{
-    font-size: 1.2rem
+  .modal-content h2 {
+    color: var(--display-yellow);
+    font-size: 1.3rem;
+    font-family: 'Share Tech Mono', 'Consolas', monospace;
+    text-shadow: 0 0 8px var(--display-yellow), 0 0 2px #000;
+    margin: 0.5rem 0 0.2rem 0;
+    letter-spacing: 0.04em;
+    font-weight: 700;
   }
   .modal-content div {
-    margin: 8px 15px;
+    margin: 0;
   }
   .modal-content label {
-    font-size: 1.6rem;
+    color: var(--display-orange);
+    font-size: 1.1rem;
+    font-family: 'Share Tech Mono', 'Consolas', monospace;
+    text-shadow: 0 0 6px var(--display-orange), 0 0 2px #000;
+    margin-bottom: 0.2rem;
   }
-  .modal-content select {
-    padding: 1px 0;
-    border-radius: 9px;
-    font-size: 0.95rem;
-  }
-  .modal-content input {
-    padding: 1px 0;
+  .modal-content select, .modal-content input[type="time"] {
+    background: var(--display-bg);
+    color: var(--display-green);
+    border: 2px solid var(--display-green);
     border-radius: 8px;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
+    font-family: 'Share Tech Mono', 'Consolas', monospace;
+    padding: 0.3rem 0.7rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    box-shadow: 0 0 8px var(--display-green) inset;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .modal-content select:focus, .modal-content input[type="time"]:focus {
+    border-color: var(--display-yellow);
+    box-shadow: 0 0 12px var(--display-yellow);
   }
   .modal-element{
     place-self: center;
   }
-  .modal-selection{
+  .modal-selection {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    gap: 1.2rem;
+    background: rgba(56, 108, 27, 0.13);
+    border-radius: 8px;
+    padding: 0.5rem 0.7rem;
+    margin-bottom: 0.2rem;
   }
   hr {
     width: 100%;
-    height: 0.5rem;
-    box-shadow: inset 0 0 3px 0px #4444443d;
+    height: 0.2rem;
+    background: linear-gradient(90deg, var(--display-green), var(--display-yellow), var(--display-orange));
+    border: none;
+    margin: 1.2rem 0 0.7rem 0;
+    box-shadow: 0 0 8px var(--display-green);
   }
-  
   .close {
-    color: #333;
-    /*position: absolute;
-    top: 0.5rem;
-    right: 1rem;*/
-    font-size: 2rem;
+    color: var(--display-orange);
+    font-size: 2.2rem;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    top: 0.2rem;
+    text-shadow: 0 0 8px var(--display-orange), 0 0 2px #000;
+    transition: color 0.2s, text-shadow 0.2s;
   }
   .close:hover {
-    color: #999;
+    color: var(--display-yellow);
+    text-shadow: 0 0 12px var(--display-yellow), 0 0 2px #000;
   }
   .stations-collapsible {
     max-height: 0px;
@@ -265,6 +290,25 @@
   .stations-collapsible.active {
     max-height: 1000px;
     overflow-y: auto;
+  }
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 1.1rem 0.3rem 0.7rem 0.3rem;
+      max-width: 99vw;
+    }
+    .modal-content h2 {
+      font-size: 1.05rem;
+    }
+    .modal-content label {
+      font-size: 0.95rem;
+    }
+    .modal-content select, .modal-content input[type="time"] {
+      font-size: 0.95rem;
+      padding: 0.2rem 0.4rem;
+    }
+    .close {
+      font-size: 1.5rem;
+    }
   }
   @media (max-width: 600px) {
     .modal-content label {
@@ -604,8 +648,8 @@
     align-content: center;
     place-items: center;
     display: flex;
-    background-color: #897aa4;
-    color: #000000;
+    background-color: #88af46;
+    color: #ffffff;
     height: 20vh;
     width: 100%;
     font-weight: 300;
@@ -713,7 +757,7 @@
     font-family: "Goldman", serif;
     font-weight: 700;
     font-style: normal;
-    background-color: var(--display-bg);
+    background-color: var(--display-panel);
     color: var(--display-gray);
   }
   /* Main CSS */
@@ -912,49 +956,67 @@
     }
   }
   .contact-block>div:nth-child(even) {
-    /* background-color: #ffffff20; */
+    background-color: #396c1b;
   }
   .contact-block>div:nth-child(odd) {
-    background-color: #ffffff20;
+    background-color: #638a21;
   }
   .contact-sub {
-    border: solid #403457d6 1px;
-    /* border-radius: 5px; */
+    position: relative;
+    border: 3px solid #34324d;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 0.6fr;
-    gap: 0 0;
-    grid-template-areas:
-      "."
-      ".";
-    justify-content: space-evenly;
+    gap: 0;
+    justify-content: center;
     align-content: center;
     justify-items: center;
     align-items: center;
     padding-top: 0.8rem;
-    box-shadow: inset 16px 0 7px -11px rgb(52 34 86 / 59%), inset -16px 0 11px -11px rgb(56 39 87 / 86%), inset 0px 0 0 0 rgb(170 156 196), inset 0px 0 0 0 rgb(170 156 196), inset 0px 0 0 0 rgb(170 156 196), inset 0px 0 0 0 rgb(170 156 196);
+    background: #080a0f;
+
+    box-shadow:
+      inset 0 0 30px #00ff4052,
+      inset 0 0 60px rgba(0, 255, 64, 0.178),
+            0 0 20px rgba(0, 255, 64, 0.267),
+            0 0 40px #00ff4052,
+            0 0 80px rgba(0,255,65,0.2);
+    overflow: hidden;
+    border-radius: 37%/8%;
   }
+
+
+  .contact-sub::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0,
+      rgba(0,0,0,0.1) 1px
+    );
+    mix-blend-mode: multiply;
+  }
+
   .contact-sub h1 {
-    place-content: center;
-    height: 100%;
-    text-align: center;
-    width: 83%;
-    box-shadow: inset 0px 4px 7px 4px rgba(0, 0, 0, 0.41);
-    border-radius: 4px;
-    padding: 0.2rem 0.1rem;
+    position: relative;
+    z-index: 1;
+    width: 80%;
     margin: 0;
+    padding: 0.3rem 0.6rem;
+    font-size: 1.5rem;
     font-weight: 900;
+    text-align: center;
     color: transparent;
-    background: #331962;
+    background: linear-gradient(90deg, #00ff4079, #30ff70);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
     background-clip: text;
-    text-shadow: 0px 2px 1.3px rgb(255 255 255 / 50%);
-    font-size: 1.35rem;
+    text-shadow: 0 0 2px #00ff4145, 0 0 6px #00ff4060, 0 0 12px rgba(0, 255, 64, 0.39);
   }
   .contact-sub img {
-    filter: invert(50%) saturate(154%) sepia(99%) hue-rotate(228deg);
+    filter: invert(64%) saturate(171%) sepia(110%) hue-rotate(-290deg);
     width: 2rem;
   }
   @media (min-width: 1250px) {
@@ -1366,6 +1428,28 @@
     }
   }
 
+.crt-scan{
+  position: relative;
+  overflow: hidden;
+  
+}
+.crt-scan::before{
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255, 255, 255) 0px,
+    rgb(60, 108, 13)    0.25px,
+    rgb(0, 0, 0)       0.5px,
+    rgb(49, 98, 56)    0.75px
+  );
+  background-size: 100% 10vh;
+  mix-blend-mode: color-burn;
+  opacity: 0.2;
+  animation: scanlines-move 54s linear infinite;
+}
 .crt-effect {
   position: relative;
   overflow: hidden;
@@ -1375,20 +1459,20 @@
   content: "";
   pointer-events: none;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   z-index: 2;
+  /* thinner, denser scan‑lines */
   background: repeating-linear-gradient(
     to bottom,
     rgb(255, 255, 255) 0px,
-    rgb(60, 108, 13) 1px,
-    rgb(0, 0, 0) 3px,
-    rgb(49, 98, 56) 1.5px
+    rgb(60, 108, 13)    0.25px,
+    rgb(0, 0, 0)       0.5px,
+    rgb(49, 98, 56)    0.75px
   );
+  /* force a 1px repeat cycle */
+  background-size: 100% 10vh;
   mix-blend-mode: color-burn;
-  opacity: 1;
+  opacity: 0.2;
   animation: scanlines-move 54s linear infinite;
 }
 
