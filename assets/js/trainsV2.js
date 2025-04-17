@@ -434,7 +434,7 @@ async function getTrainsForDirection(stationName, direction) {
                   <p class="card-text due">
                     ${dueIn} mins
                   </p>
-                  <p class="card-text status">Status: ${status}</p>
+                  <p class="card-text status">${status}</p>
                 </div>
               </div>
             `;
