@@ -179,7 +179,7 @@
     transition: all 0.212s cubic-bezier(0.4, 0, 1, 1);
     opacity: 0;
     display: none;
-    position: fixed;
+    position: fixed !important;
     z-index: 9999;
     left: 0;
     top: 0;
@@ -200,13 +200,17 @@
     text-align: center;
     background-color: #faf9f6;
     margin: 10% auto;
-    padding: 1rem 0;
+    padding: 1rem 1.5rem; /* Add padding to prevent child elements from touching edges */
     border-radius: 8px;
     width: 90%;
     max-width: 969px;
     position: relative;
     flex-wrap: wrap;
     flex-direction: column;
+  }
+
+  .modal > * {
+    margin: 0.5rem 0; /* Add margin to child elements for spacing */
   }
   .modal-content h2{
     font-size: 1.2rem
@@ -668,8 +672,8 @@
     --display-bg: #181a1b;
     --display-panel: #232323;
     --display-green: #39ff14;
-    --display-yellow: #b794e9;
-    --display-orange: #9a94e9; 
+    --display-yellow: #e6ee73;
+    --display-orange: #f8c059; 
     --display-gray: #b0b0b0;
     --display-border: #444;
     --display-shadow: #0f0f0f;
@@ -752,33 +756,51 @@
   }
   .banner-text {
     color: #865592;
-    text-shadow: -1.5px -2px 0px #cba8ff, 1.5px 2px 0px #3c1b6e, 2.5px 3px 0px #7f33bb;
-  }
-  .train-banner-text {
-    place-content: center;
-    text-align: center;
-    padding: 0.2rem 0.1rem;
-    margin: 0;
-    font-weight: 900;
-    color: var(--display-green);
-    background: #1a4313;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
-    text-shadow: 0 0 8px var(--display-green), 0 0 2px #000;
-  }
-  .card {
-    display: grid;
-    height: 18rem;
-    flex: calc(50% - 2rem);
-    padding: 0.5rem;
-    background-color: #282828;
-    box-shadow: inset 0px 10px 9px 3px rgba(0, 0, 0, 0.51);
-    margin: 0;
-  }
-  .card-footer {
-    align-content: end;
-  }
+    /* replace the selected block with this */
+    text-shadow: -1.5px -2px 0px #cba8ff,
+           1.5px  2px 0px #3c1b6e,
+           2.5px  3px 0px #7f33bb;
+    }
+
+    .train-banner-text {
+      position: relative;
+      /* ensure the real text sits above its own pseudo-element */
+      z-index: 1;
+    }
+
+    .train-banner-text::after {
+      /* copy the same text via an attribute on the element:
+       <div class="train-banner-text" data-text="Your Banner"> */
+      content: attr(data-text);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* send this behind the real text */
+      z-index: -1;
+      padding: 0.2rem 0.1rem;
+      margin: 0;
+      background: #26004d;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0px 3px 1.3px rgba(255, 255, 255, 0.5);
+      font-weight: 900;
+    }
+
+    .card {
+      display: grid;
+      height: 18rem;
+      flex: calc(50% - 2rem);
+      padding: 0.5rem;
+      background-color: #282828;
+      box-shadow: inset 0px 10px 9px 3px rgba(0, 0, 0, 0.51);
+      margin: 0;
+    }
+
+    .card-footer {
+      align-content: end;
+    }
   .card-text {
     place-content: center;
     align-content: center;
@@ -807,7 +829,7 @@
   }
   @media (min-width: 1250px) {
     .card-title {
-      font-size: 2.812rem;
+      font-size: 2.212rem;
     }
   }
   .card-link {
@@ -1345,34 +1367,108 @@
   }
 
 .crt-effect {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+}
+
+.crt-effect::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255, 255, 255) 0px,
+    rgb(60, 108, 13) 1px,
+    rgb(0, 0, 0) 3px,
+    rgb(49, 98, 56) 1.5px
+  );
+  mix-blend-mode: color-burn;
+  opacity: 1;
+  animation: scanlines-move 54s linear infinite;
+}
+
+/* Add a strong warp effect to simulate CRT bending with randomised animation */
+.crt-effect > * {
+  transform: perspective(400px) scale(1.1) translateZ(-50px) 
+             rotateX(10deg) rotateY(10deg);
+  transform-origin: center;
+  animation: crt-warp-random 11s infinite alternate ease-in-out;
+}
+
+.crt-effect > *:nth-child(odd) {
+  animation-name: crt-warp-random-2;
+  animation-duration: 13.3s;
+}
+
+.crt-effect > *:nth-child(3n) {
+  animation-name: crt-warp-random-3;
+  animation-duration: 15.7s;
+}
+
+@keyframes crt-warp-random {
+  0% {
+    transform: perspective(400px) scale(1.1) translateZ(-50px) 
+               rotateX(8deg) 
+               rotateY(8deg);
   }
-  
-  .crt-effect::before {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    z-index: 2;
-    /* Scanline pattern: 2px line, 4px transparent */
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.07) 0px,
-      rgba(255,255,255,0.07) 1px,
-      rgba(0,0,0,0) 3px,
-      rgba(0,0,0,0) 6px
-    );
-    mix-blend-mode: screen;
-    opacity: 0.9;
-    animation: scanlines-move 23s linear infinite;
+  50% {
+    transform: perspective(680px) scale(1.25) translateZ(-62px) 
+               rotateX(3deg) 
+               rotateY(5deg);
   }
-  
-  @keyframes scanlines-move {
-    0% {
-      background-position-y: 0;
-    }
-    100% {
-      background-position-y: 300px;
-    }
+  100% {
+    transform: perspective(400px) scale(1.1) translateZ(-50px) 
+               rotateX(10deg) 
+               rotateY(16deg);
   }
+}
+
+@keyframes crt-warp-random-2 {
+  0% {
+    transform: perspective(420px) scale(1.12) translateZ(-48px) 
+               rotateX(9deg) 
+               rotateY(7deg);
+  }
+  50% {
+    transform: perspective(650px) scale(1.22) translateZ(-60px) 
+               rotateX(5deg) 
+               rotateY(3deg);
+  }
+  100% {
+    transform: perspective(420px) scale(1.12) translateZ(-48px) 
+               rotateX(11deg) 
+               rotateY(9deg);
+  }
+}
+
+@keyframes crt-warp-random-3 {
+  0% {
+    transform: perspective(380px) scale(1.08) translateZ(-52px) 
+               rotateX(7deg) 
+               rotateY(9deg);
+  }
+  50% {
+    transform: perspective(700px) scale(1.28) translateZ(-65px) 
+               rotateX(2deg) 
+               rotateY(6deg);
+  }
+  100% {
+    transform: perspective(380px) scale(1.08) translateZ(-52px) 
+               rotateX(9deg) 
+               rotateY(5deg);
+  }
+}
+
+@keyframes scanlines-move {     
+  0% {
+    background-position-y: 0;
+  }
+  100% {
+    background-position-y: 2300px;
+  }
+}

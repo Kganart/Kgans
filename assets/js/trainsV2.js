@@ -432,7 +432,7 @@ async function getTrainsForDirection(stationName, direction) {
                 <div class="card-body">
                   <h5 class="card-title train-banner-text">${destination}</h5>
                   <p class="card-text due">
-                    Due in: ${dueIn} mins
+                    ${dueIn} mins
                   </p>
                   <p class="card-text status">Status: ${status}</p>
                 </div>
