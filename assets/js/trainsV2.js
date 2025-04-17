@@ -427,14 +427,14 @@ async function getTrainsForDirection(stationName, direction) {
         if (trainStatusElem && trainStatusElem !== "En Route") {
         }
         html += `
-              <div class="train-card crt-effect train-card-animate" style="margin-bottom:1rem;">
-                <div class="train-banner-text" style="font-size:1.2rem;">${direction}</div>
+              <div class="train-card crt-effect train-card-animate">
+                <div class="train-banner-text">${direction}</div>
                 <div class="card-body">
-                  <h5 class="card-title train-banner-text">Dest: ${destination}</h5>
-                  <p class="card-text train-banner-text nova-text">
+                  <h5 class="card-title train-banner-text">${destination}</h5>
+                  <p class="card-text due">
                     Due in: ${dueIn} mins
                   </p>
-                  <p class="card-text" style="font-size:0.85rem; margin-top: 0.7rem;">Status: ${status}</p>
+                  <p class="card-text status">Status: ${status}</p>
                 </div>
               </div>
             `;
